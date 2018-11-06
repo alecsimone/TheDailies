@@ -24,12 +24,21 @@ function pull_twitch_clips() {
 	$queryPeriod = getQueryPeriod();
 	$cutoffTime = clipCutoffTimestamp();
 	$clipsArray = get_twitch_clips("game=Rocket%20League", $queryPeriod)->clips;
+	$slugsArray = [];
+	foreach ($clipsArray as $clipData) {
+		$slugsArray[] = $clipData->slug;
+	}
 	$tournamentsArray = generateTodaysStreamlist();
 	foreach ($tournamentsArray as $streamName) {
 		if ($streamName === "Rocket_Dailies") {continue;}
 		$target = "channel=" . $streamName;
 		$theseClips = get_twitch_clips($target, $queryPeriod);
-		$clipsArray = array_merge($clipsArray, $theseClips->clips);
+		// $clipsArray = array_merge($clipsArray, $theseClips->clips);
+		foreach ($theseClips->clips as $clipData) {
+			if (!array_search($clipData->slug, $slugsArray)) {
+				$clipsArray[] = $clipData;
+			}
+		}
 	}
 	$existingClipData = getCleanPulledClipsDB();
 	foreach ($clipsArray as $key => $clipData) {
@@ -102,7 +111,13 @@ function generateTodaysStreamlist() {
 	$yesterday = $myWeekdays[$yesterdaysIndex];
 	$yesterdaysStreams = generateStreamListForDay($yesterday);
 
-	$combinedStreams = array_merge($yesterdaysStreams, $todaysStreams);
+	$combinedStreams = $yesterdaysStreams;
+	foreach ($todaysStreams as $stream) {
+		if (!array_search($stream, $combinedStreams)) {
+			$combinedStreams[] = $stream;
+		}
+	}
+
 	return $combinedStreams;
 }
 function generateStreamlistForDay($day) {
@@ -274,6 +289,48 @@ function addSlugToDB($slugData) {
 	} else {
 		return $wpdb->last_error;
 	}
+}
+
+add_action( 'wp_ajax_store_pulled_clips', 'store_pulled_clips' );
+function store_pulled_clips() {
+	$clipsArray = $_POST['clips'];
+	if (count($clipsArray) === 0) {
+		killAjaxFunction("No clips from this stream");
+	}
+
+	foreach ($clipsArray as $slug => $slugData) {
+		$existingSlug = getSlugInPulledClipsDB($slug);
+		if ($existingSlug !== null) {
+			$slugData['score'] = $existingSlug['score'];
+			$slugData['nuked'] = $existingSlug['nuked'];
+			$slugData['votecount'] = $existingSlug['votecount'];
+			editPulledClip($slugData);
+			continue;
+		} else {
+			$slugData['score'] = 0;
+			$slugData['nuked'] = 0;
+			$slugData['votecount'] = 0;
+			$addSlugSuccess = addSlugToDB($slugData);
+		}
+	}
+
+	update_option("lastClipUpdateTime", time());
+
+	global $wpdb;
+	killAjaxFunction($clipsArray);
+}
+
+function getSlugInPulledClipsDB($slug) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "pulled_clips_db";
+
+	$slugData = $wpdb->get_row(
+		"SELECT *
+		FROM $table_name
+		WHERE slug = '$slug'
+		", ARRAY_A
+	);
+	return $slugData;
 }
 
 ?>

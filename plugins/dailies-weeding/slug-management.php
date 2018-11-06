@@ -1,46 +1,4 @@
 <?php 
-add_action( 'wp_ajax_store_pulled_clips', 'store_pulled_clips' );
-function store_pulled_clips() {
-	$clipsArray = $_POST['clips'];
-	if (count($clipsArray) === 0) {
-		killAjaxFunction("No clips from this stream");
-	}
-
-	foreach ($clipsArray as $slug => $slugData) {
-		$existingSlug = getSlugInPulledClipsDB($slug);
-		if ($existingSlug !== null) {
-			$slugData['score'] = $existingSlug['score'];
-			$slugData['nuked'] = $existingSlug['nuked'];
-			$slugData['votecount'] = $existingSlug['votecount'];
-			editPulledClip($slugData);
-			continue;
-		} else {
-			$slugData['score'] = 0;
-			$slugData['nuked'] = 0;
-			$slugData['votecount'] = 0;
-			$addSlugSuccess = addSlugToDB($slugData);
-		}
-	}
-
-	$weedPageID = getPageIDBySlug('weed');
-	update_post_meta($weedPageID, 'lastClipTime', time());
-
-	global $wpdb;
-	killAjaxFunction($clipsArray);
-}
-
-function getSlugInPulledClipsDB($slug) {
-	global $wpdb;
-	$table_name = $wpdb->prefix . "pulled_clips_db";
-
-	$slugData = $wpdb->get_row(
-		"SELECT *
-		FROM $table_name
-		WHERE slug = '$slug'
-		", ARRAY_A
-	);
-	return $slugData;
-}
 
 function deleteSlugFromPulledClipsDB($slug) {
 	global $wpdb;
