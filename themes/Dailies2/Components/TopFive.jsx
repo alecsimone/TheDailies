@@ -22,7 +22,7 @@ export default class TopFive extends React.Component{
 
 	componentDidMount() {
 		this.getComments();
-		this.getVoters();
+		// this.getVoters();
 	}
 
 	componentDidUpdate() {
@@ -30,7 +30,7 @@ export default class TopFive extends React.Component{
 			this.getComments();
 		}
 		if (this.state.votersLoading) {
-			this.getVoters();
+			// this.getVoters();
 		}
 	}
 
@@ -49,20 +49,20 @@ export default class TopFive extends React.Component{
 		});
 	}
 
-	getVoters() {
-		let queryURL = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/clipvoters/slug=${this.props.clipdata.slug}`
-		let currentState = this.state;
-		let boundThis = this;
-		jQuery.get({
-			url: queryURL,
-			dataType: 'json',
-			success: function(data) {
-				currentState.voters = data;
-				currentState.votersLoading = false;
-				boundThis.setState(currentState);
-			}
-		});
-	}
+	// getVoters() {
+	// 	let queryURL = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/clipvoters/slug=${this.props.clipdata.slug}`
+	// 	let currentState = this.state;
+	// 	let boundThis = this;
+	// 	jQuery.get({
+	// 		url: queryURL,
+	// 		dataType: 'json',
+	// 		success: function(data) {
+	// 			currentState.voters = data;
+	// 			currentState.votersLoading = false;
+	// 			boundThis.setState(currentState);
+	// 		}
+	// 	});
+	// }
 
 	postComment(commentObject) {
 		let currentState = this.state;
@@ -188,12 +188,13 @@ export default class TopFive extends React.Component{
 		}
 
 		let voters;
-		if (this.state.votersLoading) {
-			voters = "Voters Loading..."
-		} else {	
-			// voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
-			voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.state.voters} />		
-		}
+		// if (this.state.votersLoading) {
+		// 	voters = "Voters Loading..."
+		// } else {	
+		// 	// voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
+		// 	voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.state.voters} />		
+		// }
+		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />		
 
 		let rawTitle = this.props.clipdata.title;
 		String.prototype.stripSlashes = function() {

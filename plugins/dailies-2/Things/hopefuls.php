@@ -1,5 +1,35 @@
 <?php
 
+function getHopefuls() {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "pulled_clips_db";
+
+	$hopefuls = $wpdb->get_results(
+		"
+		SELECT *
+		FROM $table_name
+		WHERE nuked = 0 AND score > 0
+		",
+		ARRAY_A
+	);
+
+	foreach ($hopefuls as $key => $clipData) {
+		$hopefuls[$key]['voters'] = [];
+		$voters = getVotersForSlug($clipData['slug']);
+		foreach ($voters as $voter) {
+			$person = getPersonInDB($voter['hash']);
+			$voterData = array(
+				"name" => $person['dailiesDisplayName'],
+				"picture" => $person['picture'],
+				"weight" => $voter['weight'],
+			);
+			$hopefuls[$key]['voters'][] = $voterData;
+		}
+	}
+
+	return $hopefuls;
+}
+
 add_action( 'wp_ajax_keepSlug', 'keepSlug' );
 function keepSlug() {
 	$slug = $_POST['slug'];

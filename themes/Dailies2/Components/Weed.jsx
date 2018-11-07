@@ -5,11 +5,13 @@ import ClipPlayer from './ClipPlayer.jsx';
 import WeedMeta from './WeedMeta.jsx';
 import WeedBallot from './WeedBallot.jsx';
 import WeedComments from './WeedComments.jsx';
+import VotingMachine from './Things/VotingMachine.jsx';
 import {privateData} from '../Scripts/privateData.jsx';
 
 export default class Weed extends React.Component{
 	constructor() {
 		super();
+		window.alert("Please Note: You are now voting for which clips should be on the RLCS World Championship show. Get those standards way back up where they're gonna need to be. Best of the best of the best only, guys.");
 		console.groupCollapsed("constructor");
 		jQuery.each(weedData.clips, function(slug, slugObj) {
 			if (slugObj.score === undefined) {

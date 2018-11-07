@@ -79,14 +79,4 @@ function addPostVotesToNewDB($postID) {
 	
 }
 
-function addVoteToDB($voteArray) {
-	global $wpdb;
-	$table_name = $wpdb->prefix . "vote_db";
-
-	$insertionSuccess = $wpdb->insert(
-		$table_name,
-		$voteArray
-	);
-}
-
 ?>

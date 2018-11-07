@@ -25,7 +25,7 @@ export default class Leader extends React.Component{
 
 	componentDidMount() {
 		this.getComments();
-		this.getVoters();
+		// this.getVoters();
 	}
 
 	componentDidUpdate() {
@@ -33,7 +33,7 @@ export default class Leader extends React.Component{
 			this.getComments();
 		}
 		if (this.state.votersLoading) {
-			this.getVoters();
+			// this.getVoters();
 		}
 	}
 
@@ -52,20 +52,20 @@ export default class Leader extends React.Component{
 		});
 	}
 
-	getVoters() {
-		let queryURL = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/clipvoters/slug=${this.props.clipdata.slug}`
-		let currentState = this.state;
-		let boundThis = this;
-		jQuery.get({
-			url: queryURL,
-			dataType: 'json',
-			success: function(data) {
-				currentState.voters = data;
-				currentState.votersLoading = false;
-				boundThis.setState(currentState);
-			}
-		});
-	}
+	// getVoters() {
+	// 	let queryURL = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/clipvoters/slug=${this.props.clipdata.slug}`
+	// 	let currentState = this.state;
+	// 	let boundThis = this;
+	// 	jQuery.get({
+	// 		url: queryURL,
+	// 		dataType: 'json',
+	// 		success: function(data) {
+	// 			currentState.voters = data;
+	// 			currentState.votersLoading = false;
+	// 			boundThis.setState(currentState);
+	// 		}
+	// 	});
+	// }
 
 	postComment(commentObject) {
 		let currentState = this.state;
@@ -189,12 +189,13 @@ export default class Leader extends React.Component{
 
 	render() {
 		let voters;
-		if (this.state.votersLoading) {
-			voters = "Voters Loading..."
-		} else {	
-			// voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
-			voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.state.voters} />
-		}
+		// if (this.state.votersLoading) {
+		// 	voters = "Voters Loading..."
+		// } else {	
+		// 	// voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
+		// 	voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.state.voters} />
+		// }
+		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />
 		let adminControls;
 		if (dailiesGlobalData.userData.userRole === 'administrator') {
 			adminControls = <div id="hopefuls-admin-controls"><img className="cutButton" src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/04/red-x.png`} onClick={this.cutHandler} /><KeepBar slug={this.props.clipdata.slug} keepSlug={this.props.keepSlug} vodLink={this.props.clipdata.vodlink} clipTime={this.props.clipdata.age} voters={this.state.voters} source={this.props.clipdata.source} sourcePic={this.props.clipdata.sourcepic} /></div>;

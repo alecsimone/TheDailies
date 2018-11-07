@@ -30,22 +30,6 @@ function deleteJudgmentFromSeenSlugsDB($id) {
 // 	}
 // }
 
-function getHopefuls() {
-	global $wpdb;
-	$table_name = $wpdb->prefix . "pulled_clips_db";
-
-	$pulledClipsDB = $wpdb->get_results(
-		"
-		SELECT *
-		FROM $table_name
-		WHERE nuked = 0 AND score > 0
-		",
-		ARRAY_A
-	);
-
-	return $pulledClipsDB;
-}
-
 function nukeSlug($slug) {
 	$slugToNuke = getSlugInPulledClipsDB($slug);
 	if ($slugToNuke === null) {

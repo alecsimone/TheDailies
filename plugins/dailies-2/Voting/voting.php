@@ -1,5 +1,54 @@
 <?php
 
+add_action( 'wp_ajax_slug_vote', 'slug_vote' );
+function slug_vote() {
+	$person = getPersonInDB(get_current_user_id());
+
+	if ($_POST['direction'] === "yea") {
+		$weight = (int)$person['rep'];
+	} elseif ($_POST['direction'] === "nay") {
+		$weight = floatval(get_option("nayCoefficient")) * (int)$person['rep'] * -1;
+	}
+
+	$voterArray = array(
+		"hash" => $person['hash'],
+		"weight" => $weight,
+		"slug" => $_POST['slug'],
+	);
+	$addVoteResult = addVoteToDB($voterArray);
+
+	killAjaxFunction($addVoteResult);
+}
+
+function addVoteToDB($voteArray) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "vote_db";
+	
+	$existingVote = $wpdb->get_row(
+		"SELECT *
+		FROM $table_name
+		WHERE hash = '{$voteArray['hash']}' AND slug = '{$voteArray['slug']}'",
+		'ARRAY_A'
+	);
+	if ($existingVote) {
+		if ($existingVote['weight'] == $voteArray['weight']) {
+			return "That vote already exists!";
+		}
+		$where = array(
+			"hash" => $voteArray['hash'],
+			"slug" => $voteArray['slug'],
+		);
+		$wpdb->delete($table_name, $where);
+	}
+
+	$insertionSuccess = $wpdb->insert(
+		$table_name,
+		$voteArray
+	);
+
+	return $insertionSuccess;
+}
+
 function getPersonVoteIDs($person) {
 	$personRow = getPersonInDB($person);
 	$hash = $personRow['hash'];

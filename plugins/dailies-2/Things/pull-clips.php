@@ -33,7 +33,6 @@ function pull_twitch_clips() {
 		if ($streamName === "Rocket_Dailies") {continue;}
 		$target = "channel=" . $streamName;
 		$theseClips = get_twitch_clips($target, $queryPeriod);
-		// $clipsArray = array_merge($clipsArray, $theseClips->clips);
 		foreach ($theseClips->clips as $clipData) {
 			if (!array_search($clipData->slug, $slugsArray)) {
 				$clipsArray[] = $clipData;
