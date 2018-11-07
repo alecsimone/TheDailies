@@ -195,7 +195,7 @@ export default class Leader extends React.Component{
 		// 	// voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
 		// 	voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.state.voters} />
 		// }
-		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />
+		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} voteCallback={this.props.voteCallback}/>
 		let adminControls;
 		if (dailiesGlobalData.userData.userRole === 'administrator') {
 			adminControls = <div id="hopefuls-admin-controls"><img className="cutButton" src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/04/red-x.png`} onClick={this.cutHandler} /><KeepBar slug={this.props.clipdata.slug} keepSlug={this.props.keepSlug} vodLink={this.props.clipdata.vodlink} clipTime={this.props.clipdata.age} voters={this.state.voters} source={this.props.clipdata.source} sourcePic={this.props.clipdata.sourcepic} /></div>;

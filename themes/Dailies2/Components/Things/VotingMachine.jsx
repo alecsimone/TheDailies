@@ -35,6 +35,9 @@ export default class VotingMachine extends React.Component{
 				console.log(data);
 			}
 		});
+		if (this.props.voteCallback) {
+			this.props.voteCallback(e);
+		}
 	}
 
 	componentDidUpdate() {
@@ -51,6 +54,14 @@ export default class VotingMachine extends React.Component{
 
 	render() {
 		// console.log(this.props.voterData);
+
+		if (this.props.voterData == "loading") {
+			return (
+				<div className="votingMachine">
+					Voters Loading...
+				</div>
+			);
+		}
 		
 		let voters = Object.keys(this.props.voterData);
 

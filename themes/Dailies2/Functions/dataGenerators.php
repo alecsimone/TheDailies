@@ -395,30 +395,6 @@ function convertTwitchTimeToTimestamp($twitchTime) {
 	return date("U",strtotime($twitchTime));
 }
 
-function getCurrentUsersSeenSlugs() {
-	global $wpdb;
-	$table_name = $wpdb->prefix . 'seen_slugs_db';
-
-	$hash = getPersonsHash(get_current_user_id());
-
-	$seenSlugs = $wpdb->get_results(
-		"
-		SELECT *
-		FROM $table_name
-		WHERE hash = '$hash'
-		",
-		ARRAY_A
-	);
-
-	foreach ($seenSlugs as $key => $slugData) {
-		if (time() - $slugData['time'] > 60 * 60 * 24 * 7) {
-			deleteJudgmentFromSeenSlugsDB($slugData['id']);
-			unset($seenSlugs[$key]);
-		}
-	}
-	return $seenSlugs;
-}
-
 function generateChannelChangerData() {
 	include( locate_template('schedule.php') );
 	$todaysChannels = $schedule[$todaysSchedule];

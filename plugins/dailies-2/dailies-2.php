@@ -22,6 +22,7 @@ require_once( __DIR__ . '/Things/thing-management.php');
 require_once( __DIR__ . '/Things/comments.php');
 require_once( __DIR__ . '/Things/submissions.php');
 require_once( __DIR__ . '/Things/pull-clips.php');
+require_once( __DIR__ . '/Things/weed.php');
 require_once( __DIR__ . '/Things/hopefuls.php');
 require_once( __DIR__ . '/Things/live.php');
 
