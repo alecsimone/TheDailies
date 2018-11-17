@@ -247,7 +247,7 @@ export default class Leader extends React.Component{
 		return(
 			<div className="Leader">
 				<div className="playerContainer">
-					<ClipPlayer type={this.props.clipdata.type} slug={this.props.clipdata.slug} width={playerWidth} autoplay={false} />
+					<ClipPlayer type={this.props.clipdata.type} slug={this.props.clipdata.slug} width={playerWidth} autoplay={this.props.autoplay} />
 				</div>
 				<div className="hopefuls-meta">
 					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>

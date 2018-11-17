@@ -28,13 +28,13 @@ export default class Weed extends React.Component{
 			}
 		});
 
-		var seenMoments = [];
-		jQuery.each(weedData.seenSlugs, (index, seenSlugObject) => {
-			let vodlink = weedData.clips[seenSlugObject.slug].vodlink;
-			if (vodlink !== "none") {
-				seenMoments.push(this.turnVodlinkIntoMomentObject(vodlink));
-			}
-		});
+		// var seenMoments = [];
+		// jQuery.each(weedData.seenSlugs, (index, seenSlugObject) => {
+		// 	let vodlink = weedData.clips[seenSlugObject.slug].vodlink;
+		// 	if (vodlink !== "none") {
+		// 		seenMoments.push(this.turnVodlinkIntoMomentObject(vodlink));
+		// 	}
+		// });
 
 		let youJudged = 0;
 		jQuery.each(weedData.seenSlugs, function(index, seenSlugObject) {
@@ -48,7 +48,7 @@ export default class Weed extends React.Component{
 		this.state = {
 			clips: weedData.clips,
 			seenSlugs: weedData.seenSlugs,
-			seenMoments,
+			// seenMoments,
 			comments: [],
 			commentsLoading: true,
 			newClip: true,
@@ -59,15 +59,15 @@ export default class Weed extends React.Component{
 		};
 
 
-		jQuery.each(this.state.clips, (index, clipData) => {
-			if (clipData.vodlink !== undefined) {
-				let thisMoment = this.turnVodlinkIntoMomentObject(clipData.vodlink);
-				if (!this.checkMomentFreshness(thisMoment)) {
-					delete this.state.clips[index];
-					this.state.totalClips--;
-				}
-			}
-		});
+		// jQuery.each(this.state.clips, (index, clipData) => {
+		// 	if (clipData.vodlink !== undefined) {
+		// 		let thisMoment = this.turnVodlinkIntoMomentObject(clipData.vodlink);
+		// 		if (!this.checkMomentFreshness(thisMoment)) {
+		// 			delete this.state.clips[index];
+		// 			this.state.totalClips--;
+		// 		}
+		// 	}
+		// });
 
 		if (this.state.seenSlugs.length === undefined) {
 			console.log(this.state.seenSlugs.length);
@@ -591,7 +591,7 @@ export default class Weed extends React.Component{
 		firstSlugData.voters = this.state.voters;
 		console.log(firstSlugData);
 		let firstSlugMoment = this.turnVodlinkIntoMomentObject(firstSlugData.vodlink);
-		let momentIsFresh = this.checkMomentFreshness(firstSlugMoment);
+		// let momentIsFresh = this.checkMomentFreshness(firstSlugMoment);
 		let i = 0;
 		// while (!momentIsFresh && i < this.state.clipsArray.length) {
 		// 	// this.nukeSlug(this.firstSlug);
@@ -606,11 +606,11 @@ export default class Weed extends React.Component{
 		// 		momentIsFresh = true;
 		// 	}
 		// }
-		if (!momentIsFresh) {
-			let clipsArray = this.state.clipsArray;
-			clipsArray.splice(0, 1);
-			this.setState({clipsArray});
-		}
+		// if (!momentIsFresh) {
+		// 	let clipsArray = this.state.clipsArray;
+		// 	clipsArray.splice(0, 1);
+		// 	this.setState({clipsArray});
+		// }
 		if (this.state.clipsArray.length === i) {
 			return(
 				<section id="weeder" className="weederVictory">
@@ -710,7 +710,7 @@ export default class Weed extends React.Component{
 					}}
 				>
 					<section id="scoutThing">
-						<Leader clipdata={firstSlugData} voteCallback={this.judgeClip}/>
+						<Leader clipdata={firstSlugData} voteCallback={this.judgeClip} autoplay={true} />
 					</section>
 				</CSSTransition>
 			</section>

@@ -100,11 +100,11 @@ export default class VotingMachine extends React.Component{
 
 		return (
 			<div className="votingMachine">
-				{nayVoters}
+				<div className="nayVoters voterBubblePod">{nayVoters}</div>
 				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
 				<p className="score">{score > 0 ? `+${score}` : `${score}`}</p>
 				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
-				{yeaVoters}
+				<div className="yeaVoters voterBubblePod">{yeaVoters}</div>
 			</div>
 		);
 	}

@@ -460,11 +460,6 @@ function generateLiveVoteData() {
 	return $voteDatas;
 }
 
-function generateHopefulsData() {
-	$hopefulsData = getHopefuls();
-	return $hopefulsData;
-}
-
 function generateCohostData() {
 	//cohost slugs: 'dazerin', 'inanimatej', 'ninjarider'
 	$cohosts = [];

@@ -8,6 +8,11 @@ function client_information() {
 		$weedData = generateWeedData();
 		wp_localize_script('weedScripts', 'weedData', $weedData);
 		wp_enqueue_script('weedScripts');
+	} else if (is_page('hopefuls')) {
+		wp_register_script( 'hopefulsScripts', get_template_directory_uri() . '/Bundles/hopefuls-bundle' . $version . '.js', ['jquery'], '', true );
+		// $hopefulsData = generateHopefulsData();
+		// wp_localize_script('hopefulsScripts', 'hopefulsData', $hopefulsData);
+		wp_enqueue_script('hopefulsScripts');
 	}
 }
 
@@ -25,19 +30,11 @@ function generateWeedData() {
 	$weedDataArray['seenSlugs'] = getCurrentUsersSeenSlugs();
 	
 	return $weedDataArray;
+}
 
-	// $weedDataArray['goodStreams'] = ["jessie", "scrub", "johnnyboi_i", "SubParButInHD", "orionrl", "callumtheshogun", "dazerin", "achievestv", "primethunderrl", "napp", "deevorl", "maestro", "vincerl", "sizz", "drippay", "halcyon", "chicago_rl", "godsmilla", "familiarleaf", "freakiirl", "mognus1", "gschwind", "memoryrl", "jwismont", "lethamyr_rl", "fairypeak", "metsanauris", "frinteerspot", "allushin", "dareyck", "dudewiththenose", "satthew", "paschy90", "gregan", "turbopolsa", "miztik", "corruptedg", "sebadam2011", "greazymeister", "killerno7", "bluey", "atr_realize", "al0t97", "timi_f", "insolences", "moses", "chrome", "turtle", "garrettg", "wavepunk", "jknapsrl", "snaski", "plutorl", "tormentrl", "espeon", "karmaah", "remkoe", "liefx", "lawler", "jamesbot", "squishymuffinz", "jacobrl", "dappur", "klassux", "findablecarpet", "seismicwhite", "markydooda", "fireburner", "sad_junior", "doomsee", "lachinio", "rizzo", "jhzer", "kronovi", "kuxir97", "m1k3rules"];
-	// $currentTime = time();
-	// $fiveMinutesAgo = $currentTime - 5 * 60;
-	// $oneMinuteAgo = $currentTime - 60;
-	// if ($lastUpdateTime < $oneMinuteAgo) {
-	// 	$needsFreshQuery = 'true';
-	// } else {
-	// 	$needsFreshQuery = 'false';
-	// }
-	// $weedDataArray['needsFreshQuery'] = $needsFreshQuery;
-	// $weedDataArray['lastNomTime'] = getLastNomTimestamp();
-	// $weedDataArray['totalClips'] = count($weedDataArray['clips']);
+function generateHopefulsData() {
+	$hopefulsData = getHopefuls();
+	return $hopefulsData;
 }
 
 ?>

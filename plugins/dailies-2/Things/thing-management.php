@@ -17,9 +17,9 @@ function getPulledClipsDB() {
 
 function getCleanPulledClipsDB() {
 	$pulledClipsDBRaw = getPulledClipsDB();
+	$ourCutoff = clipCutoffTimestamp();
 	foreach ($pulledClipsDBRaw as $key => $clipData) {
 		$clipTimestamp = convertTwitchTimeToTimestamp($clipData['age']);
-		$ourCutoff = clipCutoffTimestamp();
 		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -21 || $clipData['nuked'] == 1)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
 			continue;

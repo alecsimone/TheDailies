@@ -111,11 +111,6 @@ function script_setup() {
 		wp_localize_script('userManagementScripts', 'userManagementData', $userManagementData);
 		wp_enqueue_script('userManagementScripts');
 		wp_enqueue_script('tablesorter');
-	} else if (is_page('hopefuls')) {
-		wp_register_script( 'hopefulsScripts', get_template_directory_uri() . '/Bundles/hopefuls-bundle' . $version . '.js', ['jquery'], '', true );
-		$hopefulsData = generateHopefulsData();
-		wp_localize_script('hopefulsScripts', 'hopefulsData', $hopefulsData);
-		wp_enqueue_script('hopefulsScripts');
 	}
 
 

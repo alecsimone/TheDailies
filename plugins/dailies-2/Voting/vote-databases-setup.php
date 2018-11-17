@@ -37,7 +37,7 @@ function update_vote_history_db_check() {
 }
 
 global $vote_db_version;
-$vote_db_version = '0.1';
+$vote_db_version = '0.2';
 
 function createVoteDB() {
 	global $wpdb;
@@ -54,6 +54,7 @@ function createVoteDB() {
 			slug NVARCHAR(255) NOT NULL,
 			hash VARCHAR(255) NOT NULL,
 			weight SMALLINT NOT NULL,
+			time INT NOT NULL DEFAULT 0,
 			PRIMARY KEY  (id)
 		) " . $charset_collate . ";";
 
@@ -70,6 +71,36 @@ function update_vote_db_check() {
 	global $vote_db_version;
 	if (get_site_option("vote_db_version") != $vote_db_version) {
 		createVoteDB();
+	}
+}
+
+add_action('init', 'convertSeenSlugsToVoteDB');
+function convertSeenSlugsToVoteDB() {
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'seen_slugs_db';
+
+
+	$seenSlugs = $wpdb->get_results(
+		"
+		SELECT *
+		FROM $table_name
+		",
+		ARRAY_A
+	);
+
+	$cutoff = clipCutoffTimestamp();
+	foreach ($seenSlugs as $key => $value) {
+		if ((int)$value['time'] < $cutoff) {
+			deleteJudgmentFromSeenSlugsDB($value['id']);
+		} else {
+			$voteArray = array(
+				"hash" => $value['hash'],
+				"weight" => $value['vote'] > 0 ? getValidRep($value['hash']) : getValidRep($value['hash']) * -1 * floatval(get_option("nayCoefficient")),
+				"slug" => $value['slug'],
+			);
+			$voteAdded = addVoteToDB($voteArray);
+			if ($voteAdded == 1) {deleteJudgmentFromSeenSlugsDB($value['id']);}
+		}
 	}
 }
 

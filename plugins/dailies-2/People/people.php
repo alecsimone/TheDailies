@@ -166,7 +166,7 @@ function getValidRep($person) {
 	if ($rep == '' || $rep == 0) {
 		$rep = 1;
 	}
-	return $rep;
+	return (int)$rep;
 }
 
 function increase_rep($person, $additionalRep) {

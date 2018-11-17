@@ -425,7 +425,8 @@ img#lightboxCloseButton {
 }
 
 .votingMachine {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr auto auto auto 1fr;
 	align-items: center;
 	justify-content: center;
 	margin: 0 0 6px 0;
@@ -433,6 +434,12 @@ img#lightboxCloseButton {
 	border: 1px solid $whiteTrans07;
 	background: $whiteTrans03;
 	overflow: hidden;
+	& .nayVoters {
+		justify-self: end;
+	}
+	& .voterBubblePod {
+		line-height: 0.8em;
+	}
 	& .voterBubble {
 		margin: 0 6px;
 		width: 0.66em;

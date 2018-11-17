@@ -9,9 +9,6 @@ import {playAppropriatePromoSound, playAppropriateKillSound} from '../Scripts/so
 export default class Hopefuls extends React.Component{
 	constructor() {
 		super();
-		// this.state = {
-		// 	clips: hopefulsData
-		// }
 		this.state = {
 			hasData: false,
 			locallyCutSlugs: [],
@@ -134,7 +131,7 @@ export default class Hopefuls extends React.Component{
 				let timeB = new Date(b.age).getTime();
 				return timeB - timeA;
 			}
-			return scoreB - scoreA;
+			return scoreA - scoreB;
 		});
 		return hopefulsData;
 	}
@@ -205,7 +202,7 @@ export default class Hopefuls extends React.Component{
 		return(
 			<section id="hopefuls">
 				<div id="leader">
-					<Leader key={leader.id} clipdata={leader} keepSlug={this.keepSlug} cutSlug={this.cutSlug}/>
+					<Leader key={leader.id} clipdata={leader} keepSlug={this.keepSlug} cutSlug={this.cutSlug} autoplay={false} />
 				</div>
 				<div id="topfive">
 					{topfivecomponents}

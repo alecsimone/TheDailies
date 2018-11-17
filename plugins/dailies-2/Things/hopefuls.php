@@ -4,17 +4,21 @@ function getHopefuls() {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "pulled_clips_db";
 
-	$hopefuls = $wpdb->get_results(
+	$allClips = $wpdb->get_results(
 		"
 		SELECT *
 		FROM $table_name
-		WHERE nuked = 0 AND score > 0
+		WHERE nuked = 0
 		",
 		ARRAY_A
 	);
 
-	foreach ($hopefuls as $key => $clipData) {
-		$hopefuls[$key]['voters'] = [];
+	$hopefuls = [];
+	foreach ($allClips as $key => $clipData) {
+	// foreach ($hopefuls as $key => $clipData) {
+		// $hopefuls[$key]['voters'] = [];
+		$theseVoters = [];
+		$score = 0;
 		$voters = getVotersForSlug($clipData['slug']);
 		foreach ($voters as $voter) {
 			$person = getPersonInDB($voter['hash']);
@@ -23,9 +27,19 @@ function getHopefuls() {
 				"picture" => $person['picture'],
 				"weight" => $voter['weight'],
 			);
-			$hopefuls[$key]['voters'][] = $voterData;
+			$score = $score + (int)$voter['weight'];
+			// $hopefuls[$key]['voters'][] = $voterData;
+			$theseVoters[] = $voterData;
+		}
+		if ($score > 0) {
+			$clipData['voters'] = $theseVoters;
+			$hopefuls[] = $clipData;
+			// $hopefuls[$key] = $clipData;
+			// $hopefuls[$key]['voters'] = $theseVoters;
 		}
 	}
+
+	// basicPrint($hopefuls);
 
 	return $hopefuls;
 }

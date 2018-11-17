@@ -8,7 +8,10 @@
 	& .playerContainer {
 		width: 100%;
 		@media #{$bp1280} {
-			width: calc(50% - 12px);
+			width: calc(178vh - 302px);
+			max-width: 1280px;
+			height: calc(100vh - 170px);
+			max-height: 720px;
 			margin-right: 12px;
 		}
 	}
@@ -128,12 +131,13 @@
 		box-sizing: border-box;
 	}
 	@media #{$bp1280} {
-		width: calc(50% - 24px);
+		flex-basis: 400px;
+		flex-grow: 1;
 		margin-left: 12px;
 	}
 }
 
-#leader {
+.Leader {
 	margin-bottom: 48px;
 	& .hopefuls-title {
 		font-size: 36px;

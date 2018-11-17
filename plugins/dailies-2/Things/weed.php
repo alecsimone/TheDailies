@@ -5,12 +5,13 @@ function getCurrentUsersSeenSlugs() {
 	$table_name = $wpdb->prefix . 'vote_db';
 
 	$hash = getPersonsHash(get_current_user_id());
+	$cutoff = clipCutoffTimestamp();
 
 	$seenSlugs = $wpdb->get_results(
 		"
 		SELECT *
 		FROM $table_name
-		WHERE hash = '$hash'
+		WHERE hash = '$hash' AND time > '$cutoff'
 		",
 		ARRAY_A
 	);

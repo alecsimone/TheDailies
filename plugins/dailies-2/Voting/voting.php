@@ -41,6 +41,8 @@ function addVoteToDB($voteArray) {
 		$wpdb->delete($table_name, $where);
 	}
 
+	$voteArray['time'] = time();
+
 	$insertionSuccess = $wpdb->insert(
 		$table_name,
 		$voteArray
@@ -125,6 +127,7 @@ function getVotersForSlug($slug) {
 		WHERE slug = '$slug'
 		", ARRAY_A
 	);
+	
 	return $voterData;
 }
 
