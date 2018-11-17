@@ -2,9 +2,11 @@
 global $seen_slugs_db_version;
 global $pulled_clips_db_version;
 global $cip_comments_db_version;
+global $known_moments_db_version;
 $seen_slugs_db_version = '0.2';
 $pulled_clips_db_version = '0.7';
 $clip_comments_db_version = '0.1';
+$known_moments_db_version = '0.1';
 
 function createSeenSlugsDB() {
 	global $wpdb;
@@ -122,4 +124,39 @@ function update_clip_comments_db_check() {
 		createClipCommentsDB();
 	}
 }
+
+function createKnownMomentsDB() {
+	global $wpdb;
+	global $known_moments_db_version;
+	$installed_version = get_option("known_moments_db_version");
+
+	if ($installed_version != $known_moments_db_version) {
+		$table_name = $wpdb->prefix . "known_moments_db";
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = 
+			"CREATE TABLE " . $table_name . " (
+			id INT NOT NULL AUTO_INCREMENT,
+			moment NVARCHAR(255) NOT NULL,
+			type VARCHAR(64) NOT NULL,
+			time INT(8) NOT NULL,
+			PRIMARY KEY  (id)
+		) " . $charset_collate . ";";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+		basicPrint($wpdb->last_error);
+
+		update_option('known_moments_db_version', $known_moments_db_version);
+	}
+}
+
+add_action('plugins_loaded', 'update_known_moments_db_check');
+function update_known_moments_db_check() {
+	global $known_moments_db_version;
+	if (get_site_option("known_moments_db_version") != $known_moments_db_version) {
+		createKnownMomentsDB();
+	}
+}
+
 ?>

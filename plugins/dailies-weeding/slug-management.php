@@ -174,51 +174,6 @@ function get_dupe_clips($string) {
 	return $dupeSlugs;
 }
 
-function convertVodlinkToMomentObject($vodlink) {
-	$vodIDStart = strpos($vodlink, '/videos/') + 8;
-	$vodIDEnd = strpos($vodlink, '?t=');
-	$vodID = substr($vodlink, $vodIDStart, $vodIDEnd - $vodIDStart);
-
-	$vodTimeStart = $vodIDEnd + 3;
-	$vodTime = substr($vodlink, $vodTimeStart);
-	$hIndex = strpos($vodTime, 'h');
-	if ($hIndex) {
-		$hours = substr($vodTime, 0, $hIndex);
-	} else {
-		$hours = 0;
-	}
-	$mIndex = strpos($vodTime, 'm');
-	if ($mIndex) {
-		if ($hIndex) {
-			$minutes = substr($vodTime, $hIndex + 1, $mIndex - $hIndex - 1);
-		} else {
-			$minutes = substr($vodTime, 0, $mIndex);
-		}
-	} else {
-		$minutes = 0;
-	}
-	$sIndex = strpos($vodTime, 's');
-	if ($sIndex) {
-		if ($mIndex) {
-			$seconds = substr($vodTime, $mIndex + 1, $sIndex - $mIndex - 1);
-		} elseif ($hIndex) {
-			$seconds = substr($vodTime, $hIndex + 1, $sIndex - $hIndex - 1);
-		} else {
-			$seconds = substr($vodTime, 0, $sIndex);
-		}
-	} else {
-		$sIndex = 0;
-	}
-	
-	$vodTime = (int)$seconds + 60 * (int)$minutes + 3600 * (int)$hours;
-
-	$momentObject = array(
-		'vodID' => $vodID,
-		'vodTime' => $vodTime,
-	);
-	return $momentObject;
-}
-
 function nukeAllDupeSlugs($slug) {
 	$dupes = get_dupe_clips($slug);
 	if (is_array($dupes)) {

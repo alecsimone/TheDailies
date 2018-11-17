@@ -262,6 +262,31 @@ function createTwitterOauthSignature($url, $OAuth, $method) {
 function addSlugToDB($slugData) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "pulled_clips_db";
+
+	$slug = $slugData['slug'];
+	$type = $slugData['type'];
+	$query = "SELECT * FROM $table_name WHERE slug = '$slug' AND type = '$type'";
+	$existingRow = $wpdb->get_row($query, ARRAY_A);
+	if ($existingRow !== null) {
+		return false;
+	}
+
+	if ($slugData['type'] == "twitch" && $slugData['vodlink']) {
+		$known_moments_table_name = $wpdb->prefix . "known_moments_db";
+		$endOfVodID = strpos($slugData['vodlink'], "?t=");
+		$moment = substr($slugData['vodlink'], 0, $endOfVodID);
+		$query = "SELECT moment FROM $known_moments_table_name WHERE moment LIKE '{$moment}%'";
+		$sameVodMoments = $wpdb->get_results($query, ARRAY_A);
+		$ourVodMomentArray = convertVodlinkToMomentObject($slugData['vodlink']);
+		$ourVodTime = (int)$ourVodMomentArray['vodTime'];
+		foreach ($sameVodMoments as $vodMomentArray) {
+			$thisVodMomentArray = convertVodlinkToMomentObject($vodMomentArray['moment']);
+			$thisVodTime = (int)$thisVodMomentArray['vodTime'];
+			if ($ourVodTime + 20 > $thisVodTime && $ourVodTime - 20 < $thisVodTime) {
+				return false;
+			}
+		}
+	}
 	
 	$clipArray = array(
 		'slug' => $slugData['slug'],
@@ -282,6 +307,40 @@ function addSlugToDB($slugData) {
 	$insertionSuccess = $wpdb->insert(
 		$table_name,
 		$clipArray
+	);
+	if ($insertionSuccess) {
+		$momentArray = array(
+			"type" => $slugData['type'],
+			"time" => date("U", strtotime($slugData['age'])),
+		);
+		if ($slugData['type'] == "twitch") {
+			$momentArray['moment'] = $slugData['vodlink'] ? $slugData['vodlink'] : $slugData['slug'];
+			if ($momentArray['moment'] == "none") {$momentArray['moment'] = $slugData['slug'];}
+		}
+		addKnownMoment($momentArray);
+		return $insertionSuccess;
+	} else {
+		return $wpdb->last_error;
+	}
+}
+
+function addKnownMoment($momentArray) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "known_moments_db";
+
+	$moment = $momentArray['moment'];
+	$type = $momentArray['type'];
+
+	$query = "SELECT * FROM $table_name WHERE moment = '$moment' AND type = '$type'";
+	$existingRow = $wpdb->get_row($query, ARRAY_A);
+
+	if ($existingRow !== null) {
+		return false;
+	}
+
+	$insertionSuccess = $wpdb->insert(
+		$table_name,
+		$momentArray
 	);
 	if ($insertionSuccess) {
 		return $insertionSuccess;

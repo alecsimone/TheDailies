@@ -36,4 +36,23 @@ function clipCutoffTimestamp() {
 	return $eightHoursBeforeLastNom < $twentyFourHoursAgo ? $eightHoursBeforeLastNom : $twentyFourHoursAgo;
 }
 
+// add_action('init', 'populateKnownMoments');
+function populateKnownMoments() {
+	$pulledClips = getPulledClipsDB();
+	foreach ($pulledClips as $clip) {
+		$momentArray = array(
+			"time" => date("U", strtotime($clip['age'])),
+			"type" => $clip['type'],
+		);
+		if ($clip['type'] == "twitch") {
+			$moment = $clip['vodlink'] == "none" ? $clip['slug'] : $clip['vodlink'];
+		} else {
+			$moment = $clip['slug'];
+		}
+		$momentArray['moment'] = $moment;
+		$addedMoment = addKnownMoment($momentArray);
+		basicPrint($addedMoment);
+	}
+}
+
 ?>

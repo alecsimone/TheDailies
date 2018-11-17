@@ -1,6 +1,6 @@
 <?php get_header(); 
 
-getHopefuls();
+clean_known_moments_db_cron_handler();
 
 ?>
 

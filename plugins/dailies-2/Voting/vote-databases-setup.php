@@ -74,34 +74,4 @@ function update_vote_db_check() {
 	}
 }
 
-add_action('init', 'convertSeenSlugsToVoteDB');
-function convertSeenSlugsToVoteDB() {
-	global $wpdb;
-	$table_name = $wpdb->prefix . 'seen_slugs_db';
-
-
-	$seenSlugs = $wpdb->get_results(
-		"
-		SELECT *
-		FROM $table_name
-		",
-		ARRAY_A
-	);
-
-	$cutoff = clipCutoffTimestamp();
-	foreach ($seenSlugs as $key => $value) {
-		if ((int)$value['time'] < $cutoff) {
-			deleteJudgmentFromSeenSlugsDB($value['id']);
-		} else {
-			$voteArray = array(
-				"hash" => $value['hash'],
-				"weight" => $value['vote'] > 0 ? getValidRep($value['hash']) : getValidRep($value['hash']) * -1 * floatval(get_option("nayCoefficient")),
-				"slug" => $value['slug'],
-			);
-			$voteAdded = addVoteToDB($voteArray);
-			if ($voteAdded == 1) {deleteJudgmentFromSeenSlugsDB($value['id']);}
-		}
-	}
-}
-
 ?>

@@ -29,14 +29,7 @@ function pull_clips_cron_handler() {
 	pull_all_clips();
 }
 
-if( !wp_next_scheduled( 'populate_vote_db' ) ) {
-   wp_schedule_event( time(), 'tenMinutes', 'populate_vote_db' );
-}
-
-add_action( 'populate_vote_db', 'populate_vote_db_handler' );
-function populate_vote_db_handler() {
-	populate_vote_db();
-}
+wp_clear_scheduled_hook('populate_vote_db');
 
 if( !wp_next_scheduled( 'clean_pulled_clips_db' ) ) {
    wp_schedule_event( time(), 'daily', 'clean_pulled_clips_db' );
@@ -47,6 +40,23 @@ function clean_pulled_clips_db_cron_handler() {
 	if ($clipTimestamp < time() - 14 * 24 * 60 * 60) {
 		deleteSlugFromPulledClipsDB($clipData['slug']);
 		continue;
+	}
+}
+
+if( !wp_next_scheduled( 'clean_known_moments_db' ) ) {
+   wp_schedule_event( time(), 'daily', 'clean_known_moments_db' );
+}
+add_action( 'clean_known_moments_db', 'clean_known_moments_db_cron_handler' );
+function clean_known_moments_db_cron_handler() {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "known_moments_db";
+	$query = "SELECT * FROM $table_name";
+	$knownMoments = $wpdb->get_results($query, ARRAY_A);
+	$oneMonthAgo = time() - 30 * 24 * 60 * 60;
+	foreach ($knownMoments as $moment) {
+		if ($moment['time'] < $oneMonthAgo) {
+			$wpdb->delete($table_name, array("id" => $moment['id']));
+		}
 	}
 }
 

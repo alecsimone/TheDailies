@@ -1,4 +1,5 @@
 import React from "react";
+import ShowLoginBox from "../LoginBox.jsx";
 
 export default class VotingMachine extends React.Component{
 	constructor() {
@@ -9,6 +10,10 @@ export default class VotingMachine extends React.Component{
 	}
 
 	vote(e) {
+		if (dailiesGlobalData.userData.userID == 0) {
+			ShowLoginBox();
+			return;
+		}
 		let direction;
 		if (jQuery(e.target).hasClass("yeaButton")) {
 			this.setState({localOnlyVote: "yea"});
