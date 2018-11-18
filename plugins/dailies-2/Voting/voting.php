@@ -131,5 +131,37 @@ function getVotersForSlug($slug) {
 	return $voterData;
 }
 
+function getVoterDisplayInfoForSlug($slug) {
+	$voters = getVotersForSlug($slug);
+	$theseVoters = array();
+	foreach ($voters as $voter) {
+		if ($voter['hash'] === "twitter") {
+			$voterData = array(
+				"name" => "Twitter",
+				"picture" => get_site_url() . "/wp-content/uploads/2018/08/twitter-logo.png",
+				"weight" => $voter['weight'],
+			);
+			$theseVoters[] = $voterData;
+		} else {
+			$person = getPersonInDB($voter['hash']);
+			if (!$person) {
+				$voterData = array(
+					"name" => "Deleted Person",
+					"picture" => get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg",
+					"weight" => $voter['weight'],
+				);
+			} else {
+				$voterData = array(
+					"name" => $person['dailiesDisplayName'],
+					"picture" => $person['picture'],
+					"weight" => $voter['weight'],
+				);
+			}
+			$theseVoters[] = $voterData;
+		}
+	}
+	return $theseVoters;
+}
+
 
 ?>

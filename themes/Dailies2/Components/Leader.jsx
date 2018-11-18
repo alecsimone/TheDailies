@@ -244,6 +244,11 @@ export default class Leader extends React.Component{
 			link = `https://twitter.com/statuses/${this.props.clipdata.slug}`;
 		}
 
+		let meta = '';
+		if (this.props.clipdata.views) {meta += `${this.props.clipdata.views} views.`;}
+		if (this.props.clipdata.clipper) {meta += ` Clipped by ${this.props.clipdata.clipper}`;}
+		if (timeAgo) {meta += ` about ${timeAgo} ${timeAgoUnit} ago.`;}
+
 		return(
 			<div className="Leader">
 				<div className="playerContainer">
@@ -252,7 +257,7 @@ export default class Leader extends React.Component{
 				<div className="hopefuls-meta">
 					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}
-					<div className="hopefuls-data">{this.props.clipdata.views} views. Clipped by {this.props.clipdata.clipper} about {timeAgo} {timeAgoUnit} ago. {vodlink}</div>
+					<div className="hopefuls-data">{meta} {vodlink}</div>
 					<WeedComments key={`weedComments-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
 				{adminControls}

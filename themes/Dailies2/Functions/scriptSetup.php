@@ -13,27 +13,7 @@ function script_setup() {
 	wp_localize_script( 'globalScripts', 'dailiesGlobalData', $global_data );
 	wp_enqueue_script( 'globalScripts' );
 	wp_enqueue_style( 'globalStyles', get_template_directory_uri() . '/style' . $version . '.css');
-	if ( !is_page() && !is_attachment() ) {
-		wp_register_script( 'mainScripts', get_template_directory_uri() . '/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
-		$nonce = wp_create_nonce('vote_nonce');
-		$main_script_data = array(
-			'nonce' => $nonce,
-		);
-		if (is_home()) {
-			$main_script_data['dayOne'] = generateDayOneData();
-			$main_script_data['firstWinner'] = generateFirstWinner();
-		} elseif (is_single()) {
-			$main_script_data['singleData'] = generateSingleData();
-		} elseif (is_search()) {
-			$main_script_data['headerData'] = generateSearchHeaderData();
-			$main_script_data['initialArchiveData'] = generateSearchResultsData();
-		} else {
-			$main_script_data['headerData'] = generateArchiveHeaderData();
-			$main_script_data['initialArchiveData'] = generateInitialArchivePostData();
-		}
-		wp_localize_script('mainScripts', 'dailiesMainData', $main_script_data);
-		wp_enqueue_script( 'mainScripts' );
-	} else if (is_page('Secret Garden')) {
+	if (is_page('Secret Garden')) {
 		wp_register_script('secretGardenScripts', get_template_directory_uri() . '/Bundles/secretGarden-bundle' . $version . '.js', ['jquery'], '', true);
 		include( locate_template('schedule.php') );
 		$gardenPostObject = get_page_by_path('secret-garden');

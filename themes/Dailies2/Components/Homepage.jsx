@@ -2,13 +2,14 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import HomeTop from './HomeTop.jsx';
 import Thing from './Thing.jsx';
+import Leader from './Leader.jsx';
 import DayContainer from './DayContainer.jsx';
 
 class Homepage extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			winner: dailiesMainData.firstWinner.postData,
+			winner: dailiesMainData.firstWinner,
 			dayContainers: {
 				0: dailiesMainData.dayOne,
 			},
@@ -16,6 +17,43 @@ class Homepage extends React.Component {
 		this.state.user = dailiesGlobalData.userData;
 		this.handleScroll = this.handleScroll.bind(this);
 		window.addEventListener("scroll", this.handleScroll);
+	}
+
+	componentDidMount() {
+		window.setInterval(() => this.updateVotes(), 3000);
+	}
+
+	updateVotes() {
+		let slugs = [];
+		slugs.push(this.state.winner.slug);
+		let dayContainers = Object.keys(this.state.dayContainers);
+		dayContainers.forEach( (key) => {
+			this.state.dayContainers[key].postDatas.forEach( (data) => {
+				slugs.push(data.slug);
+			});
+		});
+		let sluglist = '';
+		slugs.forEach((slug) => {sluglist += `${slug},`;});
+		sluglist = sluglist.substring(0, sluglist.length - 1);
+		let sluglistVotersQuery = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/sluglistVoters/slugs=${sluglist}`;
+		jQuery.get({
+			url: sluglistVotersQuery,
+			dataType: 'json',
+			success: (data) => {
+				let winner = this.state.winner;
+				winner.voters = data[winner.slug];
+				this.setState({winner});
+				let dayContainers = this.state.dayContainers;
+				let dayContainerKeys = Object.keys(dayContainers);
+				dayContainerKeys.forEach( (key) => {
+					dayContainers[key].postDatas.forEach( (postData, postKey) => {
+						let thisSlug = postData.slug;
+						dayContainers[key].postDatas[postKey].voters = data[thisSlug];
+					})
+				});
+				this.setState({dayContainers});
+			},
+		});
 	}
 
 	handleScroll() {
@@ -70,14 +108,8 @@ class Homepage extends React.Component {
 					this.stepBackDayAndQuery(newDayObject, newYear, newMonth, newDay);
 				} else {
 					let newPostDatas = [];
-					let newVoteDatas = {};
 					jQuery.each(data, function(index, allData) {
-						newPostDatas.push(allData.postDataObj);;
-						newVoteDatas[allData.id] = {
-							votecount: allData.votecount[0],
-							voteledger: allData.voteledger[0],
-							guestlist: allData.guestlist[0],
-						};
+						newPostDatas.push(allData.clipdata);;
 					});
 					let newDate = {
 						day: newDay,
@@ -89,7 +121,6 @@ class Homepage extends React.Component {
 					oldDayContainers[dayContainerCounter] = {
 						date: newDate,
 						postDatas: newPostDatas,
-						voteDatas: JSON.stringify(newVoteDatas),
 					}
 					this.setState({
 						dayContainers: oldDayContainers,
@@ -128,7 +159,7 @@ class Homepage extends React.Component {
 			<div id="appContainer">
 				<HomeTop user={this.state.user} />
 				<section id="homePagePosts">
-					<Thing thingData={this.state.winner} userData={this.state.user} voteData={winnerVoteData} />
+					<Leader clipdata={this.state.winner} autoplay={false} />
 					{dayContainerComponents}
 				</section>
 			</div>

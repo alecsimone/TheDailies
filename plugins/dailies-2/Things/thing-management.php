@@ -55,4 +55,20 @@ function populateKnownMoments() {
 	}
 }
 
+function convertPostDataObjectToClipdata($postDataObject) {
+	$slug = getSlugByPostID($postDataObject['id']);
+	$clipdata = array(
+		'slug' => $slug,
+		'title' => $postDataObject['title'],
+		'skills' => $postDataObject['taxonomies']['skills'],
+		'source' => $postDataObject['taxonomies']['source'],
+		'stars' => $postDataObject['taxonomies']['stars'],
+		'tags' => $postDataObject['taxonomies']['tags'],
+		'voters' => getVoterDisplayInfoForSlug($slug),
+		'thumb' => $postDataObject['thumbs']['medium'][0],
+		'pdo' => $postDataObject,
+	);
+	return $clipdata;
+}
+
 ?>

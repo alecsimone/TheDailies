@@ -1,5 +1,6 @@
 import React from "react";
 import Thing from './Thing.jsx';
+import TopFive from './TopFive.jsx';
 
 export default class DayContainer extends React.Component {
 	render() {
@@ -17,8 +18,6 @@ export default class DayContainer extends React.Component {
 		if (dayString.charAt(0) === '0') {
 			dayString = dayString.substring(1);
 		}
-		var userData = this.props.userData;
-		var voteDataObj = JSON.parse(this.props.dayData.voteDatas);
 		var things = this.props.dayData.postDatas;
 		function thingsByScore(a,b) {
 			//let parsedA = JSON.parse(a);
@@ -33,9 +32,8 @@ export default class DayContainer extends React.Component {
 		var thingsArray = Object.keys(thingsSorted);
 		var thingComponents = thingsArray.map(function(key) {
 			var parsedThingData = things[key];
-			var voteData = voteDataObj[parsedThingData['id']];
 			return(
-				<Thing thingData={parsedThingData} userData={userData} voteData={voteData} key={parsedThingData.id} />
+				<TopFive clipdata={parsedThingData} key={parsedThingData.slug} />
 			)
 		})
 		return(

@@ -72,6 +72,15 @@ function dailies_add_extra_data_to_rest() {
 			},
 		)
 	);
+	register_rest_field('post', 'clipdata', array(
+			'get_callback' => function($postData) {
+				$thisID = $postData[id];
+				$postDataObj = buildPostDataObject($thisID);
+				$clipdata = convertPostDataObjectToClipdata($postDataObj);
+				return $clipdata;
+			},
+		)
+	);
 };
 
 function get_voter_history_for_rest($data) {
@@ -152,6 +161,24 @@ function get_clip_voters_for_rest($data) {
 		$voters[$key]['weight'] = $data['weight'];
 	}
 	return $voters;
+}
+
+add_action( 'rest_api_init', 'dailies_add_sluglist_voters_to_rest' );
+function dailies_add_sluglist_voters_to_rest() {
+	register_rest_route('dailies-rest/v1', 'sluglistVoters/slugs=(?P<slugs>[\w\-\,]+)', array(
+		'methods' => 'GET',
+		'callback' => 'get_sluglist_voters_for_rest',
+	));
+}
+
+function get_sluglist_voters_for_rest($data) {
+	$slugs = explode(',', $data['slugs']);
+	$voterData = [];
+	foreach ($slugs as $slug) {
+		$voters = getVoterDisplayInfoForSlug($slug);
+		$voterData[$slug] = $voters;
+	}
+	return $voterData;
 }
 
 add_action( 'rest_api_init', 'dailies_rest_hopefuls' );

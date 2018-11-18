@@ -26,15 +26,7 @@ function populate_vote_db() {
 }
 
 function addPostVotesToNewDB($postID) {
-	$slugsArray = array(
-		'twitch' => get_post_meta($postID, 'TwitchCode', true),
-		'twitter' => get_post_meta($postID, 'TwitterCode', true),
-		'gfy' => get_post_meta($postID, 'GFYtitle', true),
-		'youtube' => get_post_meta($postID, 'YouTubeCode', true),
-	);
-	foreach ($slugsArray as $slugCheck) {
-		$slugCheck != "" ? $slug = $slugCheck : $slug = $slug;
-	}
+	$slug = getSlugByPostID($postID);
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . "vote_db";
