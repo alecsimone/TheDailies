@@ -33,6 +33,22 @@ function client_information() {
 		// $hopefulsData = generateHopefulsData();
 		// wp_localize_script('hopefulsScripts', 'hopefulsData', $hopefulsData);
 		wp_enqueue_script('hopefulsScripts');
+	} else if (is_page('Live')) {
+		wp_register_script( 'liveScripts', get_template_directory_uri() . '/Bundles/live-bundle' . $version . '.js', ['jquery'], '', true );
+		$nonce = wp_create_nonce('vote_nonce');
+		$livePageObject = get_page_by_path('live');
+		$liveID = $livePageObject->ID;
+		$resetTime = get_post_meta($liveID, 'liveResetTime', true);
+		$resetTime = $resetTime / 1000;
+		$wordpressUsableTime = date('c', $resetTime);
+		$liveData = array(
+			'nonce' => $nonce,
+			'postData' => generateLivePostsData(),
+			'resetTime' => $resetTime,
+			'wordpressUsableTime' => $wordpressUsableTime,
+		);
+		wp_localize_script('liveScripts', 'liveData', $liveData);
+		wp_enqueue_script('liveScripts');
 	}
 }
 
@@ -131,6 +147,32 @@ function generateWeedData() {
 function generateHopefulsData() {
 	$hopefulsData = getHopefuls();
 	return $hopefulsData;
+}
+
+function generateLivePostsData() {
+	$livePageObject = get_page_by_path('live');
+	$liveID = $livePageObject->ID;
+	$resetTime = get_post_meta($liveID, 'liveResetTime', true);
+	$resetTime = $resetTime / 1000;
+	$wordpressUsableTime = date('c', $resetTime);
+	$livePostArgs = array(
+		'category__not_in' => 4,
+		'posts_per_page' => 50,
+		'date_query' => array(
+			array(
+			//	'after' => '240 hours ago',
+				'after' => $wordpressUsableTime,
+			)
+		)
+	);
+	$postDataLive = get_posts($livePostArgs);
+	$postDatas = [];
+	foreach ($postDataLive as $post) {
+		$postID = $post->ID;
+		$postDataObject =  buildPostDataObject($postID, 'postDataObj', true);
+		$postDatas[$postID] = convertPostDataObjectToClipdata($postDataObject);
+	}
+	return $postDatas;
 }
 
 ?>

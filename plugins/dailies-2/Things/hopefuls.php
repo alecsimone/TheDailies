@@ -75,8 +75,7 @@ function keepSlug() {
 			'category' => 1125,
 		),
 		'meta_input' => array(
-			'voteledger' => $voteledger,
-			'votecount' => $slugData['score'],
+			'defaultThumb' => $slugData['thumb'],
 		), 
 	);
 

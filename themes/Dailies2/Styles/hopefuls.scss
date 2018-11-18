@@ -41,7 +41,7 @@
 	}
 }
 
-#hopefuls {
+#hopefuls, #live {
 	@media #{$bp1280} {
 		width: 95%;
 		margin: auto;
@@ -74,7 +74,7 @@
 		margin: 0 0 0 12px;
 		width: calc(100% - 48px);
 	}
-	&.noHope {
+	&.noPosts {
 		align-items: center;
 		height: 100%;
 		width: 100%;

@@ -68,6 +68,9 @@ function convertPostDataObjectToClipdata($postDataObject) {
 		'thumb' => $postDataObject['thumbs']['medium'][0],
 		'pdo' => $postDataObject,
 	);
+	if ($clipdata['thumb'] == null) {
+		$clipdata['thumb'] = get_post_meta($postDataObject['id'], 'defaultThumb', true);
+	}
 	return $clipdata;
 }
 

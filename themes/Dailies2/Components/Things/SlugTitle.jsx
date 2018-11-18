@@ -11,7 +11,11 @@ const SlugTitle = (titleData) => {
 	} else if (titleData.type === "youtube" || titleData.type === "ytbe") {
 		titleLink = `https://www.youtube.com/watch?v=${titleData.slug}`;
 	}
-	return <a href={titleLink} target="_blank">{titleData.title}</a>;
+
+	let rawTitle = titleData.title.stripSlashes();
+	let title = window.htmlEntityFix(rawTitle);
+
+	return <a href={titleLink} target="_blank">{title}</a>;
 };
 
 export default SlugTitle;

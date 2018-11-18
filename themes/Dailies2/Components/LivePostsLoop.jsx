@@ -1,5 +1,6 @@
 import React from "react";
 import LittleThing from './LittleThing.jsx';
+import TopFive from './TopFive.jsx';
 import Transition from 'react-transition-group/Transition';
 
 export default class LivePostsLoop extends React.Component{
@@ -36,7 +37,7 @@ export default class LivePostsLoop extends React.Component{
 			littleThingCounter++;
 			let postData = postDatas[postID];
 			return (
-				<LittleThing key={postID} userData={userData} postData={postData} postTrasher={postTrasher} postPromoter={postPromoter} postDemoter={postDemoter} vote={vote} stage={stage} counter={littleThingCounter} />
+				<TopFive key={postID} clipdata={postData} />
 			)
 		});
 		if (postIDs.length === 0) {

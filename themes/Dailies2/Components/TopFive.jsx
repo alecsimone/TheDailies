@@ -194,13 +194,7 @@ export default class TopFive extends React.Component{
 		// 	// voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
 		// 	voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.state.voters} />		
 		// }
-		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />		
-
-		let rawTitle = this.props.clipdata.title;
-		String.prototype.stripSlashes = function() {
-		    return this.replace(/\\(.)/mg, "$1");
-		}
-		let title = rawTitle.stripSlashes();
+		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />
 
 		let link;
 		if (this.props.clipdata.type === "twitch") {
@@ -213,6 +207,10 @@ export default class TopFive extends React.Component{
 			link = `https://twitter.com/statuses/${this.props.clipdata.slug}`;
 		}
 
+		let meta = '';
+		if (this.props.clipdata.views) {meta += `${this.props.clipdata.views} views.`;}
+		if (this.props.clipdata.clipper) {meta += ` Clipped by ${this.props.clipdata.clipper}`;}
+		if (timeAgo) {meta += ` about ${timeAgo} ${timeAgoUnit} ago.`;}
 
 		return(
 			<div className="TopFive">
@@ -220,7 +218,7 @@ export default class TopFive extends React.Component{
 				<div className="hopefuls-meta">
 					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}
-					<div className="hopefuls-data">{this.props.clipdata.views} views. {this.props.clipdata.source === "User Submit" ? "Submitted by" : "Clipped by"} {this.props.clipdata.clipper} about {timeAgo} {timeAgoUnit} ago. {vodlink}</div>
+					<div className="hopefuls-data">{meta} {vodlink}</div>
 					<WeedComments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
 			</div>

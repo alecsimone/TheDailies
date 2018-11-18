@@ -14,13 +14,6 @@ function getLiveContenders() {
 	);
 	return get_posts($livePostArgs);
 }
-function getResetTime() {
-	$liveID = getPageIDBySlug('live');
-	$resetTime = get_post_meta($liveID, 'liveResetTime', true);
-	$resetTime = $resetTime / 1000;
-	$wordpressUsableTime = date('c', $resetTime);
-	return $wordpressUsableTime;
-}
 
 function generateUserData() {
 	$userID = get_current_user_id();
@@ -318,32 +311,6 @@ function generateChannelChangerData() {
 		$channelData[$name]['active'] = false;
 	}
 	return $channelData;
-}
-
-function generateLivePostsData() {
-	$livePageObject = get_page_by_path('live');
-	$liveID = $livePageObject->ID;
-	$resetTime = get_post_meta($liveID, 'liveResetTime', true);
-	$resetTime = $resetTime / 1000;
-	$wordpressUsableTime = date('c', $resetTime);
-	$livePostArgs = array(
-		'category__not_in' => 4,
-		'posts_per_page' => 50,
-		'date_query' => array(
-			array(
-			//	'after' => '240 hours ago',
-				'after' => $wordpressUsableTime,
-			)
-		)
-	);
-	$postDataLive = get_posts($livePostArgs);
-	$postDatas = [];
-	foreach ($postDataLive as $post) {
-		$postID = $post->ID;
-		$postDatas[$postID] = buildPostDataObject($postID, 'postDataObj', true);
-	}
-	//$postDatas = array_reverse($postDatas);
-	return $postDatas;
 }
 
 function generateLiveVoteData() {

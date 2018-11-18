@@ -103,6 +103,7 @@ window.htmlEntityFix = function(textToFix) {
 	txt.innerHTML = textToFix;
 	return txt.value;
 };
+
 window.ctrlIsPressed = false;
 jQuery(document).keydown(function(e) {
 	if (e.which=="17") {
@@ -179,6 +180,10 @@ function turnTwitchURLIntoTwitchCode(url) {
 			twitchCode = url.substring(twitchCodePosition);
 		}
 	return twitchCode;
+}
+
+String.prototype.stripSlashes = function() {
+    return this.replace(/\\(.)/mg, "$1");
 }
 
 export {turnGfycatURLIntoGfycode, turnYoutubeURLIntoYoutubeCode, turnTwitterURLIntoTweetID, turnTwitchURLIntoTwitchCode};

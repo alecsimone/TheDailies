@@ -29,26 +29,6 @@ function script_setup() {
 		);
 		wp_localize_script('secretGardenScripts', 'gardenData', $secretGardenData);
 		wp_enqueue_script('secretGardenScripts');
-	} else if (is_page('Live')) {
-		wp_register_script( 'liveScripts', get_template_directory_uri() . '/Bundles/live-bundle' . $version . '.js', ['jquery'], '', true );
-		$nonce = wp_create_nonce('vote_nonce');
-		$livePageObject = get_page_by_path('live');
-		$liveID = $livePageObject->ID;
-		$resetTime = get_post_meta($liveID, 'liveResetTime', true);
-		$resetTime = $resetTime / 1000;
-		$wordpressUsableTime = date('c', $resetTime);
-		$liveData = array(
-			'nonce' => $nonce,
-			'channels' => generateChannelChangerData(),
-			'postData' => generateLivePostsData(),
-			'voteData' => generateLiveVoteData(),
-			'cohosts' => generateCohostData(),
-			'resetTime' => $resetTime,
-			'wordpressUsableTime' => $wordpressUsableTime,
-		);
-		wp_localize_script('liveScripts', 'liveData', $liveData);
-		wp_enqueue_script('liveScripts');
-	//	wp_enqueue_script('isotope', 'https://dailies.gg/wp-content/themes/Dailies2/js/isotope.pkgd.min.js');
 	} else if (is_page('Submit')) {
 		wp_enqueue_script( 'scheduleScripts', get_template_directory_uri() . '/Bundles/submit-bundle' . $version . '.js', ['jquery'], '', true );
 	} else if (is_page('your-votes')) {

@@ -189,4 +189,12 @@ function dailies_rest_hopefuls() {
 	));
 }
 
+add_action( 'rest_api_init', 'dailies_rest_live' );
+function dailies_rest_live() {
+	register_rest_route('dailies-rest/v1', 'live', array(
+		'methods' => 'GET',
+		'callback' => 'getLive',
+	));
+}
+
 ?>

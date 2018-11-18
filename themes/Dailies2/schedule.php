@@ -180,7 +180,7 @@
 		//'ccaSUN' => ['CCA', 'cca', 736, 'Spring Series Championship', 'SUN 3PM EST'],
 		'rstreet' => ['Rocket Street Grind', 'rocketstreet', 518, 'SAM - 3v3 - $1000', 'SUN 4PM EST'],
 		// 'rivalSun' => ['Autumn Open', 'prorl', 81, 'Stage Three: Bracket', 'SUN 5PM EST'],
-		// 'nexus' => ['Nexus', 'nexus-gaming', 389, 'The Final Bracket', 'SUN 6PM EST'],
+		'nexus' => ['Nexus', 'nexus-gaming', 389, 'The Final Bracket', 'SUN 6PM EST'],
 		'hoopsNA' => ['Ranked Hoops', 'ranked-hoops', 837, 'NA - Hoops', 'SUN 7PM EST'],
 		//'elevateSun' => ['Elevate', 'elevate-league', 820, 'NA - 3v3', 'SUN 7PM EST'],
 		'uRogueNA' => ['United Rogue', 'united-rogue', 1292, 'NA Master League - 3v3', 'SUN 8PM EST'],

@@ -226,11 +226,7 @@ export default class Leader extends React.Component{
 		if (this.props.clipdata.vodlink !== "none") {
 			vodlink = <a href={this.props.clipdata.vodlink} className="vodlink" target="_blank">VOD Link</a>;
 		}
-
 		let rawTitle = this.props.clipdata.title;
-		String.prototype.stripSlashes = function() {
-		    return this.replace(/\\(.)/mg, "$1");
-		}
 		let title = rawTitle.stripSlashes();
 
 		let link;

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Leader from './Leader.jsx';
 import TopFive from './TopFive.jsx';
 import Pleb from './Pleb.jsx';
-import {privateData} from '../Scripts/privateData.jsx';
 import {playAppropriatePromoSound, playAppropriateKillSound} from '../Scripts/sounds.js';
 
 export default class Hopefuls extends React.Component{
@@ -169,7 +168,7 @@ export default class Hopefuls extends React.Component{
 	render() {
 		if (!this.state.hasData) {
 			return(
-				<section id="hopefuls" className="noHope">
+				<section id="hopefuls" className="noPosts">
 					<div>
 						<div>Getting Hopefuls...</div>
 						<div className="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -179,7 +178,7 @@ export default class Hopefuls extends React.Component{
 		}
 		if (this.state.clips.length === 0) {
 			return(
-				<section id="hopefuls" className="noHope">
+				<section id="hopefuls" className="noPosts">
 					<div>There are no hopefuls yet! Maybe go do some <a href={`${dailiesGlobalData.thisDomain}/1r`}>scouting</a> and find us some?</div>
 				</section>
 			);

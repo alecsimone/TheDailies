@@ -1,5 +1,36 @@
 <?php
 
+function getLive() {
+	$resetTime = getResetTime();
+	$livePostArgs = array(
+		'category_name' => 'contenders',
+		'posts_per_page' => 50,
+		'order' => 'asc',
+		'date_query' => array(
+			array(
+			//	'after' => '240 hours ago',
+				'after' => $resetTime,
+			)
+		)
+	);
+	$livePosts = get_posts($livePostArgs);
+	$liveData = [];
+	foreach ($livePosts as $post) {
+		setup_postdata($post);
+		$postData = buildPostDataObject($post->ID);
+		$liveData[] = convertPostDataObjectToClipdata($postData);
+	}
+	return $liveData;
+}
+
+function getResetTime() {
+	$liveID = getPageIDBySlug('live');
+	$resetTime = get_post_meta($liveID, 'liveResetTime', true);
+	$resetTime = $resetTime / 1000;
+	$wordpressUsableTime = date('c', $resetTime);
+	return $wordpressUsableTime;
+}
+
 add_action( 'wp_ajax_post_demoter', 'post_demoter' );
 function post_demoter() {
 	$postID = $_POST['id'];
