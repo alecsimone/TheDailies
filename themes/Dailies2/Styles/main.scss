@@ -74,7 +74,17 @@ a.propbutton {
 }
 
 #homePagePosts {
-	margin-top: 72px;
+	width: 98%;
+	margin: 72px auto;
+	& .dayContainer {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 0.6em;
+		row-gap: 1.4em;
+		& .daytitle {
+			grid-column: span 2;
+		}
+	}
 }
 
 .thing {

@@ -424,6 +424,33 @@ img#lightboxCloseButton {
 	100% { background-color: $white; }
 }
 
+.AdminBox {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+    margin-top: 12px;
+    font-size: 24px;
+    & .AdminMiddle {
+    	flex-grow: 1;
+    }
+    & .AdminRight {
+    	display: flex;
+    	align-items: center;
+    	& a.editPostButton {
+    		line-height: 0;
+    	}
+    }
+    & img {
+		width: 1.3em;
+		margin: 0 12px;
+		cursor: pointer;
+		opacity: .3;
+		&:hover {
+			opacity: .8;
+		}
+	}
+}
+
 .votingMachine {
 	display: grid;
 	grid-template-columns: 1fr auto auto auto 1fr;

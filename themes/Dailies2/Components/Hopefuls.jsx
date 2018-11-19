@@ -135,24 +135,24 @@ export default class Hopefuls extends React.Component{
 		return hopefulsData;
 	}
 
-	cutSlug(slugObj, scope) {
+	cutSlug(slug) {
 		var clips = this.state.clips;
 		clips.shift();
 		let locallyCutSlugs = this.state.locallyCutSlugs;
-		locallyCutSlugs.push(slugObj.slug);
+		locallyCutSlugs.push(slug);
 		this.setState({
 			clips,
 			locallyCutSlugs,
 		});
 		window.playAppropriateKillSound();
-		console.log(slugObj.slug);
+		console.log(slug);
 		jQuery.ajax({
 			type: "POST",
 			url: dailiesGlobalData.ajaxurl,
 			dataType: 'json',
 			data: {
 				action: 'hopefuls_cutter',
-				slug: slugObj.slug,
+				slug: slug,
 			},
 			error: function(one, two, three) {
 				console.log(one);
@@ -183,13 +183,20 @@ export default class Hopefuls extends React.Component{
 				</section>
 			);
 		}
+
+		let admin = {};
+		if (dailiesGlobalData.userData.userRole === "administrator") {
+			admin.cut = this.cutSlug;
+			admin.keep = this.keepSlug;
+		}
+
 		let leader = this.state.clips[0];
 		let topfive = [];
 		for (var i = 1; i < 7 && i < this.state.clips.length; i++) {
 			topfive.push(this.state.clips[i]);
 		}
 		let topfivecomponents = topfive.map(function(clipdata) {
-			return <TopFive key={clipdata.id} clipdata={clipdata} />;
+			return <TopFive key={clipdata.id} clipdata={clipdata} adminFunctions={admin} />;
 		});
 		let plebs = [];
 		for (var i = 7; i < this.state.clips.length; i++) {
@@ -201,7 +208,7 @@ export default class Hopefuls extends React.Component{
 		return(
 			<section id="hopefuls">
 				<div id="leader">
-					<Leader key={leader.id} clipdata={leader} keepSlug={this.keepSlug} cutSlug={this.cutSlug} autoplay={false} />
+					<Leader key={leader.id} clipdata={leader} adminFunctions={admin} autoplay={false} />
 				</div>
 				<div id="topfive">
 					{topfivecomponents}

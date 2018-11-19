@@ -5,6 +5,7 @@ import WeedComments from './WeedComments.jsx';
 import KeepBar from './KeepBar.jsx';
 import VotingMachine from './Things/VotingMachine.jsx';
 import SlugTitle from './Things/SlugTitle.jsx';
+import AdminBox from './Things/AdminBox.jsx';
 
 
 export default class Leader extends React.Component{
@@ -245,8 +246,29 @@ export default class Leader extends React.Component{
 		if (this.props.clipdata.clipper) {meta += ` Clipped by ${this.props.clipdata.clipper}`;}
 		if (timeAgo) {meta += ` about ${timeAgo} ${timeAgoUnit} ago.`;}
 
+		let identifier;
+		if (this.props.clipdata.postID) {
+			identifier = this.props.clipdata.postID;
+		} else {
+			identifier = this.props.clipdata.slug;
+		}
+
+		let winner;
+		let tags = this.props.clipdata.tags;
+		if (tags) {
+			tags.forEach((tagObject) => {
+				if (tagObject.slug == "winners") {
+					winner = true;
+				}
+			})
+			if (winner) {
+				winner = <div className="winnerBannerBox"><img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/11/Winner-banner-wide.jpg`} className="winnerBanner" /></div>;
+			}
+		}
+
 		return(
 			<div className="Leader">
+				{winner}
 				<div className="playerContainer">
 					<ClipPlayer type={this.props.clipdata.type} slug={this.props.clipdata.slug} width={playerWidth} autoplay={this.props.autoplay} />
 				</div>
@@ -256,7 +278,7 @@ export default class Leader extends React.Component{
 					<div className="hopefuls-data">{meta} {vodlink}</div>
 					<WeedComments key={`weedComments-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
-				{adminControls}
+				<AdminBox identifier={identifier} adminFunctions={this.props.adminFunctions} />
 			</div>
 		)
 	}

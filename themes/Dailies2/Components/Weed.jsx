@@ -652,6 +652,12 @@ export default class Weed extends React.Component{
 		var youStyle = {
 			width: youWidth + '%',
 		}
+
+		let admin = {};
+		if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
+			admin.cut = this.nukeButtonHandler;
+		}
+
 		console.groupEnd("render");
 		return(
 			<section id="weeder" className={"weeder" + orientation}>
@@ -710,7 +716,7 @@ export default class Weed extends React.Component{
 					}}
 				>
 					<section id="scoutThing">
-						<Leader clipdata={firstSlugData} voteCallback={this.judgeClip} autoplay={true} />
+						<Leader clipdata={firstSlugData} voteCallback={this.judgeClip} autoplay={true} adminFunctions={admin} />
 					</section>
 				</CSSTransition>
 			</section>

@@ -59,6 +59,9 @@ div#weedPlaceholder {
     & .embed-container {
     	background: black;
     }
+    & .AdminBox {
+    	flex-direction: row-reverse;
+    }
 }
 
 #wholeClipBallot {

@@ -1,173 +1,75 @@
 @import '../Styles/vars.scss';
 
-#channelChanger {
-	width: 95%;
-	margin: 60px auto;
-}
-.channelChangerButton {
-	display: inline-block;
-	position: relative;
-	background: $darkBlack;
-	padding: 3px;
-	margin: 6px 3px;
-	border-radius: 2px;
-	line-height: 0;
-}
-
-.channelChangerLogo {
-	display: inline-block;
-	max-width: 120px;
-	width: 100%;
-	img {
-		width: 100%;
-		height: auto;
-	}
-	@media #{$bp800} {
-		max-width: 192px;
-	}
-}
-
-.channelChangerDetails {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: inline-flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	white-space: pre-wrap;
-	padding: 8px;
-	box-sizing: border-box;
-	background: $darkBlack;
-	line-height: 1.5em;
-	opacity: 0;
-	transition: opacity .1s;
-	cursor: pointer;
-	&:hover {
-		opacity: 1;
-	}
-}
-.channelChangerButton.active .channelChangerDetails {
-	opacity: 1;
-}
-.channelDisplayName {
-	color: $gold;
-	font-size: 18px;
-	font-weight: bold;
-}
-
-#sortButton {
-	background: $lightBlack;
-	padding: 3px 12px;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	vertical-align: top;
-	width: 126px;
-	height: 126px;
-	box-sizing: border-box;
-	border: 3px solid $darkBlack;
-	img {
-		width: 72px;
-		height: 72px;
-	}
-	&:hover {
-		background: $darkBlack;
-	}
-	@media #{$bp800} {
-		width: 198px;
-		height: 198px;
-	}
-}
-#sortButton.active {
-	background: $darkBlack;
-}
-
-#StageFilter {
-	margin-bottom: 48px; 
-	.StageFilterButton {
-		display: inline-block;
-		margin: 0 24px;
-		font-size: 2em;
-		line-height: 2em;
-		font-weight: normal;
-		text-shadow: 0 0 3px $darkBlack;
-		text-decoration: underline;
-		cursor: pointer;
-		&:hover {
-			color: $blue;
-		}
-		&.active {
-			color: $blue;
-			font-weight: bold;
-		}
-	}
-}
-
-#coHostsPanel {
-	margin-bottom: 84px;
-}
-#coHostsPanelTitle {
-	font-size: 24px;
-	font-weight: bold;
-	color: $gold;
-	text-shadow: 0 0 6px $darkBlack;
-}
-.cohostButton {
-	display: inline-flex;
-	background: $blueGlass;
-	border: 3px solid $darkBlack;
-	box-shadow: $lowShadow;
-	align-items: center;
-	padding: 18px;
-	margin: 18px;
-}
-.cohostLogo {
-	width: 96px;
-	height: 96px;
-	margin-right: 18px;
-	img {
-		width: 100%;
-		height: 100%;
-		border-radius: 50%;
-	}
-}
-.cohostMeta {
-	margin: 0 12px;
-}
-.cohostName {
-	font-size: 36px;
-	font-weight: bold;
-	color: $white;
-	margin-bottom: 12px;
-}
-.cohostSocialLinkImg {
-	width: 42px;
-	height: 42px;
-	margin: 0 6px;
-}
-
-#LivePostsLoops {
-	margin: 60px auto;
-}
-
-#livePostsLoop {
-	width: 95%;
+#live {
+	width: 98%;
 	margin: auto;
-	margin-bottom: 60px;
-	@media #{$bp800} {
-		width: 90%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 0.6em;
+	row-gap: 1.4em;
+	&.noPosts {
+	    display: flex;
+	    width: 100%;
+	    height: 100%;
+	    align-items: center;
+	    justify-content: center;
+	    position: absolute;
+	    font-size: 2em;
+		margin-top: -48px;
 	}
 }
-h4.LivePostsLoopHeader {
-	font-size: 3em;
-	font-weight: 300;
-	width: 100%;
-	margin: 24px 0;
-	color: $whiteTrans75;
-	text-shadow: 0px 1px 4px $darkBlack;
+
+.contender {
+	background: $thinBlueGlass;
+	border: 3px solid $whiteTrans07;
+	& .TopFive {
+		background: none;
+		border: none;
+	}
+}
+
+.contenderNumber {
+	background: $thinBlueGlass;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: hsla(42, 79%, 64%, .8);
+}
+
+.contender:nth-of-type(12n+1) .contenderNumber {
+	background: hsla(187, 31%, 26%, 0.5);
+}
+.contender:nth-of-type(12n+2) .contenderNumber {
+	background: hsla(11, 68%, 31%, 0.5);
+}
+.contender:nth-of-type(12n+3) .contenderNumber {
+	background: hsla(291, 34%, 24%, 0.5);
+}
+.contender:nth-of-type(12n+4) .contenderNumber {
+	background: hsla(144, 47%, 23%, 0.5);
+}
+.contender:nth-of-type(12n+5) .contenderNumber {
+	background: hsla(36, 47%, 23%, 0.5);
+}
+.contender:nth-of-type(12n+6) .contenderNumber {
+	background: hsla(236, 24%, 37%, 0.5);
+}
+.contender:nth-of-type(12n+7) .contenderNumber {
+	background: hsla(84, 34%, 23%, 0.5);
+}
+.contender:nth-of-type(12n+8) .contenderNumber {
+	background: hsla(344, 31%, 36%, 0.5);
+}
+.contender:nth-of-type(12n+9) .contenderNumber {
+	background: hsla(229, 26%, 20%, 0.5);
+}
+.contender:nth-of-type(12n+10) .contenderNumber {
+	background: hsla(14, 54%, 27%, 0.5);
+}
+.contender:nth-of-type(12n+11) .contenderNumber {
+	background: hsla(340, 52%, 17%, 0.5);
+}
+.contender:nth-of-type(12n+0) .contenderNumber {
+	background: hsla(11, 21%, 25%, 0.5);
 }
 
 .littleThingsContainer {
@@ -317,13 +219,13 @@ h4.LivePostsLoopHeader {
 
 }
 
-img.littleThingTrasher, img.editThisImg, img.littleThingPromoter {
-	width: 24px;
-	margin-right: 12px;
-	height: auto;
-	cursor: pointer;
-	opacity: .8;
-}
+// img.littleThingTrasher, img.editThisImg, img.littleThingPromoter {
+// 	width: 24px;
+// 	margin-right: 12px;
+// 	height: auto;
+// 	cursor: pointer;
+// 	opacity: .8;
+// }
 img.littleThingPromoter {
 	margin-right: 18px;
 }

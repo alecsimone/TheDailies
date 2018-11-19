@@ -68,6 +68,19 @@ export default class VotingMachine extends React.Component{
 			);
 		}
 		
+		if (typeof this.props.voterData !== "object" || this.props.voterData === null) {
+			let nayVoters;
+			let yeaVoters;
+			return (
+				<div className="votingMachine">
+					<div className="nayVoters voterBubblePod">{nayVoters}</div>
+					<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
+					<p className="score">0</p>
+					<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
+					<div className="yeaVoters voterBubblePod">{yeaVoters}</div>
+				</div>
+			);
+		}
 		let voters = Object.keys(this.props.voterData);
 
 		let score = 0;

@@ -3,6 +3,7 @@ import WeedComments from './WeedComments.jsx';
 import VoterInfoBox from './VoterInfoBox.jsx';
 import VotingMachine from './Things/VotingMachine.jsx';
 import SlugTitle from './Things/SlugTitle.jsx';
+import AdminBox from './Things/AdminBox.jsx';
 
 
 export default class TopFive extends React.Component{
@@ -212,6 +213,13 @@ export default class TopFive extends React.Component{
 		if (this.props.clipdata.clipper) {meta += ` Clipped by ${this.props.clipdata.clipper}`;}
 		if (timeAgo) {meta += ` about ${timeAgo} ${timeAgoUnit} ago.`;}
 
+		let identifier;
+		if (this.props.clipdata.postID) {
+			identifier = this.props.clipdata.postID;
+		} else {
+			identifier = this.props.clipdata.slug;
+		}
+
 		return(
 			<div className="TopFive">
 				<img src={thumbSrc} className="topfivethumb" />
@@ -221,6 +229,7 @@ export default class TopFive extends React.Component{
 					<div className="hopefuls-data">{meta} {vodlink}</div>
 					<WeedComments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
+				<AdminBox identifier={identifier} adminFunctions={this.props.adminFunctions} />
 			</div>
 		)
 	}

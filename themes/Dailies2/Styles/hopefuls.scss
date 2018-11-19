@@ -34,14 +34,14 @@
 	}
 	@media #{$bp800} {
 		padding: 12px;
-		border-radius: 3px;
+		border-radius: 5px;
 	}
 	@media #{$bp1900} {
 		padding: 12px 8px;
 	}
 }
 
-#hopefuls, #live {
+#hopefuls {
 	@media #{$bp1280} {
 		width: 95%;
 		margin: auto;
@@ -142,6 +142,12 @@
 	& .hopefuls-title {
 		font-size: 36px;
 	}
+	& .winnerBannerBox {
+		width: 100%;
+		& .winnerBanner {
+			width: 100%;
+		}
+	}
 	@media #{$bp1280} {
 		margin-bottom: 24px;
 		& .weedComments {
@@ -195,7 +201,6 @@
 	flex-wrap: wrap;
 	text-align: left;
 	justify-content: center;
-	margin-bottom: 12px;
 	& .hopefuls-title {
 		font-size: 30px;
 	}

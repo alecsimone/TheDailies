@@ -36,6 +36,14 @@ export default class Live extends React.Component{
 		});
 	}
 
+	cutPost(postID) {
+		console.log(`Cutting ${postID}`);
+	}
+
+	promotePost(postID) {
+		console.log(`Promoting ${postID}`);
+	}
+
 	render() {
 		if (!this.state.hasData) {
 			return(
@@ -55,13 +63,20 @@ export default class Live extends React.Component{
 			);
 		}
 
+		let admin = {};
+		if (dailiesGlobalData.userData.userRole === "administrator") {
+			admin.cut = this.cutPost;
+			admin.promote = this.promotePost;
+			admin.edit = true;
+		}
+
 		let contenderCounter = 0;
 		let contenderComponents = this.state.clips.map(function(clipdata) {
 			contenderCounter++;
 			return(
 				<div className="contender" key={contenderCounter}>
-					<div className="contenderNumber">{contenderCounter}</div>
-				 	<TopFive key={clipdata.slug} clipdata={clipdata} />
+					<div className="contenderNumber">{`!vote${contenderCounter}`}</div>
+				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin}/>
 				</div>
 			);
 		});
