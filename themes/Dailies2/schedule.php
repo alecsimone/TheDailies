@@ -15,7 +15,7 @@
 		//'myth' => ['Primal League Open', 'mythical-esports', 251, 'NA - 3v3 - Placement', '8PM EST'],
 		// 'memento' => ['Memento Mori', 'memento-mori', 1453, "NA - 3v3", '8PM EST'],
 		//'bl' => ['Boost Legacy', 'boost-legacy', 401, 'NA - 1v1 - $20', '8PM EST'],
-		'collegeRL' => ['College RL', 'rlcs', 79, 'League Play', '7PM EST'],
+		// 'collegeRL' => ['College RL', 'rlcs', 79, 'League Play', '7PM EST'],
 		'tartans' => ['Team Tartans', 'team-tartans', 1573, 'NA - 3v3', '9PM EST'],
 		// 'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 1v1 - $1,000', '930PM EST'],
 		//'cca' => ['CCA', 'cca', 736, 'Monday Night Madness', '10PM EST'],

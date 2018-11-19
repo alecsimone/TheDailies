@@ -169,5 +169,15 @@ function getSlugByPostID($postID) {
 	}
 	return $slug;
 }
+function getClipTypeByPostID($postID) {
+	$twitch = get_post_meta($postID, 'TwitchCode', true);
+	if ($twitch) {return "twitch";}
+	$twitter = get_post_meta($postID, 'TwitterCode', true);
+	if ($twitter) {return "twitter";}
+	$gfycat = get_post_meta($postID, 'GFYtitle', true);
+	if ($gfycat) {return "gfycat";}
+	$youtube = get_post_meta($postID, 'YouTubeCode', true);
+	if ($youtube) {return "youtube";}
+}
 
 ?>

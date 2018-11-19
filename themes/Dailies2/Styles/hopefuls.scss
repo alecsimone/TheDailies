@@ -5,6 +5,16 @@
 	border: 3px solid $whiteTrans07;
 	box-sizing: border-box;
 	width: 100%;
+	& textarea {
+		background: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		color: white;
+		&:focus {
+			outline: 1px solid $whiteTrans25;
+		}
+	}
 	& .playerContainer {
 		width: 100%;
 		@media #{$bp1280} {
@@ -45,16 +55,6 @@
 	@media #{$bp1280} {
 		width: 95%;
 		margin: auto;
-	}
-	& textarea {
-		background: none;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		color: white;
-		&:focus {
-			outline: 1px solid $whiteTrans25;
-		}
 	}
 	& input.keepbar {
 		background: none;

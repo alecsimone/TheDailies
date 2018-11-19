@@ -59,6 +59,7 @@ function convertPostDataObjectToClipdata($postDataObject) {
 	$slug = getSlugByPostID($postDataObject['id']);
 	$clipdata = array(
 		'slug' => $slug,
+		'type' => getClipTypeByPostID($postDataObject['id']),
 		'postID' => $postDataObject['id'],
 		'title' => $postDataObject['title'],
 		'skills' => $postDataObject['taxonomies']['skills'],

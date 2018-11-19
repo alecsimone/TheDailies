@@ -14,6 +14,19 @@ const AdminBox = ({adminFunctions, identifier}) => {
 	if (adminFunctions.keep) {
 		keep = <KeepBar slug={identifier} keepSlug={adminFunctions.keep} />;
 	}
+	let input;
+	if (adminFunctions.input) {
+		input = 
+			<form className="adminInput" onSubmit={(e) => inputSubmit(e)}>
+				<input type="text" placeholder="+Score" className="addScoreBox" />
+			</form>
+		let inputSubmit = function(e) {
+			e.preventDefault();
+			let input = e.target.children[0];
+			adminFunctions.input(input.value, identifier);
+			input.value = '';
+		}
+	}
 	let promote;
 	if (adminFunctions.promote) {
 		promote = <img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/01/Green-Up-Arrow.png`} className="promotePostButton" onClick={() => adminFunctions.promote(identifier)}/>;
@@ -29,7 +42,7 @@ const AdminBox = ({adminFunctions, identifier}) => {
 				{cut}
 			</div>
 			<div className="AdminMiddle">
-				{keep}
+				{keep}{input}
 			</div>
 			<div className="AdminRight">
 				{promote} {edit}

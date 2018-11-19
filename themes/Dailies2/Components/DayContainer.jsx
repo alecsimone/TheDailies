@@ -30,10 +30,11 @@ export default class DayContainer extends React.Component {
 		}
 		var thingsSorted = things.sort(thingsByScore);
 		var thingsArray = Object.keys(thingsSorted);
+		let adminFunctions = this.props.adminFunctions;
 		var thingComponents = thingsArray.map(function(key) {
 			var parsedThingData = things[key];
 			return(
-				<TopFive clipdata={parsedThingData} key={parsedThingData.slug} />
+				<TopFive clipdata={parsedThingData} key={parsedThingData.slug} adminFunctions={adminFunctions} />
 			)
 		})
 		return(

@@ -163,5 +163,24 @@ function getVoterDisplayInfoForSlug($slug) {
 	return $theseVoters;
 }
 
+add_action( 'wp_ajax_add_twitter_votes', 'add_twitter_votes' );
+function add_twitter_votes() {
+	$postID = $_POST['id'];
+	if (is_numeric($_POST['addedPoints'])) {
+		$addedPoints = (int)$_POST['addedPoints'];
+	} else {
+		killAjaxFunction("That's not a number!");		
+	}
+
+	$voteArray = array(
+		"slug" => getSlugByPostID($postID),
+		"hash" => "twitter",
+		"weight" => $addedPoints,
+	);
+	addVoteToDB($voteArray);
+
+	killAjaxFunction("You added " . $addedPoints . " points to post " . $postID);
+}
+
 
 ?>

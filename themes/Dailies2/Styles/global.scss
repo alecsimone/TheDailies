@@ -449,6 +449,11 @@ img#lightboxCloseButton {
 			opacity: .8;
 		}
 	}
+	& input {
+		background: none;
+		border-bottom: 1px solid $whiteTrans50;
+		color: $white;
+	}
 }
 
 .votingMachine {

@@ -131,7 +131,59 @@ class Homepage extends React.Component {
 		});
 	}
 
+	declareWinner(postID) {
+		console.log(postID);
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				id: postID,
+				action: 'declare_winner',
+				vote_nonce: dailiesMainData.nonce,
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: function(data) {
+				// console.log(this.props);
+			}
+		});
+	}
+
+	addScore(addedPoints, identifier) {
+		if (!isNaN(addedPoints)) {
+			jQuery.ajax({
+				type: "POST",
+				url: dailiesGlobalData.ajaxurl,
+				dataType: 'json',
+				data: {
+					action: 'add_twitter_votes',
+					id: identifier,
+					addedPoints,
+					vote_nonce: dailiesMainData.nonce,
+				},
+				error: function(one, two, three) {
+					console.log(one);
+					console.log(two);
+					console.log(three);
+				},
+				success: function(data) {
+					console.log(data);
+				}
+			});
+		}
+	}
+
 	render() {
+		let admin = {};
+		if (dailiesGlobalData.userData.userRole == "administrator") {
+			admin.edit = true;
+			admin.promote = this.declareWinner;
+			admin.input = this.addScore;
+		}
 		var userData = this.state.user;
 		var winnerVoteData = dailiesMainData.firstWinner.voteData;
 		var dayContainers = this.state.dayContainers;
@@ -150,16 +202,17 @@ class Homepage extends React.Component {
 				}
 				let dateKey = dayContainers[key]['date']['year'].toString() + monthString + dayString;
 				return(
-					<DayContainer dayData={dayContainers[key]} userData={userData} key={dateKey} />
+					<DayContainer dayData={dayContainers[key]} userData={userData} key={dateKey} adminFunctions={admin} />
 				)
 			}
 		})
+
 
 		return(
 			<div id="appContainer">
 				<HomeTop user={this.state.user} />
 				<section id="homePagePosts">
-					<Leader clipdata={this.state.winner} autoplay={false} />
+					<Leader clipdata={this.state.winner} autoplay={false} adminFunctions={admin} />
 					{dayContainerComponents}
 				</section>
 			</div>

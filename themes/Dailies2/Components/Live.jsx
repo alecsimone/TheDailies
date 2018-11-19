@@ -10,6 +10,8 @@ export default class Live extends React.Component{
 			hasData: false,
 			locallyCutSlugs: [],
 		}
+
+		this.cutPost = this.cutPost.bind(this);
 	}
 
 	componentDidMount() {
@@ -38,10 +40,55 @@ export default class Live extends React.Component{
 
 	cutPost(postID) {
 		console.log(`Cutting ${postID}`);
+		let clips = this.state.clips;
+		clips.forEach((clipdata, index) => {
+			if (clipdata.postID == postID) {
+				delete clips[index];
+			}
+		});
+		let locallyCutSlugs = this.state.locallyCutSlugs;
+		locallyCutSlugs.push(postID);
+		this.setState({clips, locallyCutSlugs})
+		playAppropriateKillSound();
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				id: postID,
+				action: 'post_demoter',
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
 	}
 
 	promotePost(postID) {
 		console.log(`Promoting ${postID}`);
+		playAppropriatePromoSound();
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				id: postID,
+				action: 'post_promoter',
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
 	}
 
 	render() {
