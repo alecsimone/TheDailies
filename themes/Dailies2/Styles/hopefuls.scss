@@ -204,12 +204,19 @@
 	& .hopefuls-title {
 		font-size: 30px;
 	}
-	& .topfivethumb {
+	& .clickToPlayThumb {
 		width: 100%;
 		height: auto;
+		position: relative;
 		@media #{$bp1280} {
 			width: calc(50% - 12px);
 			margin-right: 12px;
+		}
+		& img.topfivethumb {
+			width: 100%;
+		}
+		& img.playbutton {
+			max-width: 60px;
 		}
 	}
 	@media screen and (min-width: 800px) and (max-width: 1279px) {

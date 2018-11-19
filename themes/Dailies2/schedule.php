@@ -17,7 +17,7 @@
 		//'bl' => ['Boost Legacy', 'boost-legacy', 401, 'NA - 1v1 - $20', '8PM EST'],
 		// 'collegeRL' => ['College RL', 'rlcs', 79, 'League Play', '7PM EST'],
 		'tartans' => ['Team Tartans', 'team-tartans', 1573, 'NA - 3v3', '9PM EST'],
-		// 'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 1v1 - $1,000', '930PM EST'],
+		'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 1v1 - $1,000', '930PM EST'],
 		//'cca' => ['CCA', 'cca', 736, 'Monday Night Madness', '10PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),

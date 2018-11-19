@@ -4,6 +4,7 @@ import VoterInfoBox from './VoterInfoBox.jsx';
 import VotingMachine from './Things/VotingMachine.jsx';
 import SlugTitle from './Things/SlugTitle.jsx';
 import AdminBox from './Things/AdminBox.jsx';
+import ClickToPlayThumb from './Things/ClickToPlayThumb.jsx';
 
 
 export default class TopFive extends React.Component{
@@ -165,11 +166,6 @@ export default class TopFive extends React.Component{
 	}
 
 	render() {
-		let thumbSrc = this.props.clipdata.thumb;
-		if (thumbSrc === 'none') {
-			thumbSrc = `${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/09/default-clip-thumb.jpg`;
-		}
-
 		let clipTime = new Date(this.props.clipdata.age);
 		let currentTime = + new Date();
 		let timeSince = currentTime - clipTime;
@@ -222,7 +218,7 @@ export default class TopFive extends React.Component{
 
 		return(
 			<div className="TopFive">
-				<img src={thumbSrc} className="topfivethumb" />
+				<ClickToPlayThumb clipdata={this.props.clipdata} />
 				<div className="hopefuls-meta">
 					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}

@@ -64,9 +64,9 @@ export default class ClipPlayer extends React.Component{
 	}
 
 	render() {
-		let seedlingInfoWidth = this.props.width;
-		if (seedlingInfoWidth > 1920) {seedlingInfoWidth = 1920};
-		let embedHeight = seedlingInfoWidth * 9 / 16;
+		// let seedlingInfoWidth = this.props.width;
+		// if (seedlingInfoWidth > 1920) {seedlingInfoWidth = 1920};
+		// let embedHeight = seedlingInfoWidth * 9 / 16;
 		let autoplay;
 		if (this.props.autoplay === undefined) {
 			autoplay = true;
