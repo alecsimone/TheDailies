@@ -56,6 +56,13 @@ div#weedPlaceholder {
     	width: 100%;
     	text-align: center;
     }
+    & .playerContainer {
+		@media #{$bp1900} {
+			max-width: calc(100% - 500px);
+			height: calc(100vh - 240px);
+			max-height: none;
+		}
+    }
     & .embed-container {
     	background: black;
     }
