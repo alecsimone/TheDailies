@@ -19,6 +19,25 @@
 	}
 }
 
+.ContenderVoteBar {
+	grid-column: span 2;
+	display: flex;
+	background: $thinBlueGlass;
+	color: $white;
+	border: $whiteTrans07;
+	padding: 3px;
+	border-radius: 3px;
+	font-size: 1.6em;
+	line-height: 2em;
+	font-weight: bold;
+	& .contenderVoteSection {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	} 
+}
+
 .contender {
 	background: $thinBlueGlass;
 	border: 3px solid $whiteTrans07;
@@ -35,40 +54,40 @@
 	color: hsla(42, 79%, 64%, .8);
 }
 
-.contender:nth-of-type(12n+1) .contenderNumber {
+.contender:nth-of-type(12n+1) .contenderNumber, .contenderVoteSection:nth-of-type(12n+1) {
 	background: hsla(187, 31%, 26%, 0.5);
 }
-.contender:nth-of-type(12n+2) .contenderNumber {
+.contender:nth-of-type(12n+2) .contenderNumber, .contenderVoteSection:nth-of-type(12n+2)  {
 	background: hsla(11, 68%, 31%, 0.5);
 }
-.contender:nth-of-type(12n+3) .contenderNumber {
+.contender:nth-of-type(12n+3) .contenderNumber, .contenderVoteSection:nth-of-type(12n+3)  {
 	background: hsla(291, 34%, 24%, 0.5);
 }
-.contender:nth-of-type(12n+4) .contenderNumber {
+.contender:nth-of-type(12n+4) .contenderNumber, .contenderVoteSection:nth-of-type(12n+4)  {
 	background: hsla(144, 47%, 23%, 0.5);
 }
-.contender:nth-of-type(12n+5) .contenderNumber {
+.contender:nth-of-type(12n+5) .contenderNumber, .contenderVoteSection:nth-of-type(12n+5)  {
 	background: hsla(36, 47%, 23%, 0.5);
 }
-.contender:nth-of-type(12n+6) .contenderNumber {
+.contender:nth-of-type(12n+6) .contenderNumber, .contenderVoteSection:nth-of-type(12n+6)  {
 	background: hsla(236, 24%, 37%, 0.5);
 }
-.contender:nth-of-type(12n+7) .contenderNumber {
+.contender:nth-of-type(12n+7) .contenderNumber, .contenderVoteSection:nth-of-type(12n+7)  {
 	background: hsla(84, 34%, 23%, 0.5);
 }
-.contender:nth-of-type(12n+8) .contenderNumber {
+.contender:nth-of-type(12n+8) .contenderNumber, .contenderVoteSection:nth-of-type(12n+8)  {
 	background: hsla(344, 31%, 36%, 0.5);
 }
-.contender:nth-of-type(12n+9) .contenderNumber {
+.contender:nth-of-type(12n+9) .contenderNumber, .contenderVoteSection:nth-of-type(12n+9)  {
 	background: hsla(229, 26%, 20%, 0.5);
 }
-.contender:nth-of-type(12n+10) .contenderNumber {
+.contender:nth-of-type(12n+10) .contenderNumber, .contenderVoteSection:nth-of-type(12n+10)  {
 	background: hsla(14, 54%, 27%, 0.5);
 }
-.contender:nth-of-type(12n+11) .contenderNumber {
+.contender:nth-of-type(12n+11) .contenderNumber, .contenderVoteSection:nth-of-type(12n+11)  {
 	background: hsla(340, 52%, 17%, 0.5);
 }
-.contender:nth-of-type(12n+0) .contenderNumber {
+.contender:nth-of-type(12n+0) .contenderNumber, .contenderVoteSection:nth-of-type(12n+0)  {
 	background: hsla(11, 21%, 25%, 0.5);
 }
 
@@ -242,10 +261,13 @@ input.nomCheckbox {
 	margin-right: 16px;
 }
 
+.resetContainer {
+	grid-column: span 2;
+}
 img.resetLive {
 	width: 50px;
 	height: 50px;
-	margin-bottom: 12px;
+	margin-top: 12px;
 }
 #submissionsToggle {
 	font-size: 24px;

@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import TopFive from './TopFive.jsx';
+import ContenderVoteBar from './ContenderVoteBar.jsx';
 import {playAppropriatePromoSound, playAppropriateKillSound} from '../Scripts/sounds.js';
+import {turnContenderDataIntoVoteData} from '../Scripts/global.js';
 
 export default class Live extends React.Component{
 	constructor() {
@@ -91,6 +93,33 @@ export default class Live extends React.Component{
 		});
 	}
 
+	resetLive() {
+		var date = Date.now();
+		if (confirm('Are you sure you want to reset the posts?')) {
+			console.log("OK, we'll reset them.");
+			this.setState({clips: []});
+			jQuery.ajax({
+				type: "POST",
+				url: dailiesGlobalData.ajaxurl,
+				dataType: 'json',
+				data: {
+					timestamp: date,
+					action: 'reset_live',
+				},
+				error: function(one, two, three) {
+					console.log(one);
+					console.log(two);
+					console.log(three);
+				},
+				success: function(data) {
+					// console.log(data);
+				}
+			});
+		} else {
+			console.log("OK cool, we'll just keep these then.");
+		}
+	}
+
 	render() {
 		if (!this.state.hasData) {
 			return(
@@ -110,6 +139,8 @@ export default class Live extends React.Component{
 			);
 		}
 
+		let voteData = turnContenderDataIntoVoteData(this.state.clips);
+
 		let admin = {};
 		if (dailiesGlobalData.userData.userRole === "administrator") {
 			admin.cut = this.cutPost;
@@ -121,16 +152,24 @@ export default class Live extends React.Component{
 		let contenderComponents = this.state.clips.map(function(clipdata) {
 			contenderCounter++;
 			return(
-				<div className="contender" key={contenderCounter}>
+				<article className="contender" key={contenderCounter}>
 					<div className="contenderNumber">{`!vote${contenderCounter}`}</div>
 				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin}/>
-				</div>
+				</article>
 			);
 		});
 
+		if (dailiesGlobalData.userData.userID === 1) {
+			var resetLiveButton = <div className="resetContainer"><img className="resetLive" onClick={() => this.resetLive()} src={dailiesGlobalData.thisDomain + '/wp-content/uploads/2017/12/reset-icon.png'} /></div>
+		} else {
+			var resetLiveButton = '';
+		}
+
 		return(
 			<section id="live">
+				<ContenderVoteBar voteData={voteData} />
 				{contenderComponents}
+				{resetLiveButton}
 			</section>
 		)
 	}

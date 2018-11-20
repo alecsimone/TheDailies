@@ -186,4 +186,14 @@ String.prototype.stripSlashes = function() {
     return this.replace(/\\(.)/mg, "$1");
 }
 
-export {turnGfycatURLIntoGfycode, turnYoutubeURLIntoYoutubeCode, turnTwitterURLIntoTweetID, turnTwitchURLIntoTwitchCode};
+function turnContenderDataIntoVoteData(contenderData) {
+	let voteData = contenderData.map( (clipdata) => {
+		let score = 0;
+		clipdata.voters.forEach((voterData) => score += parseFloat(voterData.weight));
+		if (score < 0) {score = 0;}
+		return score;
+	});
+	return voteData;
+}
+
+export {turnGfycatURLIntoGfycode, turnYoutubeURLIntoYoutubeCode, turnTwitterURLIntoTweetID, turnTwitchURLIntoTwitchCode, turnContenderDataIntoVoteData};

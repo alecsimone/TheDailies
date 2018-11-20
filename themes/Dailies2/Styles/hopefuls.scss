@@ -18,7 +18,7 @@
 	& .playerContainer {
 		width: 100%;
 		@media #{$bp1280} {
-			width: calc(178vh - 302px);
+			width: calc(178vh - 420px);
 			max-width: 1280px;
 			height: calc(100vh - 170px);
 			max-height: 720px;
