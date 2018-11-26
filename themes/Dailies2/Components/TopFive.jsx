@@ -1,6 +1,5 @@
 import React from "react";
 import WeedComments from './WeedComments.jsx';
-import VoterInfoBox from './VoterInfoBox.jsx';
 import VotingMachine from './Things/VotingMachine.jsx';
 import SlugTitle from './Things/SlugTitle.jsx';
 import AdminBox from './Things/AdminBox.jsx';

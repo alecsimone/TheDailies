@@ -22,6 +22,7 @@ export default class VotingMachine extends React.Component{
 			this.setState({localOnlyVote: "nay"});
 			direction = 'nay';
 		}
+		e.target.blur();
 		jQuery.ajax({
 			type: "POST",
 			url: dailiesGlobalData.ajaxurl,

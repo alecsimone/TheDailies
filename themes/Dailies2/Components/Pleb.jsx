@@ -1,5 +1,6 @@
 import React from "react";
-import VoterInfoBox from './VoterInfoBox.jsx';
+import SlugTitle from './Things/SlugTitle.jsx';
+import VotingMachine from './Things/VotingMachine.jsx';
 
 
 export default class Pleb extends React.Component{
@@ -61,11 +62,7 @@ export default class Pleb extends React.Component{
 		}
 
 		let voters;
-		if (this.state.votersLoading) {
-			voters = "Voters Loading..."
-		} else {	
-			voters = <VoterInfoBox key={`voterInfoBox-${this.props.clipdata.slug}`} thisID={this.props.clipdata.slug} voterData={this.state.voters} twitchVoters={[]} guestlist={[]} addedVotes="0" />
-		}
+		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />
 
 		let rawTitle = this.props.clipdata.title;
 		String.prototype.stripSlashes = function() {
@@ -88,7 +85,7 @@ export default class Pleb extends React.Component{
 			<div className="Pleb">
 				<img className="plebPic" src={sourcePic} />
 				<div className="hopefuls-meta">
-					<div className="hopefuls-title"><span className="hopefuls-score">(+{this.props.clipdata.score})</span> <a href={link} target="_blank">{title}</a></div>
+					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					<div className="hopefuls-data">{this.props.clipdata.views} views. Clipped by {this.props.clipdata.clipper} about {timeAgo} {timeAgoUnit} ago. {vodlink}</div>
 					{voters}
 				</div>
