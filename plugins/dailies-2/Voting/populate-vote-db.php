@@ -2,6 +2,7 @@
 
 add_action('init', 'populate_vote_db');
 function populate_vote_db() {
+	if (!currentUserIsAdmin()) {return;}
 	$votePopulationOffset = get_option("votePopulationOffset");
 	if (!$votePopulationOffset) {
 		$votePopulationOffset = 0;
@@ -92,6 +93,7 @@ function addPostVotesToNewDB($postID) {
 
 add_action('init', 'convertSeenSlugsToVoteDB');
 function convertSeenSlugsToVoteDB() {
+	if (!currentUserIsAdmin()) {return;}
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'seen_slugs_db';
 
@@ -109,6 +111,16 @@ function convertSeenSlugsToVoteDB() {
 		if ((int)$value['time'] < $cutoff) {
 			deleteJudgmentFromSeenSlugsDB($value['id']);
 		} else {
+			$hash = $value['hash'];
+			$slug = $value['slug'];
+			$vote_db_name = $wpdb->prefix . 'vote_db';
+			$existingVote = $wpdb->get_row(
+				"SELECT *
+				FROM $vote_db_name
+				WHERE slug = '$slug' AND hash = '$hash'",
+				'ARRAY_A'
+			);
+			if ($existingVote) {continue;}
 			$voteArray = array(
 				"hash" => $value['hash'],
 				"weight" => $value['vote'] > 0 ? getValidRep($value['hash']) : getValidRep($value['hash']) * -1 * floatval(get_option("nayCoefficient")),
