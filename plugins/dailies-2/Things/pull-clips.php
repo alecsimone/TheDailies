@@ -1,17 +1,17 @@
 <?php
 
 function pull_all_clips() {
-	pull_twitter_mentions();
 	pull_twitch_clips();
+	pull_twitter_mentions();
 	update_option("lastClipUpdateTime", time());
 }
 
 function getQueryPeriod() {
 	$lastUpdateTime = get_option("lastClipUpdateTime");
-	if (!$lastUpdateTime) {
-		$weedPageID = getPageIDBySlug('weed');
-		$lastUpdateTime = get_post_meta($weedPageID, 'lastClipTime', true);
-	}
+	// if (!$lastUpdateTime) {
+	// 	$weedPageID = getPageIDBySlug('weed');
+	// 	$lastUpdateTime = get_post_meta($weedPageID, 'lastClipTime', true);
+	// }
 	$currentTime = time();
 	$queryLength = $currentTime - $lastUpdateTime;
 	if ($queryLength >= 60 * 60 * 24) {
@@ -24,11 +24,14 @@ function getQueryPeriod() {
 function pull_twitch_clips() {
 	$queryPeriod = getQueryPeriod();
 	$cutoffTime = clipCutoffTimestamp();
+
 	$clipsArray = get_twitch_clips("game=Rocket%20League", $queryPeriod)->clips;
+
 	$slugsArray = [];
 	foreach ($clipsArray as $clipData) {
 		$slugsArray[] = $clipData->slug;
 	}
+
 	$tournamentsArray = generateTodaysStreamlist();
 	foreach ($tournamentsArray as $streamName) {
 		if ($streamName === "Rocket_Dailies") {continue;}
@@ -37,6 +40,7 @@ function pull_twitch_clips() {
 		foreach ($theseClips->clips as $clipData) {
 			if (!array_search($clipData->slug, $slugsArray)) {
 				$clipsArray[] = $clipData;
+				$slugsArray[] = $clipData->slug;
 			}
 		}
 	}
@@ -58,6 +62,7 @@ function pull_twitch_clips() {
 			unset($clipsArray[$key]);
 			continue;
 		}
+
 		if ($clipData->vod) {
 			$vodlink = $clipData->vod->url;
 		} else {
@@ -167,7 +172,9 @@ function pull_twitter_mentions() {
 		// basicPrint($key);
 		$tweetTimestamp = date(U, strtotime($tweetData->created_at));
 		if ($tweetTimestamp < $cutoffTimestamp) {continue;}
-		$tweetURL = "https://twitter.com/" . $tweetData->user->screen_name . "/status/" . $tweetData->id_str;
+
+		// $tweetURL = "https://twitter.com/" . $tweetData->user->screen_name . "/status/" . $tweetData->id_str;
+
 		if ($tweetData->in_reply_to_status_id_str) {
 			$parentTweet = getTweet($tweetData->in_reply_to_status_id_str);
 			if ($parentTweet->user->screen_name === "Rocket_Dailies") {continue;}
@@ -183,9 +190,11 @@ function pull_twitter_mentions() {
 				if (!strpos($urlArray->expanded_url, 'twitter.com/i/') && strpos($urlArray->expanded_url, '/status/') >= 0) {
 					$linkedTweetID = turnURLIntoTwitterCode($urlArray->expanded_url);
 					$linkedTweet = getTweet($linkedTweetID);
+
 					if ($linkedTweet->user->screen_name === "Rocket_Dailies") {continue;}
 					$linkedTweetTimestamp = date(U, strtotime($linkedTweet->created_at));
-			if ($linkedTweetTimestamp < $cutoffTimestamp) {continue;}
+					if ($linkedTweetTimestamp < $cutoffTimestamp) {continue;}
+					
 					if ( tweetIsProbablySubmission($linkedTweet) ) {
 						$submission = submitTweet($linkedTweet);
 					}
@@ -212,9 +221,9 @@ function tweetIsProbablySubmission($tweetData) {
 	}
 	if ($entities->urls) {
 		foreach ($entities->urls as $urlArray) {
-			if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
+			// if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
 				return true;
-			}
+			// }
 		}
 	}
 }

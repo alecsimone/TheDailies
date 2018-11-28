@@ -131,13 +131,13 @@ function generateFirstWinner() {
 function generateWeedData() {
 	$weedDataArray = array();
 	$weedDataArray['streamList'] = generateTodaysStreamlist();
-	$lastUpdateTime = get_option("lastClipUpdateTime");
-	if (!$lastUpdateTime) {
-		$weedPageID = getPageIDBySlug('weed');
-		$lastUpdateTime = get_post_meta($weedPageID, 'lastClipTime', true);
-	}
-	$weedDataArray['lastUpdate'] = $lastUpdateTime;
-	$weedDataArray['cutoffTimestamp'] = clipCutoffTimestamp();
+	// $lastUpdateTime = get_option("lastClipUpdateTime");
+	// if (!$lastUpdateTime) {
+	// 	$weedPageID = getPageIDBySlug('weed');
+	// 	$lastUpdateTime = get_post_meta($weedPageID, 'lastClipTime', true);
+	// }
+	// $weedDataArray['lastUpdate'] = $lastUpdateTime;
+	// $weedDataArray['cutoffTimestamp'] = clipCutoffTimestamp();
 	$weedDataArray['clips'] = getCleanPulledClipsDB();
 	$weedDataArray['seenSlugs'] = getCurrentUsersSeenSlugs();
 	

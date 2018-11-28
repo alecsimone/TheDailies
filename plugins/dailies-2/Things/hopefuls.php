@@ -27,6 +27,10 @@ function getHopefuls() {
 				"picture" => $person['picture'],
 				"weight" => $voter['weight'],
 			);
+			if (!$person) {
+				$voterData["name"] = "Deleted User";
+				$voterData["picture"] = get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg";
+			}
 			$score = $score + (int)$voter['weight'];
 			// $hopefuls[$key]['voters'][] = $voterData;
 			$theseVoters[] = $voterData;
@@ -58,11 +62,11 @@ function keepSlug() {
 
 	$postStar = starChecker($postTitle);
 
-	$slugVoters = getVotersForSlug($slugData['slug']);
-	$voteledger = array();
-	foreach ($slugVoters as $voter) {
-		$voteledger[$voter['hash']] = getValidRep($voter['hash']);
-	}
+	// $slugVoters = getVotersForSlug($slugData['slug']);
+	// $voteledger = array();
+	// foreach ($slugVoters as $voter) {
+	// 	$voteledger[$voter['hash']] = getValidRep($voter['hash']);
+	// }
 
 	$thingArray = array(
 		'post_title' => $postTitle,
@@ -78,6 +82,10 @@ function keepSlug() {
 			'defaultThumb' => $slugData['thumb'],
 		), 
 	);
+
+	if ($slugData['vodlink'] && $slugData['vodlink'] !== "none") {
+		$thingArray['meta_input']['vodlink'] = $slugData['vodlink'];
+	}
 
 	if ($slugData['type'] === "twitch") {
 		$thingArray['meta_input']['TwitchCode'] = $slugData['slug'];

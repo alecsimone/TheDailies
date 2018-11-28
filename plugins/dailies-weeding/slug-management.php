@@ -42,6 +42,7 @@ function nukeSlug($slug) {
 		$slugToNuke['nuked'] = 1;
 		editPulledClip($slugToNuke);
 	}
+	deleteAllVotesForSlug($slug);
 	return $slug;
 
 	// $time = time() * 1000;

@@ -46,6 +46,9 @@ function submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter) {
 			'type' => $clipType,
 		);
 		$addSlugSuccess = addSlugToDB($clipArray);
+		if (!$addSlugSuccess) {
+			return "That clip has already been submitted";
+		}
 	}
 
 	$gussyResult = gussyClip($clipType, $slug);
@@ -214,17 +217,17 @@ function submitTweet($tweetData) {
 		}
 	}
 	if ($tweet === "") {
-		$tweet = $tweeter . " Twitter Mention";
+		$tweet = $tweeter . " Twitter Submission";
 	}
 	$tweetID = $tweetData->id_str;
-	if ($tweetData->entities->media) {
-		$submissionURL = "https://twitter.com/" . $tweeter . "/status/" . $tweetID;
-	} elseif ($tweetData->entities->urls) {
+	if ($tweetData->entities->urls) {
 		foreach ($tweetData->entities->urls as $urlArray) {
 			if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
 				$submissionURL = $urlArray->expanded_url;
 			}
 		}
+	} else {
+		$submissionURL = "https://twitter.com/" . $tweeter . "/status/" . $tweetID;
 	}
 	// basicPrint($tweeter);
 	// basicPrint($tweet);

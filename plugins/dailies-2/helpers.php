@@ -120,14 +120,15 @@ function turnURLIntoGfycode($url) {
 }
 
 function sourceFinder($channelURL) {
+	$channelURL = strtoupper($channelURL);
 	$sourceArgs = array(
 		'taxonomy' => 'source'
 	);
 	$sources = get_terms($sourceArgs);
 	$sourceID = 632; //632 is User Submits
 	foreach ($sources as $source) {
-		$key = get_term_meta($source->term_id, 'twitch', true);
-		if (strcasecmp($key, $channelURL) == 0) {
+		$key = strtoupper(get_term_meta($source->term_id, 'twitch', true));
+		if (strpos($key, $channelURL)) {
 			$sourceID = $source->term_id;
 		}
 	}

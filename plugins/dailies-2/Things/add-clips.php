@@ -45,24 +45,22 @@
 
 function checkSlugFreshness($slugData) {
 	global $wpdb;
-	$table_name = $wpdb->prefix . "pulled_clips_db";
+	$pulled_clips_table_name = $wpdb->prefix . "pulled_clips_db";
 
 	$slug = $slugData['slug'];
 	$type = $slugData['type'];
-	$query = "SELECT * FROM $table_name WHERE slug = '$slug' AND type = '$type'";
-	$existingRow = $wpdb->get_row($query, ARRAY_A);
-	if ($existingRow !== null) {
+	$query = "SELECT * FROM $pulled_clips_table_name WHERE slug = '$slug' AND type = '$type'";
+	$existingClip = $wpdb->get_row($query, ARRAY_A);
+	if ($existingClip !== null) {
 		return false;
 	}
 
 	if ($slugData['type'] == "twitch" && $slugData['vodlink']) {
-		$known_moments_table_name = $wpdb->prefix . "known_moments_db";
-		$endOfVodID = strpos($slugData['vodlink'], "?t=");
-		$moment = substr($slugData['vodlink'], 0, $endOfVodID);
-		$query = "SELECT moment FROM $known_moments_table_name WHERE moment LIKE '{$moment}%'";
-		$sameVodMoments = $wpdb->get_results($query, ARRAY_A);
+		$sameVodMoments = getAllKnownMomentsForVOD($slugData['vodlink']);
+
 		$ourVodMomentArray = convertVodlinkToMomentObject($slugData['vodlink']);
 		$ourVodTime = (int)$ourVodMomentArray['vodTime'];
+		
 		foreach ($sameVodMoments as $vodMomentArray) {
 			$thisVodMomentArray = convertVodlinkToMomentObject($vodMomentArray['moment']);
 			$thisVodTime = (int)$thisVodMomentArray['vodTime'];
@@ -70,8 +68,27 @@ function checkSlugFreshness($slugData) {
 				return false;
 			}
 		}
+	} elseif ($slugData['type'] == "twitch") {
+		$known_moments_table_name = $wpdb->prefix . "known_moments_db";
+		$query = "SELECT * FROM $known_moments_table_name WHERE moment = '$slug' AND type = '$type'";
+		$existingMoment = $wpdb->get_row($query, ARRAY_A);
+		if ($existingMoment !== null) {
+			return false;
+		}
 	}
 	return true;
+}
+
+function getAllKnownMomentsForVOD($vodlink) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "known_moments_db";
+
+	$endOfVodID = strpos($slugData['vodlink'], "?t=");
+	$moment = substr($slugData['vodlink'], 0, $endOfVodID);
+
+	$query = "SELECT moment FROM $table_name WHERE moment LIKE '{$moment}%'";
+	$sameVodMoments = $wpdb->get_results($query, ARRAY_A);
+	return $sameVodMoments;
 }
 
 function addKnownMoment($momentArray) {
@@ -99,34 +116,34 @@ function addKnownMoment($momentArray) {
 	}
 }
 
-add_action( 'wp_ajax_store_pulled_clips', 'store_pulled_clips' );
-function store_pulled_clips() {
-	$clipsArray = $_POST['clips'];
-	if (count($clipsArray) === 0) {
-		killAjaxFunction("No clips from this stream");
-	}
+// add_action( 'wp_ajax_store_pulled_clips', 'store_pulled_clips' );
+// function store_pulled_clips() {
+// 	$clipsArray = $_POST['clips'];
+// 	if (count($clipsArray) === 0) {
+// 		killAjaxFunction("No clips from this stream");
+// 	}
 
-	foreach ($clipsArray as $slug => $slugData) {
-		$existingSlug = getSlugInPulledClipsDB($slug);
-		if ($existingSlug !== null) {
-			$slugData['score'] = $existingSlug['score'];
-			$slugData['nuked'] = $existingSlug['nuked'];
-			$slugData['votecount'] = $existingSlug['votecount'];
-			editPulledClip($slugData);
-			continue;
-		} else {
-			$slugData['score'] = 0;
-			$slugData['nuked'] = 0;
-			$slugData['votecount'] = 0;
-			$addSlugSuccess = addSlugToDB($slugData);
-		}
-	}
+// 	foreach ($clipsArray as $slug => $slugData) {
+// 		$existingSlug = getSlugInPulledClipsDB($slug);
+// 		if ($existingSlug !== null) {
+// 			$slugData['score'] = $existingSlug['score'];
+// 			$slugData['nuked'] = $existingSlug['nuked'];
+// 			$slugData['votecount'] = $existingSlug['votecount'];
+// 			editPulledClip($slugData);
+// 			continue;
+// 		} else {
+// 			$slugData['score'] = 0;
+// 			$slugData['nuked'] = 0;
+// 			$slugData['votecount'] = 0;
+// 			$addSlugSuccess = addSlugToDB($slugData);
+// 		}
+// 	}
 
-	update_option("lastClipUpdateTime", time());
+// 	update_option("lastClipUpdateTime", time());
 
-	global $wpdb;
-	killAjaxFunction($clipsArray);
-}
+// 	global $wpdb;
+// 	killAjaxFunction($clipsArray);
+// }
 
 function getSlugInPulledClipsDB($slug) {
 	global $wpdb;

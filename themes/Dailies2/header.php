@@ -23,9 +23,11 @@
 	<nav id="menu-links">
 		<a href="<?php echo get_site_url(); ?>" id="medalLink"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2016/10/Medal-small.png" class="headermedal"></a><a id="searchToggle">Search</a><div id="searchbox"><?php get_search_form(); ?></div><?php 
 		$navLinks = [
-			'Winners' => '/tag/winners',
+			// 'Winners' => '/tag/winners',
 			'Rules' => '/rules',
 			'Schedule' => '/schedule',
+			'Scout' => '/scout',
+			'Hopefuls' => '/hopefuls',
 			'Live' => '/live',
 		];
 		$baseURL = get_site_url();

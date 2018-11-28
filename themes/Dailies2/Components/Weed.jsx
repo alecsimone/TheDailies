@@ -23,7 +23,7 @@ export default class Weed extends React.Component{
 			if (slugObj.nuked == 1) {
 				delete weedData.clips[slug];
 			}
-			if (Number(slugObj.score) < -50) {
+			if (Number(slugObj.score) < -40) {
 				delete weedData.clips[slug];
 			}
 		});
@@ -590,9 +590,9 @@ export default class Weed extends React.Component{
 		let firstSlugData = this.state.clips[this.firstSlug];
 		firstSlugData.voters = this.state.voters;
 		console.log(firstSlugData);
-		let firstSlugMoment = this.turnVodlinkIntoMomentObject(firstSlugData.vodlink);
+		// let firstSlugMoment = this.turnVodlinkIntoMomentObject(firstSlugData.vodlink);
 		// let momentIsFresh = this.checkMomentFreshness(firstSlugMoment);
-		let i = 0;
+		// let i = 0;
 		// while (!momentIsFresh && i < this.state.clipsArray.length) {
 		// 	// this.nukeSlug(this.firstSlug);
 		// 	console.log(`Skipping ${this.firstSlug} because you've seen that moment already`);
@@ -611,13 +611,13 @@ export default class Weed extends React.Component{
 		// 	clipsArray.splice(0, 1);
 		// 	this.setState({clipsArray});
 		// }
-		if (this.state.clipsArray.length === i) {
-			return(
-				<section id="weeder" className="weederVictory">
-					<div id="Victory">You won!</div>
-				</section>
-			)
-		}
+		// if (this.state.clipsArray.length === i) {
+		// 	return(
+		// 		<section id="weeder" className="weederVictory">
+		// 			<div id="Victory">You won!</div>
+		// 		</section>
+		// 	)
+		// }
 
 		let unjudgedClipCounter = 0;
 		let yourUndjudgedClips = 0;
@@ -739,55 +739,55 @@ if (jQuery('#weedApp').length) {
 	}
 
 	console.log(secondsAgo);
-	if (secondsAgo > 60 || weedData.clips.length === 0) {
-		if (weedData.clips === null) {weedData.clips={};}	
-		jQuery.each(streams, function() {
-			if (this === "Rocket_Dailies") {return true;}
-			var query = `https://api.twitch.tv/kraken/clips/top?channel=${this}&period=${queryPeriod}&limit=100`;
-			var ajax = jQuery.ajax({
-				type: 'GET',
-				url: query,
-				headers: {
-					'Client-ID' : privateData.twitchClientID,
-					'Accept' : 'application/vnd.twitchtv.v5+json',
-				},
-				error: function(one, two, three) {
-					console.log(one);
-					console.log(two);
-					console.log(three);
-				},
-				success: function(data) {
-					parseClipData(data);
-				}
-			});
-			queries.push(ajax); 
-		});
+	if (false && secondsAgo > 60 || weedData.clips.length === 0) {
+		// if (weedData.clips === null) {weedData.clips={};}	
+		// jQuery.each(streams, function() {
+		// 	if (this === "Rocket_Dailies") {return true;}
+		// 	var query = `https://api.twitch.tv/kraken/clips/top?channel=${this}&period=${queryPeriod}&limit=100`;
+		// 	var ajax = jQuery.ajax({
+		// 		type: 'GET',
+		// 		url: query,
+		// 		headers: {
+		// 			'Client-ID' : privateData.twitchClientID,
+		// 			'Accept' : 'application/vnd.twitchtv.v5+json',
+		// 		},
+		// 		error: function(one, two, three) {
+		// 			console.log(one);
+		// 			console.log(two);
+		// 			console.log(three);
+		// 		},
+		// 		success: function(data) {
+		// 			parseClipData(data);
+		// 		}
+		// 	});
+		// 	queries.push(ajax); 
+		// });
 
-		var query = `https://api.twitch.tv/kraken/clips/top?game=Rocket%20League&period=${queryPeriod}&limit=100`;
-		var ajax = jQuery.ajax({
-			type: 'GET',
-			url: query,
-			headers: {
-				'Client-ID' : privateData.twitchClientID,
-				'Accept' : 'application/vnd.twitchtv.v5+json',
-			},
-			error: function(one, two, three) {
-				console.log(one);
-				console.log(two);
-				console.log(three);
-			},
-			success: function(data) {
-				parseClipData(data);
-			},
-		});
-		queries.push(ajax);
+		// var query = `https://api.twitch.tv/kraken/clips/top?game=Rocket%20League&period=${queryPeriod}&limit=100`;
+		// var ajax = jQuery.ajax({
+		// 	type: 'GET',
+		// 	url: query,
+		// 	headers: {
+		// 		'Client-ID' : privateData.twitchClientID,
+		// 		'Accept' : 'application/vnd.twitchtv.v5+json',
+		// 	},
+		// 	error: function(one, two, three) {
+		// 		console.log(one);
+		// 		console.log(two);
+		// 		console.log(three);
+		// 	},
+		// 	success: function(data) {
+		// 		parseClipData(data);
+		// 	},
+		// });
+		// queries.push(ajax);
 
-		jQuery.when.apply(jQuery, queries).then(function() {
-			ReactDOM.render(
-				<Weed />,
-				document.getElementById('weedApp')
-			);
-		});
+		// jQuery.when.apply(jQuery, queries).then(function() {
+		// 	ReactDOM.render(
+		// 		<Weed />,
+		// 		document.getElementById('weedApp')
+		// 	);
+		// });
 	} else {
 		console.log("We've got clips, no need to query");
 		ReactDOM.render(
@@ -797,134 +797,134 @@ if (jQuery('#weedApp').length) {
 	}
 }
 
-function parseClipData(data) {
-	let clipStorage = {};
-	jQuery.each(data.clips, function(index, clipData) {
-		if (clipData.game !== "Rocket League") {
-			console.log(`Rejecting ${clipData.slug} because it's not Rocket League`);
-			return true;
-		}
-		if (Number(clipData.views) < 3) {
-			console.log(`Rejecting ${clipData.slug} because it has too few views`);
-			return true;
-		}
-		let clipTime = Date.parse(clipData.created_at) / 1000;
-		if (clipTime <= Number(weedData.cutoffTimestamp)) {
-			console.log(`Rejecting ${clipData.slug} because it's too old`);
-			return true;
-		}
-		if (clipData.vod) {
-			var vodlink = clipData.vod.url;
-		} else {
-			var vodlink = 'none';
-		}
-		let thumb;
-		if (clipData.thumbnails) {
-			thumb = clipData.thumbnails.medium;
-		} else {
-			thumb = null;
-		}
-		let thisClipObject = {
-			slug: clipData.slug,
-			title: clipData.title,
-			views: clipData.views,
-			age: clipData.created_at,
-			source: clipData.broadcaster.display_name,
-			sourcepic: clipData.broadcaster.logo,
-			vodlink,
-			clipper: clipData.curator.display_name,
-			score: 0,
-			votecount: 0,
-			thumb,
-			type: "twitch",
-		}
-		if (weedData.clips !== null && weedData.clips[clipData.slug] !== undefined) {
-			if (weedData.clips[clipData.slug].nuked == 1) {
-				console.log(`Rejecting ${clipData.slug} because it's been nuked`);
-				return true;
-			}
-			thisClipObject.score = weedData.clips[clipData.slug].score;
-			thisClipObject.votecount = weedData.clips[clipData.slug].votecount;
-		}
-		clipStorage[clipData.slug] = thisClipObject;
-	});
-	if (Object.keys(clipStorage).length === 0) {
-		// console.log("no clips here");
-		return true;
-	}
-	storePulledClips(clipStorage);
-	jQuery.each(clipStorage, function(index, val) {
-		weedData.clips[index] = val;
-	});
-}
+// function parseClipData(data) {
+// 	let clipStorage = {};
+// 	jQuery.each(data.clips, function(index, clipData) {
+// 		if (clipData.game !== "Rocket League") {
+// 			console.log(`Rejecting ${clipData.slug} because it's not Rocket League`);
+// 			return true;
+// 		}
+// 		if (Number(clipData.views) < 3) {
+// 			console.log(`Rejecting ${clipData.slug} because it has too few views`);
+// 			return true;
+// 		}
+// 		let clipTime = Date.parse(clipData.created_at) / 1000;
+// 		if (clipTime <= Number(weedData.cutoffTimestamp)) {
+// 			console.log(`Rejecting ${clipData.slug} because it's too old`);
+// 			return true;
+// 		}
+// 		if (clipData.vod) {
+// 			var vodlink = clipData.vod.url;
+// 		} else {
+// 			var vodlink = 'none';
+// 		}
+// 		let thumb;
+// 		if (clipData.thumbnails) {
+// 			thumb = clipData.thumbnails.medium;
+// 		} else {
+// 			thumb = null;
+// 		}
+// 		let thisClipObject = {
+// 			slug: clipData.slug,
+// 			title: clipData.title,
+// 			views: clipData.views,
+// 			age: clipData.created_at,
+// 			source: clipData.broadcaster.display_name,
+// 			sourcepic: clipData.broadcaster.logo,
+// 			vodlink,
+// 			clipper: clipData.curator.display_name,
+// 			score: 0,
+// 			votecount: 0,
+// 			thumb,
+// 			type: "twitch",
+// 		}
+// 		if (weedData.clips !== null && weedData.clips[clipData.slug] !== undefined) {
+// 			if (weedData.clips[clipData.slug].nuked == 1) {
+// 				console.log(`Rejecting ${clipData.slug} because it's been nuked`);
+// 				return true;
+// 			}
+// 			thisClipObject.score = weedData.clips[clipData.slug].score;
+// 			thisClipObject.votecount = weedData.clips[clipData.slug].votecount;
+// 		}
+// 		clipStorage[clipData.slug] = thisClipObject;
+// 	});
+// 	if (Object.keys(clipStorage).length === 0) {
+// 		// console.log("no clips here");
+// 		return true;
+// 	}
+// 	storePulledClips(clipStorage);
+// 	jQuery.each(clipStorage, function(index, val) {
+// 		weedData.clips[index] = val;
+// 	});
+// }
 
-function storePulledClips(clips) {
-	// console.log(clips);
-	if (Object.keys(clips).length === 0) {
-		return;
-	}
-	if (Object.keys(clips).length > 50) {
-		var clipsA = {};
-		var clipsB = {};
-		for (var i = 49; i >= 0; i--) {
-			let key = Object.keys(clips)[i];
-			clipsA[key] = clips[key];
-		}
-		jQuery.ajax({
-			type: "POST",
-			url: dailiesGlobalData.ajaxurl,
-			dataType: 'json',
-			data: {
-				clips: clipsA,
-				action: 'store_pulled_clips',
-			},
-			error: function(one, two, three) {
-				console.log(one);
-				console.log(two);
-				console.log(three);
-			},
-			success: function(data) {
-				// console.log(data);
-			}
-		});
-		for (var i = Object.keys(clips).length - 1; i >= 50; i--) {
-			let key = Object.keys(clips)[i];
-			clipsB[key] = clips[key];
-		}
-		jQuery.ajax({
-			type: "POST",
-			url: dailiesGlobalData.ajaxurl,
-			dataType: 'json',
-			data: {
-				clips: clipsB,
-				action: 'store_pulled_clips',
-			},
-			error: function(one, two, three) {
-				console.log(one);
-				console.log(two);
-				console.log(three);
-			},
-			success: function(data) {
-				// console.log(data);
-			}
-		});
-		return;
-	}
-	jQuery.ajax({
-		type: "POST",
-		url: dailiesGlobalData.ajaxurl,
-		dataType: 'json',
-		data: {
-			clips,
-			action: 'store_pulled_clips',
-		},
-		error: function(one, two, three) {
-			console.log(one);
-			console.log(two);
-			console.log(three);
-		},
-		success: function(data) {
-			// console.log(data);
-		}
-	});
-}
+// function storePulledClips(clips) {
+// 	// console.log(clips);
+// 	if (Object.keys(clips).length === 0) {
+// 		return;
+// 	}
+// 	if (Object.keys(clips).length > 50) {
+// 		var clipsA = {};
+// 		var clipsB = {};
+// 		for (var i = 49; i >= 0; i--) {
+// 			let key = Object.keys(clips)[i];
+// 			clipsA[key] = clips[key];
+// 		}
+// 		jQuery.ajax({
+// 			type: "POST",
+// 			url: dailiesGlobalData.ajaxurl,
+// 			dataType: 'json',
+// 			data: {
+// 				clips: clipsA,
+// 				action: 'store_pulled_clips',
+// 			},
+// 			error: function(one, two, three) {
+// 				console.log(one);
+// 				console.log(two);
+// 				console.log(three);
+// 			},
+// 			success: function(data) {
+// 				// console.log(data);
+// 			}
+// 		});
+// 		for (var i = Object.keys(clips).length - 1; i >= 50; i--) {
+// 			let key = Object.keys(clips)[i];
+// 			clipsB[key] = clips[key];
+// 		}
+// 		jQuery.ajax({
+// 			type: "POST",
+// 			url: dailiesGlobalData.ajaxurl,
+// 			dataType: 'json',
+// 			data: {
+// 				clips: clipsB,
+// 				action: 'store_pulled_clips',
+// 			},
+// 			error: function(one, two, three) {
+// 				console.log(one);
+// 				console.log(two);
+// 				console.log(three);
+// 			},
+// 			success: function(data) {
+// 				// console.log(data);
+// 			}
+// 		});
+// 		return;
+// 	}
+// 	jQuery.ajax({
+// 		type: "POST",
+// 		url: dailiesGlobalData.ajaxurl,
+// 		dataType: 'json',
+// 		data: {
+// 			clips,
+// 			action: 'store_pulled_clips',
+// 		},
+// 		error: function(one, two, three) {
+// 			console.log(one);
+// 			console.log(two);
+// 			console.log(three);
+// 		},
+// 		success: function(data) {
+// 			// console.log(data);
+// 		}
+// 	});
+// }

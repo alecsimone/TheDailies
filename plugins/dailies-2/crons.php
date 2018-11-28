@@ -20,8 +20,11 @@ function add_custom_cron_schedules($schedules) {
 }
 add_filter( 'cron_schedules', 'add_custom_cron_schedules' );
 
+if (wp_get_schedule('pull_clips') === "twiceHourly") {
+	wp_clear_scheduled_hook('pull_clips');
+}
 if( !wp_next_scheduled( 'pull_clips' ) ) {
-   wp_schedule_event( time(), 'twiceHourly', 'pull_clips' );
+   wp_schedule_event( time(), 'tenMinutes', 'pull_clips' );
 }
 
 add_action( 'pull_clips', 'pull_clips_cron_handler' );

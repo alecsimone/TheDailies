@@ -20,8 +20,14 @@ function getCleanPulledClipsDB() {
 	$ourCutoff = clipCutoffTimestamp();
 	foreach ($pulledClipsDBRaw as $key => $clipData) {
 		$clipTimestamp = convertTwitchTimeToTimestamp($clipData['age']);
-		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -19 || $clipData['nuked'] == 1)) {
+		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -21 || $clipData['nuked'] == 1)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
+			deleteAllVotesForSlug($clipData['slug']);
+			continue;
+		}
+		if ($clipTimestamp < $ourCutoff - 24 * 60 * 60 && (intval($clipData['score']) < -1 || $clipData['nuked'] == 1)) {
+			deleteSlugFromPulledClipsDB($clipData['slug']);
+			deleteAllVotesForSlug($clipData['slug']);
 			continue;
 		}
 		$pulledClipsDB[$clipData['slug']] = $clipData;
@@ -36,8 +42,11 @@ function clipCutoffTimestamp() {
 	return $eightHoursBeforeLastNom < $twentyFourHoursAgo ? $eightHoursBeforeLastNom : $twentyFourHoursAgo;
 }
 
-// add_action('init', 'populateKnownMoments');
+add_action('init', 'populateKnownMoments');
 function populateKnownMoments() {
+	$momentsAreKnown = get_option("momentsAreKnown");
+	if ($momentsAreKnown) {return;}
+
 	$pulledClips = getPulledClipsDB();
 	foreach ($pulledClips as $clip) {
 		$momentArray = array(
@@ -53,6 +62,7 @@ function populateKnownMoments() {
 		$addedMoment = addKnownMoment($momentArray);
 		basicPrint($addedMoment);
 	}
+	update_option( "momentsAreKnown", true );
 }
 
 function convertPostDataObjectToClipdata($postDataObject) {
@@ -72,6 +82,11 @@ function convertPostDataObjectToClipdata($postDataObject) {
 	);
 	if ($clipdata['thumb'] == null) {
 		$clipdata['thumb'] = get_post_meta($postDataObject['id'], 'defaultThumb', true);
+	}
+
+	$vodlink = get_post_meta($postDataObject['id'], 'vodlink', true);
+	if ($vodlink !== '') {
+		$clipdata['vodlink'] = $vodlink;
 	}
 	return $clipdata;
 }

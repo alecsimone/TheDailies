@@ -8,7 +8,7 @@ export default class KeepBar extends React.Component{
 
 	keepHandler(e) {
 		e.preventDefault();
-		let newThingName = document.getElementById('keepbar').value;
+		let newThingName = jQuery(e.target).children('.keepbar').val();
 		this.props.keepSlug(newThingName, this.props.slug);
 	}
 
@@ -70,7 +70,7 @@ export default class KeepBar extends React.Component{
 	render() {
 		return(
 			<form className='keepbox' onSubmit={this.keepHandler}>
-				<input type="text" id="keepbar" className="keepbar" name="keepbar" placeholder="Who and Why?" autoComplete="off"/><input type="submit" value="keep" className="keepbutton" />
+				<input type="text" className="keepbar" name="keepbar" placeholder="Who and Why?" autoComplete="off"/><input type="submit" value="keep" className="keepbutton" />
 			</form>
 		)
 	}

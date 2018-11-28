@@ -99,8 +99,11 @@ export default class VotingMachine extends React.Component{
 
 		// console.log(yeaVotersList, nayVotersList);
 
+		let ourVote;
+
 		let yeaVoters = Object.keys(yeaVotersList).map((key) => {
 			var voterName = yeaVotersList[key]['name'];
+			if (voterName === dailiesGlobalData.userData.userName) {ourVote = "yea";}
 			var voterPic = yeaVotersList[key]['picture'];
 			let voterRep = yeaVotersList[key]['weight'];
 			return (
@@ -110,6 +113,7 @@ export default class VotingMachine extends React.Component{
 
 		let nayVoters = Object.keys(nayVotersList).map((key) => {
 			var voterName = nayVotersList[key]['name'];
+			if (voterName === dailiesGlobalData.userData.userName) {ourVote = "nay";}
 			var voterPic = nayVotersList[key]['picture'];
 			let voterRep = nayVotersList[key]['weight'];
 			return (
@@ -120,9 +124,9 @@ export default class VotingMachine extends React.Component{
 		return (
 			<div className="votingMachine">
 				<div className="nayVoters voterBubblePod">{nayVoters}</div>
-				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
+				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" ? " spin" : ""} ${ourVote === "nay" ? " currentlyChosenVoteButton" : ""}`} onClick={(e) => this.vote(e)}/>
 				<p className="score">{score > 0 ? `+${score}` : `${score}`}</p>
-				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
+				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" ? " spin" : ""} ${ourVote === "yea" ? " currentlyChosenVoteButton" : ""}`} onClick={(e) => this.vote(e)}/>
 				<div className="yeaVoters voterBubblePod">{yeaVoters}</div>
 			</div>
 		);

@@ -482,7 +482,7 @@ img#lightboxCloseButton {
 		height: 0.8em;
 		opacity: 0.25;
 		cursor: pointer;
-		&:hover {
+		&:hover, &.currentlyChosenVoteButton {
 			opacity: 0.8;
 			transform: scale(1.1);
 		}

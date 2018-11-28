@@ -20,6 +20,18 @@ function slug_vote() {
 	killAjaxFunction($addVoteResult);
 }
 
+function deleteSlugVote($slug, $hash) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "vote_db";
+
+	$where = array(
+		"hash" => $hash,
+		"slug" => $slug,
+	);
+
+	$wpdb->delete($table_name, $where);
+}
+
 function addVoteToDB($voteArray) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "vote_db";
@@ -129,6 +141,13 @@ function getVotersForSlug($slug) {
 	);
 	
 	return $voterData;
+}
+
+function deleteAllVotesForSlug($slug) {
+	$slugVotes = getVotersForSlug($slug);
+	foreach ($slugVotes as $vote) {
+		deleteSlugVote($vote['slug'], $vote['hash']);
+	}
 }
 
 function getVoterDisplayInfoForSlug($slug) {
