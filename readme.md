@@ -13,98 +13,98 @@ Things go through 5 stages: Scout, Hopefuls, Contenders, Nominees, and Archives
 
 A quick map:
 
-#People#
--Create Database
--Getters
----getPeopleDB()
----getPersonInDB($person)
----getValidRep($person)
----getPersonsHash($person)
----getPicForPerson($person)
----buildFreshTwitchDB()
----getSpecialPeople()
--Setters
----addPersonToDB($personArray)
----editPersonInDB($personArray)
----deletePersonFromDB($person)
----increase_rep($person, $additionalRep)
----updateRepTime($person)
----updateRole($dailiesID, $role, $old_roles)   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT
----togglePersonSpecialness($person)
--Database Cleanup
----fixBrokenPeople()   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT
----mergeTwitchAccounts()   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT
----recognizeTwitchChatters()   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT
+#People#\
+-Create Database\
+-Getters\
+---getPeopleDB()\
+---getPersonInDB($person)\
+---getValidRep($person)\
+---getPersonsHash($person)\
+---getPicForPerson($person)\
+---buildFreshTwitchDB()\
+---getSpecialPeople()\
+-Setters\
+---addPersonToDB($personArray)\
+---editPersonInDB($personArray)\
+---deletePersonFromDB($person)\
+---increase_rep($person, $additionalRep)\
+---updateRepTime($person)\
+---updateRole($dailiesID, $role, $old_roles)   CURRENTLY IN PEOPLE-AND-THINGS/\PEOPLE-MANAGEMENT
+---togglePersonSpecialness($person)\
+-Database Cleanup\
+---fixBrokenPeople()   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT\
+---mergeTwitchAccounts()   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT\
+---recognizeTwitchChatters()   CURRENTLY IN PEOPLE-AND-THINGS/PEOPLE-MANAGEMENT\
 
-#Things#
--Database Setup
+#Things#\
+-Database Setup\
 
--Submissions
----submitClipAjaxHandler()
----submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter)
----gussyClip($clipType, $slug)
-----getTweet($tweetID)
-----gussyTweet($tweetID)
-----gussyTwitch($twitchCode)
-----gussyYoutube($youtubeCode)
-----gussyGfy($gfyCode)
----addProspect()
-----gussyProspect()
+-Submissions\
+---submitClipAjaxHandler()\
+---submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter)\
+---gussyClip($clipType, $slug)\
+----getTweet($tweetID)\
+----gussyTweet($tweetID)\
+----gussyTwitch($twitchCode)\
+----gussyYoutube($youtubeCode)\
+----gussyGfy($gfyCode)\
+---addProspect()\
+----gussyProspect()\
 
--Pull Clips
----getQueryPeriod()
----pull_all_clips()
----pull_twitch_clips()
-----generateTodaysStreamlist()
-----generateStreamlistForDay($day)
-----get_twitch_clips($target, $queryPeriod)
----pull_twitter_mentions()
-----tweetIsProbablySubmission($tweetData)
-----submitTweet($tweetData)   CURRENTLY IN Things/submissions.php
-----generateTwitterAuthorization($url, $method)
-----createTwitterOauthSignature($url, $OAuth, $method)
----addSlugToDB($slugData)
----store_pulled_clips()
----getSlugInPulledClipsDB($slug)
----deleteSlugFromPulledClipsDB($slug)   CURRENTLY IN dailies-weeding/slug-management.php
----nukeSlug($slug)   CURRENTLY IN dailies-weeding/slug-management.php
----nukeAllDupeSlugs($slug)   CURRENTLY IN dailies-weeding/slug-management.php
----nuke_slug_handler()   CURRENTLY IN dailies-weeding/slug-management.php
----get_dupe_clips($string)   CURRENTLY IN dailies-weeding/slug-management.php
-----convertVodlinkToMomentObject($vodlink)   CURRENTLY IN dailies-weeding/slug-management.php
----editPulledClip($clipArray)   CURRENTLY IN dailies-weeding/slug-management.php
+-Pull Clips\
+---getQueryPeriod()\
+---pull_all_clips()\
+---pull_twitch_clips()\
+----generateTodaysStreamlist()\
+----generateStreamlistForDay($day)\
+----get_twitch_clips($target, $queryPeriod)\
+---pull_twitter_mentions()\
+----tweetIsProbablySubmission($tweetData)\
+----submitTweet($tweetData)   CURRENTLY IN Things/submissions.php\
+----generateTwitterAuthorization($url, $method)\
+----createTwitterOauthSignature($url, $OAuth, $method)\
+---addSlugToDB($slugData)\
+---store_pulled_clips()\
+---getSlugInPulledClipsDB($slug)\
+---deleteSlugFromPulledClipsDB($slug)   CURRENTLY IN dailies-weeding/slug-management.php\
+---nukeSlug($slug)   CURRENTLY IN dailies-weeding/slug-management.php\
+---nukeAllDupeSlugs($slug)   CURRENTLY IN dailies-weeding/slug-management.php\
+---nuke_slug_handler()   CURRENTLY IN dailies-weeding/slug-management.php\
+---get_dupe_clips($string)   CURRENTLY IN dailies-weeding/slug-management.php\
+----convertVodlinkToMomentObject($vodlink)   CURRENTLY IN dailies-weeding/slug-management.php\
+---editPulledClip($clipArray)   CURRENTLY IN dailies-weeding/slug-management.php\
 
--Weed (aka Scout, 1R)
----getPulledClipsDB()   CURRENTLY IN THING-MANAGEMENT.PHP
----getCleanPulledClipsDB()   CURRENTLY IN THING-MANAGEMENT.PHP
----clipCutoffTimestamp()   CURRENTLY IN THING-MANAGEMENT.PHP
----getCurrentUsersSeenSlugs()
+-Weed (aka Scout, 1R)\
+---getPulledClipsDB()   CURRENTLY IN THING-MANAGEMENT.PHP\
+---getCleanPulledClipsDB()   CURRENTLY IN THING-MANAGEMENT.PHP\
+---clipCutoffTimestamp()   CURRENTLY IN THING-MANAGEMENT.PHP\
+---getCurrentUsersSeenSlugs()\
 
 
--Hopefuls
----getHopefuls()
----keepSlug()
----hopefuls_cutter()
+-Hopefuls\
+---getHopefuls()\
+---keepSlug()\
+---hopefuls_cutter()\
 
--Live
----post_promoter()   CURRENTLY IN themes/Dailies2/Functions/liveOperations.php
----post_demoter()
----post_trasher($postID)
----reset_live()   CURRENTLY IN themes/Dailies2/Functions/liveOperations.php
+-Live\
+---post_promoter()   CURRENTLY IN themes/Dailies2/Functions/liveOperations.php\
+---post_demoter()\
+---post_trasher($postID)\
+---reset_live()   CURRENTLY IN themes/Dailies2/Functions/liveOperations.php\
 
--Homepage
+-Homepage\
 
--Archives
+-Archives\
 
--Comments
----getCommentsForSlug($slug)
----getCommentByID($id)   CURRENTLY IN dailies-weeding/comment-management.php
----postCommentHandler()   CURRENTLY IN dailies-weeding/comment-management.php
----addCommentToDB($commentData)   CURRENTLY IN dailies-weeding/comment-management.php
----yea_comment()   CURRENTLY IN dailies-weeding/comment-management.php
----del_comment()   CURRENTLY IN dailies-weeding/comment-management.php
+-Comments\
+---getCommentsForSlug($slug)\
+---getCommentByID($id)   CURRENTLY IN dailies-weeding/comment-management.php\
+---postCommentHandler()   CURRENTLY IN dailies-weeding/comment-management.php\
+---addCommentToDB($commentData)   CURRENTLY IN dailies-weeding/comment-management.php\
+---yea_comment()   CURRENTLY IN dailies-weeding/comment-management.php\
+---del_comment()   CURRENTLY IN dailies-weeding/comment-management.php\
 
-#Rules#
---Coming Soon
+#Rules#\
+--Coming Soon\
 
-#Votes#
+#Votes#\
