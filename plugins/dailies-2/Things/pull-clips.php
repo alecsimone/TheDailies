@@ -55,10 +55,12 @@ function pull_twitch_clips() {
 			continue;
 		}
 		if ((int)convertTwitchTimeToTimestamp($clipData->created_at) < $cutoffTime) {
+			basicPrint("Too old!");
 			unset($clipsArray[$key]);
 			continue;
 		}
 		if ((int)$existingClipData[$clipData->slug]['nuked'] === 1) {
+			basicPrint("Already nuked!");
 			unset($clipsArray[$key]);
 			continue;
 		}
@@ -88,10 +90,11 @@ function pull_twitch_clips() {
 			'type' => "twitch",
 		);
 
-		if ($existingClipData[$clipData->slug]!== null) {
+		if ($existingClipData[$clipData->slug] !== null) {
 			$thisClipArray['score'] = $existingClipData[$clipData->slug]['score'];
 			$thisClipArray['votecount'] = $existingClipData[$clipData->slug]['votecount'];
 		}
+
 
 		if ($existingClipData[$clipData->slug]) {
 			editPulledClip($thisClipArray);

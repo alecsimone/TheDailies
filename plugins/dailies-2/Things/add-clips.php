@@ -1,4 +1,6 @@
-<?php function addSlugToDB($slugData) {
+<?php 
+	
+function addSlugToDB($slugData) {
 	$slugIsFresh = checkSlugFreshness($slugData);
 	if (!$slugIsFresh) {return false;}
 
@@ -17,6 +19,7 @@
 		'nuked' => $slugData['nuked'] ? $slugData['nuked'] : 0,
 		'type' => $slugData['type'],
 	);
+
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . "pulled_clips_db";
@@ -80,12 +83,14 @@ function checkSlugFreshness($slugData) {
 }
 
 function getAllKnownMomentsForVOD($vodlink) {
+	if ($vodlink === "none") {
+		return array();
+	}
 	global $wpdb;
 	$table_name = $wpdb->prefix . "known_moments_db";
 
-	$endOfVodID = strpos($slugData['vodlink'], "?t=");
-	$moment = substr($slugData['vodlink'], 0, $endOfVodID);
-
+	$endOfVodID = strpos($vodlink, "?t=");
+	$moment = substr($vodlink, 0, $endOfVodID);
 	$query = "SELECT moment FROM $table_name WHERE moment LIKE '{$moment}%'";
 	$sameVodMoments = $wpdb->get_results($query, ARRAY_A);
 	return $sameVodMoments;
