@@ -1,42 +1,30 @@
 <?php
 
 //Top Level Functions
-function vote($person, $thing) {
-	$hasVoted = checkIfPersonHasVoted($person, $thing);
-	if (!$hasVoted) {
-		$person = getPersonInDB($person);
-		if ($person) {
-			$rep = getValidRep($person['hash']);
-			changeVotecount($rep, $thing);
-			$voteledger = getValidVoteledger($thing);
-			$voteledger[$person['hash']] = $rep;
-			update_post_meta($thing, 'voteledger', $voteledger);
-			addVoteToHistory($person, $thing);
-			checkForRepIncrease($person);
-		} else {
-			changeVotecount(1, $thing);
-			addCurrentGuestToGuestlist($thing);
-		}
-	} else {
-		unvote($person, $thing);
-	}
-	buildPostDataObject($thing);
-}
+// function vote($person, $thing) {
+// 	$hasVoted = checkIfPersonHasVoted($person, $thing);
+// 	if (!$hasVoted) {
+// 		$person = getPersonInDB($person);
+// 		if ($person) {
+// 			$rep = getValidRep($person['hash']);
+// 			changeVotecount($rep, $thing);
+// 			$voteledger = getValidVoteledger($thing);
+// 			$voteledger[$person['hash']] = $rep;
+// 			update_post_meta($thing, 'voteledger', $voteledger);
+// 			addVoteToHistory($person, $thing);
+// 			checkForRepIncrease($person);
+// 		} else {
+// 			changeVotecount(1, $thing);
+// 			addCurrentGuestToGuestlist($thing);
+// 		}
+// 	} else {
+// 		unvote($person, $thing);
+// 	}
+// 	buildPostDataObject($thing);
+// }
 
 //Getters and Setters
-function getCurrentVotersList() {
-	$liveID = getPageIDBySlug('live');
-	$currentVotersList = get_post_meta($liveID, 'currentVoters', true);
-	if ($currentVotersList === '') {
-		$currentVotersList = [];
-	}
-	return $currentVotersList;
-}
 
-function updateCurrentVotersList($newList) {
-	$liveID = getPageIDBySlug('live');
-	update_post_meta($liveID, 'currentVoters', $newList);
-}
 
 function getValidVoteledger($postID) {
 	$voteledger = get_post_meta($postID, 'voteledger', true);
@@ -203,18 +191,7 @@ function absorb_votes($postID) {
 	return;
 }
 
-function applyChatVote($voter, $direction) {
-	$currentVotersList = getCurrentVotersList();
-	$otherDirection = getOtherDirection($direction);
-	if (!in_array($voter, $currentVotersList[$direction])) { 
-		$currentVotersList[$direction][] = $voter;
-	}
-	if (in_array($voter, $currentVotersList[$otherDirection])) {
-		$ourVoterKey = array_search($voter, $currentVotersList[$otherDirection]);
-		array_splice($currentVotersList[$otherDirection], $ourVoterKey, 1);
-	}
-	updateCurrentVotersList($currentVotersList);
-}
+
 
 function prepareVoteHistoryArray($person, $thing) {
 	$voteArray = array(
@@ -227,15 +204,6 @@ function prepareVoteHistoryArray($person, $thing) {
 		$voteArray['hash'] = $personRow['hash'];
 	}
 	return $voteArray;
-}
-
-function getOtherDirection($direction) {
-	if ($direction === 'yea') {
-		$otherDirection = 'nay';
-	} elseif ($direction === 'nay') {
-		$otherDirection = 'yea';
-	}
-	return $otherDirection;
 }
 
 function getPostIDForVoteNumber($voteNumber) {
@@ -279,28 +247,9 @@ function removeCurrentGuestFromGuestlists($postID) {
 }
 
 //AJAX Handlers
-add_action( 'wp_ajax_chat_vote', 'chat_vote' );
-function chat_vote() {
-	if (!currentUserIsAdmin()) {
-		wp_die("You are not an admin, sorry");
-	}
-	applyChatVote($_POST['voter'], $_POST['direction']);
-	killAjaxFunction($_POST['voter'] . ' voted ' . $_POST['direction']);
-}
 
-add_action( 'wp_ajax_chat_contender_vote', 'chat_contender_vote' );
-function chat_contender_vote() {
-	if (!currentUserIsAdmin()) {
-		wp_die("You are not an admin, sorry");
-	}	
-	$voter = $_POST['voter'];
-	$postIDToVoteOn = getPostIDForVoteNumber($_POST['voteNumber']);
-	if (!$postIDToVoteOn) {
-		wp_die("You've picked an invalid number");
-	}
-	vote($voter, $postIDToVoteOn);
-	killAjaxFunction($voter. " voted on post " . $postIDToVoteOn);
-}
+
+
 
 add_action( 'wp_ajax_handle_vote', 'handle_vote' );
 add_action( 'wp_ajax_nopriv_handle_vote', 'handle_vote' );

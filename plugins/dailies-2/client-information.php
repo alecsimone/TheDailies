@@ -49,6 +49,28 @@ function client_information() {
 		);
 		wp_localize_script('liveScripts', 'liveData', $liveData);
 		wp_enqueue_script('liveScripts');
+	} else if (is_page('contender-voteboard')) {
+		wp_register_script( 'contenderVoteboardScripts', get_template_directory_uri() . '/Bundles/contendervoteboard-bundle' . $version . '.js', ['jquery'], '', true );
+		$livePageObject = get_page_by_path('live');
+		$liveID = $livePageObject->ID;
+		$resetTime = get_post_meta($liveID, 'liveResetTime', true);
+		$resetTime = $resetTime / 1000;
+		$wordpressUsableTime = date('c', $resetTime);
+		$contenderVoteboardData = array(
+			'resetTime' => $wordpressUsableTime,
+		);
+		wp_localize_script('contenderVoteboardScripts', 'contenderVoteboardData', $contenderVoteboardData);
+		wp_enqueue_script( 'contenderVoteboardScripts');
+	} else if (is_page('live-voting-machine')) {
+		wp_register_script( 'liveVotingMachineScripts', get_template_directory_uri() . '/Bundles/livevotingmachine-bundle' . $version . '.js', ['jquery'], '', true );
+		$liveVoters = getVoterDisplayInfoForSlug("live");
+		wp_localize_script('liveVotingMachineScripts', 'liveVoters', $liveVoters);
+		wp_enqueue_script( 'liveVotingMachineScripts');
+	} else if (is_page('live-votebar')) {
+		wp_register_script( 'liveVoteBarScripts', get_template_directory_uri() . '/Bundles/livevotebar-bundle' . $version . '.js', ['jquery'], '', true );
+		$liveData = getLive();
+		wp_localize_script('liveVoteBarScripts', 'liveData', $liveData);
+		wp_enqueue_script( 'liveVoteBarScripts');
 	}
 }
 

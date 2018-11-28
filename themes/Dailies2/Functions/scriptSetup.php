@@ -52,18 +52,6 @@ function script_setup() {
 		);
 		wp_localize_script('voteboardScripts', 'voteboardData', $voteboardData);
 		wp_enqueue_script( 'voteboardScripts');
-	} else if (is_page('contender-voteboard')) {
-		wp_register_script( 'contenderVoteboardScripts', get_template_directory_uri() . '/Bundles/contendervoteboard-bundle' . $version . '.js', ['jquery'], '', true );
-		$livePageObject = get_page_by_path('live');
-		$liveID = $livePageObject->ID;
-		$resetTime = get_post_meta($liveID, 'liveResetTime', true);
-		$resetTime = $resetTime / 1000;
-		$wordpressUsableTime = date('c', $resetTime);
-		$contenderVoteboardData = array(
-			'resetTime' => $wordpressUsableTime,
-		);
-		wp_localize_script('contenderVoteboardScripts', 'contenderVoteboardData', $contenderVoteboardData);
-		wp_enqueue_script( 'contenderVoteboardScripts');
 	} else if (is_page('user-management')) {
 		wp_register_script('tablesorter', get_template_directory_uri() . '/Scripts/jquery.tablesorter.min.js', ['jquery'], '', false );
 		wp_register_script( 'userManagementScripts', get_template_directory_uri() . '/Bundles/usermanagement-bundle' . $version . '.js', ['jquery'], '', true );

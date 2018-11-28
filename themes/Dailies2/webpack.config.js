@@ -15,6 +15,8 @@ module.exports = {
     	submit: "./Entries/submit-entry.js",
     	voteboard: "./Entries/voteboard-entry.js",
     	contendervoteboard: "./Entries/contender-voteboard-entry.js",
+    	livevotingmachine: "./Entries/live-voting-machine-entry.js",
+    	livevotebar: "./Entries/live-votebar-entry.js",
     	usermanagement: "./Entries/user-management-entry.js",
     	weed: "./Entries/weed-entry.js",
     	hopefuls: "./Entries/hopefuls-entry.js",

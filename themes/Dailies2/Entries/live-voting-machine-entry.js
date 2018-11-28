@@ -1,0 +1,1 @@
+require('../Scripts/live-voting-machine.js');

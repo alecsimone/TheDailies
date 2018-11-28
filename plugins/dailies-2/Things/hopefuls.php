@@ -98,16 +98,16 @@ function keepSlug() {
 	}
 
 	$didPost = wp_insert_post($thingArray, true);
-	if ($didPost > 0) {
-		absorb_votes($didPost);
-	}
+	// if ($didPost > 0) {
+	// 	absorb_votes($didPost);
+	// }
 
-	$dupes = get_dupe_clips($slugData['slug']);
-	if ($dupes) {
-		foreach ($dupes as $dupe) {
-			nukeSlug($dupe);
-		}
-	}
+	// $dupes = get_dupe_clips($slugData['slug']);
+	// if ($dupes) {
+	// 	foreach ($dupes as $dupe) {
+	// 		nukeSlug($dupe);
+	// 	}
+	// }
 	nukeSlug($slugData['slug']);
 
 	killAjaxFunction("Post added for " . $slugData['slug']);

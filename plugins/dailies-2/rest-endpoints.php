@@ -197,4 +197,12 @@ function dailies_rest_live() {
 	));
 }
 
+add_action( 'rest_api_init', 'dailies_rest_live_voters' );
+function dailies_rest_live_voters() {
+	register_rest_route('dailies-rest/v1', 'live-voters', array(
+		'methods' => 'GET',
+		'callback' => 'getLiveVoters',
+	));
+}
+
 ?>

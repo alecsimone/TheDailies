@@ -58,7 +58,7 @@ function checkSlugFreshness($slugData) {
 		return false;
 	}
 
-	if ($slugData['type'] == "twitch" && $slugData['vodlink']) {
+	if ($slugData['type'] == "twitch" && $slugData['vodlink'] && $slugData['vodlink'] !== "none") {
 		$sameVodMoments = getAllKnownMomentsForVOD($slugData['vodlink']);
 
 		$ourVodMomentArray = convertVodlinkToMomentObject($slugData['vodlink']);
