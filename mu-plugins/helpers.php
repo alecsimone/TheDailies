@@ -84,10 +84,12 @@ function getLastNomTime() {
 	return $latestNomDateArray;
 }
 function getLastNomTimestamp() {
-	$lastNomDateArray = getLastNomTime();
-	$lastNomDateString = $lastNomDateArray['Date'] . '-' . $lastNomDateArray['Month'] . ' ' . $lastNomDateArray['Year'];
-	$lastNomTimestamp = strtotime($lastNomDateString);
-	return $lastNomTimestamp;
+	$latestNomArgs = array(
+		'category_name' => 'noms',
+		'posts_per_page' => 1,
+	);
+	$latestNom = get_posts($latestNomArgs);
+	return strtotime($latestNom[0]->post_date);
 }
 
 function killAjaxFunction($response) {
