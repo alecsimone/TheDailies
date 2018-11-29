@@ -50,7 +50,7 @@
 		//'throwdown' => ['Throwdown TV', 'throwdowntv', 531, 'OCE - Open Qualifiers', '5AM EST'],
 		//'rlindia' => ['RLIndia', 'rlindia', 897, 'Asian Nations Cup Showmatches', '1030AM EST'],
 		// 'universalOpen' => ['Universal Open', 'faceit', 883, 'EU Closed Qualifiers', '12PM EST'],
-		'rewind' => ['Rewind', 'rewindrl', 583, 'EU Renegade Cup', '12PM EST'],
+		'rewind' => ['Neon Dream', 'rewindrl', 583, 'EU Renegade Cup', '12PM EST'],
 		//'gfinityEU' => ['GFinity EU', 'rocket-league-central', 547, 'EU - 3v3 Challenger Series', '1PM EST'],
 		//'ireland' => ['RL Ireland', 'rocket-league-ireland', 1115, 'Nixus v All Stars', '2PM EST'],
 		//'metaleak' => ['Metaleak', 'metaleak', 521, 'EU - &euro;500 Metacup', '2PM EST'],
@@ -70,7 +70,7 @@
 	),
 	'Thursday' => array(
 		//'goldenDust' => ['Golden Dust Cup', 'tgx', 916, 'Storm Chaser Championship', '12PM EST'],
-		'rewind' => ['Rewind', 'rewindrl', 583, 'EU Renegade Cup', '12PM EST'],
+		'rewind' => ['Neon Dream', 'rewindrl', 583, 'EU Renegade Cup', '12PM EST'],
 		'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '2PM EST'],
 		//'rewind' => ['Rewind', 'rewindrl', 583, 'EU - 2v2', '1PM EST'],
 		// 'gfinity' => ['GFinity', 'rocket-league-central', 547, 'EU - 3v3 - &pound;400', '1PM EST'],

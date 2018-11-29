@@ -22,12 +22,12 @@ function getCleanPulledClipsDB() {
 		$clipTimestamp = convertTwitchTimeToTimestamp($clipData['age']);
 		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -21 || $clipData['nuked'] == 1)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
-			deleteAllVotesForSlug($clipData['slug']);
+			// deleteAllVotesForSlug($clipData['slug']);
 			continue;
 		}
 		if ($clipTimestamp < $ourCutoff - 24 * 60 * 60 && (intval($clipData['score']) < -1 || $clipData['nuked'] == 1)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
-			deleteAllVotesForSlug($clipData['slug']);
+			// deleteAllVotesForSlug($clipData['slug']);
 			continue;
 		}
 		$pulledClipsDB[$clipData['slug']] = $clipData;

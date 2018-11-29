@@ -74,6 +74,12 @@ function chat_vote() {
 		wp_die("You are not an admin, sorry");
 	}
 	$person = getPersonInDB($_POST['voter']);
+	if ($person == null) {
+		$person = array(
+			"hash" => "norep" . $_POST['voter'],
+			"rep" => 1,
+		);
+	}
 	if ($_POST['direction'] === "yea") {
 		$weight = (int)$person['rep'];
 	} elseif ($_POST['direction'] === "nay") {
@@ -267,7 +273,12 @@ function getVoterDisplayInfoForSlug($slug) {
 				"picture" => get_site_url() . "/wp-content/uploads/2018/08/twitter-logo.png",
 				"weight" => $voter['weight'],
 			);
-			$theseVoters[] = $voterData;
+		} else if (strpos($voter['hash'], "norep") === 0) {
+			$voterData = array(
+				"name" => substr($voter['hash'], 5),
+				"picture" => get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg",
+				"weight" => $voter['weight'],
+			);
 		} else {
 			$person = getPersonInDB($voter['hash']);
 			if (!$person) {
@@ -283,8 +294,8 @@ function getVoterDisplayInfoForSlug($slug) {
 					"weight" => $voter['weight'],
 				);
 			}
-			$theseVoters[] = $voterData;
 		}
+		$theseVoters[] = $voterData;
 	}
 	return $theseVoters;
 }
