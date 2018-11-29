@@ -40,6 +40,7 @@
 		justify-content: center;
 		overflow: hidden;
 		border-right: 1px solid $blackTrans90;
+		transition: all .5s;
 		& span.score {
 		    margin-left: 1em;
 		    font-weight: normal;

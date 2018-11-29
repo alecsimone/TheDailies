@@ -249,6 +249,7 @@ function addProspect () {
 
 	$clipTax = array(
 		'stars' => $starID,
+		'category' => 1125,
 	);
 
 	$clipMeta = array();
@@ -284,9 +285,9 @@ function addProspect () {
 		'meta_input' => $clipMeta,
 	);
 	$didPost = wp_insert_post($prospectArray, true);
-	if ($didPost > 0) {
-		absorb_votes($didPost);
-	}
+	// if ($didPost > 0) {
+	// 	absorb_votes($didPost);
+	// }
 
 	killAjaxFunction($didPost);
 }

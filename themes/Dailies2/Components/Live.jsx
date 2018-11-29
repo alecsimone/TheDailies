@@ -18,7 +18,11 @@ export default class Live extends React.Component{
 
 	componentDidMount() {
 		this.updateLive();
-		window.setInterval(() => this.updateLive(), 3000);
+		if (dailiesGlobalData.userData.userRole == "administrator") {
+			window.setInterval(() => this.updateLive(), 1000);
+		} else {
+			window.setInterval(() => this.updateLive(), 3000);
+		}
 	}
 
 	updateLive() {

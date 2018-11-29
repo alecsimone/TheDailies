@@ -12,6 +12,11 @@ function addVoteToDB($voteArray) {
 	);
 	if ($existingVote) {
 		if ($existingVote['weight'] == $voteArray['weight']) {
+			$where = array(
+				"hash" => $voteArray['hash'],
+				"slug" => $voteArray['slug'],
+			);
+			$wpdb->delete($table_name, $where);
 			return "That vote already exists!";
 		}
 		$where = array(
@@ -235,6 +240,21 @@ function deleteAllVotesForSlug($slug) {
 	foreach ($slugVotes as $vote) {
 		deleteSlugVote($vote['slug'], $vote['hash']);
 	}
+}
+
+add_action( 'wp_ajax_reset_chat_votes', 'reset_chat_votes' );
+function reset_chat_votes() {
+	if (!currentUserIsAdmin()) {
+		wp_die("You are not an admin, sorry");
+	}
+
+	deleteAllVotesForSlug("live");
+
+	// $currentVotersList['yea'] = [];
+	// $currentVotersList['nay'] = [];
+
+	// updateCurrentVotersList($currentVotersList);
+	killAjaxFunction("we resettin the votes!");
 }
 
 function getVoterDisplayInfoForSlug($slug) {

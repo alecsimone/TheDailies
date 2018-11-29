@@ -271,19 +271,6 @@ function handle_vote() {
 	wp_die();
 }
 
-add_action( 'wp_ajax_reset_chat_votes', 'reset_chat_votes' );
-function reset_chat_votes() {
-	if (!currentUserIsAdmin()) {
-		wp_die("You are not an admin, sorry");
-	}
-
-	$currentVotersList['yea'] = [];
-	$currentVotersList['nay'] = [];
-
-	updateCurrentVotersList($currentVotersList);
-	killAjaxFunction("we resettin the votes!");
-}
-
 function internal_reset_chat_votes() {
 	if (!currentUserIsAdmin()) {
 		wp_die("You are not an admin, sorry");
