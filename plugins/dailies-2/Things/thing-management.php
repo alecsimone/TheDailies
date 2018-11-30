@@ -76,6 +76,7 @@ function convertPostDataObjectToClipdata($postDataObject) {
 		'source' => $postDataObject['taxonomies']['source'],
 		'stars' => $postDataObject['taxonomies']['stars'],
 		'tags' => $postDataObject['taxonomies']['tags'],
+		'categories' => $postDataObject['categories'],
 		'voters' => getVoterDisplayInfoForSlug($slug),
 		'thumb' => $postDataObject['thumbs']['medium'][0],
 		'pdo' => $postDataObject,

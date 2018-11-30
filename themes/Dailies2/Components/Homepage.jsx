@@ -99,7 +99,7 @@ class Homepage extends React.Component {
 		}
 		let currentFormattedDate = currentYear + '-' + currentMonth + '-' + currentDay;
 		let nextFormattedDate = newYear + '-' + newMonth + '-' + newDay;
-		let nextDateQuery = dailiesGlobalData.thisDomain + '/wp-json/wp/v2/posts?after=' + nextFormattedDate + 'T00:00:00&before=' + currentFormattedDate + 'T00:00:00&categories=4';
+		let nextDateQuery = dailiesGlobalData.thisDomain + '/wp-json/wp/v2/posts?after=' + nextFormattedDate + 'T00:00:00&before=' + currentFormattedDate + 'T00:00:00';
 		jQuery.get({
 			url: nextDateQuery,
 			dataType: 'json',
@@ -215,6 +215,7 @@ class Homepage extends React.Component {
 					<Leader clipdata={this.state.winner} autoplay={false} adminFunctions={admin} />
 					{dayContainerComponents}
 				</section>
+				{this.state.loadingMore ? <div class="lds-ring"><div></div><div></div><div></div><div></div></div> : ""}
 			</div>
 		)
 	}

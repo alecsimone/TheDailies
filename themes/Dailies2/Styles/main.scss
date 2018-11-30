@@ -84,6 +84,13 @@ a.propbutton {
 		& .daytitle {
 			grid-column: span 2;
 		}
+		& .Leader {
+			grid-column: span 2;
+			margin: 0;
+		}
+		& .Pleb {
+			margin: 0;
+		}
 	}
 }
 

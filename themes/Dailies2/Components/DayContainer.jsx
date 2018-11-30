@@ -1,6 +1,8 @@
 import React from "react";
 import Thing from './Thing.jsx';
 import TopFive from './TopFive.jsx';
+import Leader from './Leader.jsx';
+import Pleb from './Pleb.jsx';
 
 export default class DayContainer extends React.Component {
 	render() {
@@ -18,28 +20,54 @@ export default class DayContainer extends React.Component {
 		if (dayString.charAt(0) === '0') {
 			dayString = dayString.substring(1);
 		}
+		let adminFunctions = this.props.adminFunctions;
 		var things = this.props.dayData.postDatas;
 		function thingsByScore(a,b) {
 			//let parsedA = JSON.parse(a);
 			//let parsedB = JSON.parse(b);
 			//let scoreA = parseFloat(parsedA.votecount, 10);
 			//let scoreB = parseFloat(parsedB.votecount, 10);
-			let scoreA = parseFloat(a.votecount, 10);
-			let scoreB = parseFloat(b.votecount, 10);
+			// let scoreA = parseFloat(a.votecount, 10);
+			// let scoreB = parseFloat(b.votecount, 10);
+			let scoreA = 0;
+			if (Array.isArray(a.voters)) {
+				a.voters.forEach((voter) => scoreA = scoreA + Number(voter.weight));
+			}
+			let scoreB = 0;
+			if (Array.isArray(b.voters)) {
+				b.voters.forEach((voter) => scoreB = scoreB + Number(voter.weight));
+			}
 			return scoreB - scoreA;
 		}
 		var thingsSorted = things.sort(thingsByScore);
-		var thingsArray = Object.keys(thingsSorted);
-		let adminFunctions = this.props.adminFunctions;
-		var thingComponents = thingsArray.map(function(key) {
-			var parsedThingData = things[key];
-			return(
-				<TopFive clipdata={parsedThingData} key={parsedThingData.slug} adminFunctions={adminFunctions} />
-			)
+		// var thingsArray = Object.keys(thingsSorted);
+		var thingComponents = things.map((thing) => {
+			let winner = false;
+			let tags = thing.tags;
+			if (tags) {
+				tags.forEach((tagObject) => {
+					if (tagObject.slug == "winners") {
+						winner = true;
+					}
+				});
+			}
+			if (winner) {
+				return(
+					<Leader clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} autoplay={false} />
+				)
+			} else if (thing.categories === "Noms") {
+				return(
+					<TopFive clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+				)
+			} else {
+				return(
+					<Pleb clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+				)
+			}
 		})
 		return(
 			<section className="dayContainer">
-				<div className="daytitle">NOMINEES FOR {monthsArray[date.month - 1].toUpperCase()} {dayString.toUpperCase()}</div>
+				<div className="daytitle">{monthsArray[date.month - 1].toUpperCase()} {dayString.toUpperCase()}</div>
 				{thingComponents}
 			</section>
 		)
