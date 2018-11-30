@@ -1,5 +1,6 @@
 import React from "react";
 import SlugTitle from './Things/SlugTitle.jsx';
+import MetaBox from './Things/MetaBox.jsx';
 import VotingMachine from './Things/VotingMachine.jsx';
 
 
@@ -54,32 +55,8 @@ export default class Pleb extends React.Component{
 			sourcePic = `${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/rl-logo-med.png`;
 		}
 
-		let clipTime = new Date(this.props.clipdata.age);
-		let currentTime = + new Date();
-		let timeSince = currentTime - clipTime;
-		if (timeSince < 3600000) {
-			var timeAgo = Math.floor(timeSince / 1000 / 60);
-			var timeAgoUnit = 'minutes';
-			if (timeAgo === 1) {var timeAgoUnit = 'minute'};
-		} else {
-			var timeAgo = Math.floor(timeSince / 1000 / 60 / 60);
-			var timeAgoUnit = 'hours';
-			if (timeAgo === 1) {var timeAgoUnit = 'hour'};
-		}
-
-		let vodlink;
-		if (this.props.clipdata.vodlink !== "none") {
-			vodlink = <a href={this.props.clipdata.vodlink} className="vodlink" target="_blank">VOD Link</a>;
-		}
-
 		let voters;
 		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />
-
-		let rawTitle = this.props.clipdata.title;
-		String.prototype.stripSlashes = function() {
-		    return this.replace(/\\(.)/mg, "$1");
-		}
-		let title = rawTitle.stripSlashes();
 
 		let link;
 		if (this.props.clipdata.type === "twitch") {
@@ -97,8 +74,8 @@ export default class Pleb extends React.Component{
 				<img className="plebPic" src={sourcePic} />
 				<div className="hopefuls-meta">
 					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
-					<div className="hopefuls-data">{this.props.clipdata.views} views. Clipped by {this.props.clipdata.clipper} about {timeAgo} {timeAgoUnit} ago. {vodlink}</div>
 					{voters}
+					<MetaBox metaData={this.props.clipdata} />
 				</div>
 			</div>
 		)

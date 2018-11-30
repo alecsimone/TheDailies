@@ -2,6 +2,7 @@ import React from "react";
 import WeedComments from './WeedComments.jsx';
 import VotingMachine from './Things/VotingMachine.jsx';
 import SlugTitle from './Things/SlugTitle.jsx';
+import MetaBox from './Things/MetaBox.jsx';
 import AdminBox from './Things/AdminBox.jsx';
 import ClickToPlayThumb from './Things/ClickToPlayThumb.jsx';
 
@@ -165,24 +166,6 @@ export default class TopFive extends React.Component{
 	}
 
 	render() {
-		let clipTime = new Date(this.props.clipdata.age);
-		let currentTime = + new Date();
-		let timeSince = currentTime - clipTime;
-		if (timeSince < 3600000) {
-			var timeAgo = Math.floor(timeSince / 1000 / 60);
-			var timeAgoUnit = 'minutes';
-			if (timeAgo === 1) {var timeAgoUnit = 'minute'};
-		} else {
-			var timeAgo = Math.floor(timeSince / 1000 / 60 / 60);
-			var timeAgoUnit = 'hours';
-			if (timeAgo === 1) {var timeAgoUnit = 'hour'};
-		}
-
-		let vodlink;
-		if (this.props.clipdata.vodlink !== "none") {
-			vodlink = <a href={this.props.clipdata.vodlink} className="vodlink" target="_blank">VOD Link</a>;
-		}
-
 		let voters;
 		// if (this.state.votersLoading) {
 		// 	voters = "Voters Loading..."
@@ -203,11 +186,6 @@ export default class TopFive extends React.Component{
 			link = `https://twitter.com/statuses/${this.props.clipdata.slug}`;
 		}
 
-		let meta = '';
-		if (this.props.clipdata.views) {meta += `${this.props.clipdata.views} views.`;}
-		if (this.props.clipdata.clipper) {meta += ` Clipped by ${this.props.clipdata.clipper}`;}
-		if (timeAgo) {meta += ` about ${timeAgo} ${timeAgoUnit} ago.`;}
-
 		let identifier;
 		if (this.props.clipdata.postID) {
 			identifier = this.props.clipdata.postID;
@@ -221,7 +199,7 @@ export default class TopFive extends React.Component{
 				<div className="hopefuls-meta">
 					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}
-					<div className="hopefuls-data">{meta} {vodlink}</div>
+					<MetaBox metaData={this.props.clipdata} />
 					<WeedComments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
 				<AdminBox identifier={identifier} adminFunctions={this.props.adminFunctions} />

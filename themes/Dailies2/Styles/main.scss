@@ -94,9 +94,6 @@ a.propbutton {
 		}
 		& .Pleb {
 			margin: 0;
-			& .votingMachine {
-				grid-template-columns: auto auto auto auto 1fr;
-			}
 		}
 	}
 }

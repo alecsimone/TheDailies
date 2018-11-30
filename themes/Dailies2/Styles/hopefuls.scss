@@ -196,7 +196,7 @@
 }
 .TopFive {
 	display: inline-flex;
-	align-items: stretch;
+	align-items: end;
 	flex-wrap: wrap;
 	text-align: left;
 	justify-content: center;
@@ -206,6 +206,7 @@
 	& .clickToPlayThumb {
 		width: 100%;
 		height: auto;
+		min-height: 200px;
 		position: relative;
 		@media #{$bp1280} {
 			width: calc(50% - 12px);
