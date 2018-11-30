@@ -70,18 +70,17 @@ function playRandomSound(soundsArray) {
 }
 
 window.playAppropriateKillSound = function() {
-	jQuery.ajax({
-		type: "POST",
-		url: dailiesGlobalData.ajaxurl,
+	jQuery.get({
+		url: `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/live-voters`,
 		dataType: 'json',
-		data: {
-			action: 'get_chat_votes',
-		},
-		error: function(one, two, three) {
-			return false;
-		},
-		success: function(data) {
-			if (data.nay.length > 8) {
+		success: (data) => {
+			let nayCount = 0;
+			data.forEach((vote) => {
+				if (Number(vote.weight) < 0) {
+					nayCount++
+				}
+			});
+			if (nayCount > 8) {
 				playRandomSound(specialKillSounds.sounds)
 			} else {
 				playRandomSound(killSounds.sounds)
@@ -91,18 +90,17 @@ window.playAppropriateKillSound = function() {
 }
 
 window.playAppropriatePromoSound = function() {
-	jQuery.ajax({
-		type: "POST",
-		url: dailiesGlobalData.ajaxurl,
+	jQuery.get({
+		url: `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/live-voters`,
 		dataType: 'json',
-		data: {
-			action: 'get_chat_votes',
-		},
-		error: function(one, two, three) {
-			return false;
-		},
-		success: function(data) {
-			if (data.yea.length > 5) {
+		success: (data) => {
+			let yeaCount = 0;
+			data.forEach((vote) => {
+				if (Number(vote.weight) > 0) {
+					yeaCount++
+				}
+			});
+			if (yeaCount > 5) {
 				playRandomSound(specialPromoSounds.sounds)
 			} else {
 				playRandomSound(promoSounds.sounds)

@@ -1,6 +1,6 @@
 <?php
 
-add_action('init', 'populate_vote_db');
+// add_action('init', 'populate_vote_db');
 function populate_vote_db() {
 	if (!currentUserIsAdmin()) {return;}
 	$votePopulationOffset = get_option("votePopulationOffset");
@@ -32,16 +32,16 @@ function addPostVotesToNewDB($postID) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "vote_db";
 	
-	$existingVote = $wpdb->get_row(
-		"SELECT *
-		FROM $table_name
-		WHERE slug = '$slug'",
-		'ARRAY_A'
-	);
-	if ($existingVote) {
-		update_option("votePopulationOffset", "done");
-		return "done";
-	}
+	// $existingVote = $wpdb->get_row(
+	// 	"SELECT *
+	// 	FROM $table_name
+	// 	WHERE slug = '$slug'",
+	// 	'ARRAY_A'
+	// );
+	// if ($existingVote) {
+	// 	update_option("votePopulationOffset", "done");
+	// 	return "done";
+	// }
 
 
 	$voteData = array(
@@ -80,18 +80,18 @@ function addPostVotesToNewDB($postID) {
 		}
 	}
 	
-	if ($voteData['addedScore'] != "") {
-		$twitterVoteArray = array(
-			"hash" => "twitter",
-			"weight" => $voteData['addedScore'],
-			"slug" => $slug,
-		);
-		addVoteToDB($twitterVoteArray);
-	}
+	// if ($voteData['addedScore'] != "") {
+	// 	$twitterVoteArray = array(
+	// 		"hash" => "twitter",
+	// 		"weight" => $voteData['addedScore'],
+	// 		"slug" => $slug,
+	// 	);
+	// 	addVoteToDB($twitterVoteArray);
+	// }
 	
 }
 
-add_action('init', 'convertSeenSlugsToVoteDB');
+// add_action('init', 'convertSeenSlugsToVoteDB');
 function convertSeenSlugsToVoteDB() {
 	if (!currentUserIsAdmin()) {return;}
 	global $wpdb;

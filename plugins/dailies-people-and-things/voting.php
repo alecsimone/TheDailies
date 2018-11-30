@@ -282,11 +282,4 @@ function internal_reset_chat_votes() {
 	updateCurrentVotersList($currentVotersList);
 }
 
-add_action( 'wp_ajax_get_chat_votes', 'get_chat_votes' );
-add_action( 'wp_ajax_nopriv_get_chat_votes', 'get_chat_votes' );
-function get_chat_votes() {
-	$currentVotersList = getCurrentVotersList();
-	killAjaxFunction($currentVotersList);
-}
-
 ?>

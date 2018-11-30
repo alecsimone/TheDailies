@@ -109,6 +109,7 @@ function keepSlug() {
 	// 	}
 	// }
 	nukeSlug($slugData['slug']);
+	deleteAllVotesForSlug("live");
 
 	killAjaxFunction("Post added for " . $slugData['slug']);
 }

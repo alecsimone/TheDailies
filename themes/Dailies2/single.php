@@ -1,7 +1,5 @@
 <?php get_header(); 
 
-
-
 ?>
 
 <section id="singleApp"></section>

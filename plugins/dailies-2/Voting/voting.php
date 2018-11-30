@@ -75,10 +75,16 @@ function chat_vote() {
 	}
 	$person = getPersonInDB($_POST['voter']);
 	if ($person == null) {
+		$newHash = generateHash();
 		$person = array(
-			"hash" => "norep" . $_POST['voter'],
+			"hash" => $newHash,
 			"rep" => 1,
 		);
+		$addPersonArray = array(
+			"twitchName" => $_POST['voter'],
+			"hash" => $newHash,
+		);
+		addPersonToDB($addPersonArray);
 	}
 	if ($_POST['direction'] === "yea") {
 		$weight = (int)$person['rep'];
@@ -273,12 +279,6 @@ function getVoterDisplayInfoForSlug($slug) {
 				"picture" => get_site_url() . "/wp-content/uploads/2018/08/twitter-logo.png",
 				"weight" => $voter['weight'],
 			);
-		} else if (strpos($voter['hash'], "norep") === 0) {
-			$voterData = array(
-				"name" => substr($voter['hash'], 5),
-				"picture" => get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg",
-				"weight" => $voter['weight'],
-			);
 		} else {
 			$person = getPersonInDB($voter['hash']);
 			if (!$person) {
@@ -289,7 +289,7 @@ function getVoterDisplayInfoForSlug($slug) {
 				);
 			} else {
 				$voterData = array(
-					"name" => $person['dailiesDisplayName'],
+					"name" => $person['dailiesDisplayName'] == "--" ? $person['twitchName'] : $person['dailiesDisplayName'],
 					"picture" => $person['picture'],
 					"weight" => $voter['weight'],
 				);
@@ -317,6 +317,13 @@ function add_twitter_votes() {
 	addVoteToDB($voteArray);
 
 	killAjaxFunction("You added " . $addedPoints . " points to post " . $postID);
+}
+
+add_action( 'wp_ajax_get_chat_votes', 'get_chat_votes' );
+add_action( 'wp_ajax_nopriv_get_chat_votes', 'get_chat_votes' );
+function get_chat_votes() {
+	$currentVotersList = getVotersForSlug("live");
+	killAjaxFunction($currentVotersList);
 }
 
 
