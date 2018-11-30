@@ -1,7 +1,7 @@
 @import '../Styles/vars.scss';
 
 .Leader, .TopFive, .Pleb {
-	background: $thinBlueGlass;
+	background: $blueGlass;
 	border: 3px solid $whiteTrans07;
 	box-sizing: border-box;
 	width: 100%;
@@ -196,7 +196,7 @@
 }
 .TopFive {
 	display: inline-flex;
-	align-items: flex-start;
+	align-items: stretch;
 	flex-wrap: wrap;
 	text-align: left;
 	justify-content: center;
@@ -244,7 +244,7 @@ div#plebs {
 		margin-bottom: 6px;
 	}
 	& .plebPic {
-		width: 100px;
+		width: auto;
 		height: 100px;
 		margin-right: 18px;
 	}

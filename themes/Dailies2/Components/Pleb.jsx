@@ -42,8 +42,12 @@ export default class Pleb extends React.Component{
 		if (!sourcePic) {
 			if (this.props.clipdata.source[0].name !== "User Submits") {
 				sourcePic = this.props.clipdata.source[0].logo;
+			} else if (this.props.clipdata.stars[0].logo) { 
+				sourcePic = this.props.clipdata.stars[0].logo;
+			} else if (this.props.clipdata.thumb) {
+				sourcePic = this.props.clipdata.thumb;
 			} else { 
-				sourcePic = this.props.clipdata.stars[0].logo ? this.props.clipdata.stars[0].logo : `${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/rl-logo-med.png`;
+				sourcePic = `${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/rl-logo-med.png`;
 			}
 		}
 		if (sourcePic === "unknown") {
