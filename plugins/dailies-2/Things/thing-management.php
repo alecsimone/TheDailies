@@ -30,6 +30,11 @@ function getCleanPulledClipsDB() {
 			// deleteAllVotesForSlug($clipData['slug']);
 			continue;
 		}
+		if ($clipTimestamp < $ourCutoff - 72 * 60 * 60) {
+			deleteSlugFromPulledClipsDB($clipData['slug']);
+			// deleteAllVotesForSlug($clipData['slug']);
+			continue;
+		}
 		$pulledClipsDB[$clipData['slug']] = $clipData;
 	}
 	return $pulledClipsDB;

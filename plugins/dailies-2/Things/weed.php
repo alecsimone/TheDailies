@@ -5,7 +5,7 @@ function getCurrentUsersSeenSlugs() {
 	$table_name = $wpdb->prefix . 'vote_db';
 
 	$hash = getPersonsHash(get_current_user_id());
-	$cutoff = clipCutoffTimestamp();
+	$cutoff = clipCutoffTimestamp() - 72 * 60 * 60;
 
 	$seenSlugs = $wpdb->get_results(
 		"
