@@ -84,13 +84,16 @@ a.propbutton {
 		& .daytitle {
 			grid-column: span 2;
 		}
+		& h3.dayContainerSectionHeader {
+			grid-column: span 2;
+			color: $gold;
+		}
 		& .Leader {
 			grid-column: span 2;
 			margin: 0;
 		}
 		& .Pleb {
 			margin: 0;
-			grid-column: span 2;
 			& .votingMachine {
 				grid-template-columns: auto auto auto auto 1fr;
 			}

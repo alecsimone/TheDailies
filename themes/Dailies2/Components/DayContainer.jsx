@@ -41,34 +41,55 @@ export default class DayContainer extends React.Component {
 		}
 		var thingsSorted = things.sort(thingsByScore);
 		// var thingsArray = Object.keys(thingsSorted);
-		var thingComponents = things.map((thing) => {
-			let winner = false;
-			let tags = thing.tags;
-			if (tags) {
-				tags.forEach((tagObject) => {
+		let winner = false;
+		let noms = [];
+		let contenders = [];
+		things.forEach( (thing) => {
+			if (thing.tags) {
+				thing.tags.forEach((tagObject) => {
 					if (tagObject.slug == "winners") {
-						winner = true;
+						winner = thing;
+						return;
 					}
 				});
 			}
-			if (winner) {
-				return(
-					<Leader clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} autoplay={false} />
-				)
-			} else if (thing.categories === "Noms") {
-				return(
-					<TopFive clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
-				)
+			if (thing.categories === "Noms") {
+				noms.push(thing);
 			} else {
-				return(
-					<Pleb clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
-				)
+				contenders.push(thing);
 			}
-		})
+		});
+		let winnerPost;
+		if (winner) {
+			winnerPost = <Leader clipdata={winner} key={winner.slug} adminFunctions={adminFunctions} autoplay={false} />
+		}
+		let nomComponents = noms.map((thing) => {
+			return(
+				<TopFive clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+			)
+		});
+		let contenderComponents = contenders.map((thing) => {
+			return(
+				<Pleb clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+			)
+		});
+
+		let nomHeader;
+		if (nomComponents.length > 0) {
+			nomHeader = <h3 className="dayContainerSectionHeader">Nominees</h3>;
+		}
+		let contenderHeader;
+		if (contenderComponents.length > 0) {
+			contenderHeader = <h3 className="dayContainerSectionHeader">Contenders</h3>;
+		}
 		return(
 			<section className="dayContainer">
 				<div className="daytitle">{monthsArray[date.month - 1].toUpperCase()} {dayString.toUpperCase()}</div>
-				{thingComponents}
+				{winnerPost}
+				{nomHeader}
+				{nomComponents}
+				{contenderHeader}
+				{contenderComponents}
 			</section>
 		)
 	}
