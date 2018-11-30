@@ -24,7 +24,28 @@ const MetaBox = ({metaData}) => {
 		vodlink = <a href={metaData.vodlink} className="vodlink" target="_blank">VOD Link</a>;
 	}
 
-	return <div className="hopefuls-data">{meta} {vodlink}</div>;
+	let taxbox;
+	// if ((metaData.stars && metaData.stars.length > 0 && metaData.stars[0].name) || (metaData.source && metaData.source.length > 0 && metaData.source[0].name)) {
+		let stars = false;
+		if (metaData.stars && metaData.stars.length > 0 && metaData.stars[0].name) {
+			stars = metaData.stars.map((star) => <a key={`${metaData.slug}-${star.name}`} className="star" href={`${dailiesGlobalData.thisDomain}/stars/${star.slug}`} >{star.name}</a>);
+		}
+		let source = false;
+		if (metaData.source && metaData.source.length > 0 && metaData.source[0].name) {
+			source = metaData.source.map((source) => <a key={`${metaData.slug}-${source.name}`} className="source" href={`${dailiesGlobalData.thisDomain}/source/${source.slug}`} >{source.name}</a>);
+		}
+		let tags = false;
+		if (metaData.tags && metaData.tags.length > 0 && metaData.tags[0].name) {
+			tags = metaData.tags.map((tag) => <a key={`${metaData.slug}-${tag.name}`} className="tag" href={`${dailiesGlobalData.thisDomain}/tag/${tag.slug}`} >{tag.name}</a>);
+		}
+		let skills = false;
+		if (metaData.skills && metaData.skills.length > 0 && metaData.skills[0].name) {
+			skills = metaData.skills.map((skill) => <a key={`${metaData.slug}-${skill.name}`} className="skill" href={`${dailiesGlobalData.thisDomain}/skills/${skill.slug}`} >{skill.name}</a>);
+		}
+		// taxbox = <div key={`${metaData.slug}-taxbox`} className="taxbox">Stars:{stars}, From:{source}. More:{tags}</div>
+	// }
+
+	return <div key={`${metaData.slug}-data`} className="hopefuls-data">{stars ? "Stars:": ""}{stars} {source ? "From:": ""}{source} {tags || skills ? "More:": ""}{tags}{skills} {meta} {vodlink}</div>;
 }
 
 export default MetaBox;

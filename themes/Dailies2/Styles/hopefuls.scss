@@ -37,6 +37,23 @@
 	}
 	& .hopefuls-data {
 		color: $whiteTrans50;
+		& .taxbox {
+			display: inline-block;
+		}
+		& .star, .source, .tag, .skill {
+			color: $whiteTrans50;
+			margin-left: 4px;
+			&:hover {
+				color: $white;
+			}
+		}
+		& h5.taxtitle {
+		    margin: 0;
+		    display: inline;
+		    font-size: 1em;
+		    font-weight: normal;
+		    // color: $goldTrans75;
+		}
 	}
 	& a.vodlink {
 		color: $blue;
