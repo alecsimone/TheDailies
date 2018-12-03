@@ -45,14 +45,17 @@ export default class DayContainer extends React.Component {
 		let noms = [];
 		let contenders = [];
 		things.forEach( (thing) => {
+			let isWinner = false;
 			if (thing.tags) {
 				thing.tags.forEach((tagObject) => {
 					if (tagObject.slug == "winners") {
 						winner = thing;
+						isWinner = true;
 						return;
 					}
 				});
 			}
+			if (isWinner) {return;}
 			if (thing.categories === "Noms") {
 				noms.push(thing);
 			} else {

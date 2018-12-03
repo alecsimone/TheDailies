@@ -131,6 +131,14 @@ export default class Hopefuls extends React.Component{
 				return timeB - timeA;
 			}
 			return scoreA - scoreB;
+			// let timeA = new Date(a.age).getTime();
+			// let timeB = new Date(b.age).getTime();
+			// if (timeA === timeB) {
+			// 	let scoreA = Number(a.score);
+			// 	let scoreB = Number(b.score);
+			// 	return scoreB - scoreA;
+			// }
+			// return timeA - timeB;
 		});
 		return hopefulsData;
 	}

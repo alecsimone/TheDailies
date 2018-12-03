@@ -65,7 +65,7 @@ add_action( 'wp_ajax_nuke_slug', 'nuke_slug_handler' );
 function nuke_slug_handler() {
 	$slugToNuke = $_POST['slug'];
 	nukeSlug($slugToNuke);
-	nukeAllDupeSlugs($slug);
+	// nukeAllDupeSlugs($slug);
 	killAjaxFunction($slugToNuke);
 }
 

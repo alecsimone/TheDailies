@@ -81,12 +81,13 @@ a.propbutton {
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 0.6em;
 		row-gap: 1.4em;
+		margin-top: 6em;
 		& .daytitle {
 			grid-column: span 2;
 		}
 		& h3.dayContainerSectionHeader {
 			grid-column: span 2;
-			color: $gold;
+			color: $goldTrans75;
 		}
 		& .Leader {
 			grid-column: span 2;
@@ -285,7 +286,7 @@ p.attribution a {
 }
 
 .daytitle, #sortbar {
-	padding: 1.2em;
+	padding: 0.2em;
 	font-size: 48px;
 	//background: $blackTrans25;
 	text-shadow: 0px 0px 3px $darkBlack;

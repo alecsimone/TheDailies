@@ -37,6 +37,7 @@ function getHopefuls() {
 		}
 		if ($score > 0) {
 			$clipData['voters'] = $theseVoters;
+			$clipData['score'] = $score;
 			$hopefuls[] = $clipData;
 			// $hopefuls[$key] = $clipData;
 			// $hopefuls[$key]['voters'] = $theseVoters;

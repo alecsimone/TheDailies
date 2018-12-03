@@ -11,7 +11,6 @@ import {privateData} from '../Scripts/privateData.jsx';
 export default class Weed extends React.Component{
 	constructor() {
 		super();
-		// window.alert("Please Note: You are now voting for which clips should be on the RLCS World Championship show. Get those standards way back up where they're gonna need to be. Best of the best of the best only, guys.");
 		console.groupCollapsed("constructor");
 		jQuery.each(weedData.clips, function(slug, slugObj) {
 			if (slugObj.score === undefined) {
@@ -90,8 +89,9 @@ export default class Weed extends React.Component{
 		this.delComment = this.delComment.bind(this);
 		this.sortByVOD = this.sortByVOD.bind(this);
 		
-		this.state.clipsArray = this.sortClips(Object.keys(weedData.clips));
-		
+		// this.state.clipsArray = this.sortClips(Object.keys(weedData.clips));
+		this.state.clipsArray = this.sortByGravitas(Object.keys(weedData.clips));
+
 		console.groupEnd("constructor");
 	}
 
@@ -156,6 +156,70 @@ export default class Weed extends React.Component{
 		// });
 
 		return clipsArray;
+	}
+
+	sortByGravitas(clipsArray) {
+		let clipsData = this.state.clips;
+		let clipVods = {}; //clipVods will have vodIDs as keys, and an array of slugs with that vodID as their properties
+		let looseClips = {}; //Will be just like weedData.clips, an object of slugs attached to their data
+		clipsArray.forEach( (slug, index) => {
+			if (clipsData[slug].nuked == 1) {
+				console.log(`${slug} has been nuked, but is still showing up`);
+				clipsArray.splice(index, 1);
+			}
+			if (clipsData[slug].vodlink !== "none" && clipsData[slug].vodlink.indexOf("twimg.com") == -1 ) {
+				let currentMoment = this.turnVodlinkIntoMomentObject(clipsData[slug].vodlink);
+				if (clipVods[currentMoment['vodID']]) {
+					clipVods[currentMoment['vodID']].push(slug);
+				} else {
+					clipVods[currentMoment['vodID']] = [slug];
+				}
+			} else {
+				looseClips[slug] = clipsData[slug];
+			}
+		});
+
+		let clipViewsObject = {};
+
+		Object.keys(looseClips).forEach( (slug) => {
+			clipViewsObject[slug] = Number(clipsData[slug].views);
+		});
+
+		Object.keys(clipVods).forEach( (vodID) => {
+			if (clipVods[vodID].length === 1) {
+				let thatSlugsData = clipsData[clipVods[vodID][0]];
+				looseClips[thatSlugsData.slug] = thatSlugsData;
+				clipViewsObject[thatSlugsData.slug] = Number(thatSlugsData.views);
+				delete clipVods[vodID];
+			} else {
+				let thisVodsViews = 0;
+				clipVods[vodID].forEach( (slug) => {
+					thisVodsViews += Number(clipsData[slug].views);
+				});
+				clipViewsObject[vodID] = thisVodsViews;
+			}
+		});
+
+		let sortedClipViewsArray = Object.keys(clipViewsObject).sort( (a, b) => clipViewsObject[b] - clipViewsObject[a]);
+
+		let sortedClipsArray = [];
+
+		sortedClipViewsArray.forEach( (identifier) => {
+			if (Number(identifier) !== NaN && Number(identifier) < 1000000000000000000) {
+				clipVods[identifier].sort( (a, b) => {
+					let momentA = this.turnVodlinkIntoMomentObject(clipsData[a].vodlink);
+					let momentB = this.turnVodlinkIntoMomentObject(clipsData[b].vodlink);
+					return momentA.vodtime - momentB.vodtime;
+				});
+				clipVods[identifier].forEach((slug) => {
+					sortedClipsArray.push(slug)
+				});
+			} else {
+				sortedClipsArray.push(identifier);
+			}
+		});
+
+		return sortedClipsArray;
 	}
 
 	sortByVOD(a, b) {
@@ -275,13 +339,13 @@ export default class Weed extends React.Component{
 			youJudged: this.state.youJudged + 1,
 			clips,
 		});
-		let dupeSlugs = this.findAllDupes(this.firstSlug);
-		if (dupeSlugs) {
-			dupeSlugs.forEach(function(slugToNuke) {
-				console.log(`Nuking ${slugToNuke} because it's the same moment as the clip you just judged`);
-				boundThis.nukeSlug(slugToNuke);
-			});
-		}
+		// let dupeSlugs = this.findAllDupes(this.firstSlug);
+		// if (dupeSlugs) {
+		// 	dupeSlugs.forEach(function(slugToNuke) {
+		// 		console.log(`Nuking ${slugToNuke} because it's the same moment as the clip you just judged`);
+		// 		boundThis.nukeSlug(slugToNuke);
+		// 	});
+		// }
 		// jQuery.ajax({
 		// 	type: "POST",
 		// 	url: dailiesGlobalData.ajaxurl,
@@ -725,20 +789,20 @@ export default class Weed extends React.Component{
 }
 
 if (jQuery('#weedApp').length) {
-	var streams = Object.keys(weedData.streamList);
-	var queries = [];
-	var lastQueryTime = parseInt(weedData.lastUpdate, 10);
-	var currentTime = new Date() / 1000;
-	var secondsAgo = currentTime - lastQueryTime;
-	var hoursAgo = secondsAgo / 60 / 60;
-	var queryPeriod;
-	if (hoursAgo > 24) {
-		queryPeriod = "week";
-	} else {
-		queryPeriod = "day";
-	}
+	// var streams = Object.keys(weedData.streamList);
+	// var queries = [];
+	// var lastQueryTime = parseInt(weedData.lastUpdate, 10);
+	// var currentTime = new Date() / 1000;
+	// var secondsAgo = currentTime - lastQueryTime;
+	// var hoursAgo = secondsAgo / 60 / 60;
+	// var queryPeriod;
+	// if (hoursAgo > 24) {
+	// 	queryPeriod = "week";
+	// } else {
+	// 	queryPeriod = "day";
+	// }
 
-	console.log(secondsAgo);
+	// console.log(secondsAgo);
 	if (false && secondsAgo > 60 || weedData.clips.length === 0) {
 		// if (weedData.clips === null) {weedData.clips={};}	
 		// jQuery.each(streams, function() {
