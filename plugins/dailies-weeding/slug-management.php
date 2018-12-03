@@ -69,21 +69,6 @@ function nuke_slug_handler() {
 	killAjaxFunction($slugToNuke);
 }
 
-function editPulledClip($clipArray) {
-	global $wpdb;
-	$table_name = $wpdb->prefix . 'pulled_clips_db';
-
-	$where = array(
-		'slug' => $clipArray['slug'],
-	);
-
-	$wpdb->update(
-		$table_name,
-		$clipArray,
-		$where
-	);
-}
-
 function store_slug_judgment($person, $slug, $judgment, $vodlink) {
 	$vote = 0;
 	if ($judgment === 'strongNo') {

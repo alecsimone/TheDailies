@@ -186,33 +186,33 @@ function getPersonVoteIDs($person) {
 	return $voteIDs;
 }
 
+// add_action( 'init', 'addScoresToPulledClipsDB');
+// function addScoresToPulledClipsDB() {
+// 	$pulledClipsDB = getCleanPulledClipsDB();
+// 	foreach ($pulledClipsDB as $slug => $clipArray) {
+// 		if ($clipArray['score'] == 0) {
+// 			$clipArray['score'] = getScoreForSlug($slug);
+// 			$clipArray['votecount'] = count(getVotersForSlug($slug));
+// 		}
+// 		editPulledClip($clipArray);
+// 	}
+// }
+
 add_action( 'wp_ajax_judge_slug', 'judge_slug' );
 function judge_slug() {
 	$slug = $_POST['slug'];
 	$judgment = $_POST['judgment'];
-	$vodlink = $_POST['vodlink'];
-	if ($judgment === "pass") {
-		killAjaxFunction("Dummy just passed");
-		wp_die();
-		return;
-	}
-
 	$userID = get_current_user_id();
 
-	// Update the score in the PulledClipsDB
 	$clipArray = getSlugInPulledClipsDB($slug);
 
 	if ($clipArray === null) {
 		killAjaxFunction("Unknown Clip: " . $slug);
 	}
 
-	if ($judgment === 'strongNo') {
-		$clipArray['score'] = $clipArray['score'] - getValidRep($userID) * .2;
-	} elseif ($judgment === 'weakNo') {
-		// $clipArray['score'] = $clipArray['score'] - 1;
-	} elseif ($judgment === 'weakYes') {
-		$clipArray['score'] = $clipArray['score'] + 1;
-	} elseif ($judgment === 'strongYes') {
+	if ($judgment === 'down') {
+		$clipArray['score'] = $clipArray['score'] - getValidRep($userID) * floatval(get_option("nayCoefficient"));
+	} elseif ($judgment === 'up') {
 		$clipArray['score'] = $clipArray['score'] + getValidRep($userID);
 	}
 	if (!is_int($clipArray['votecount'])) {
@@ -221,12 +221,6 @@ function judge_slug() {
 	$clipArray['votecount'] = (int)$clipArray['votecount'] + 1;
 	editPulledClip($clipArray);
 
-	// Add the vote to Seen_Clips_DB
-	$error = store_slug_judgment($userID, $slug, $judgment, $vodlink);
-	global $wpdb;
-	$clipArray['storeError'] = $wpdb->last_error;
-
-	nukeAllDupeSlugs($slug);
 	checkForRepIncrease($userID);
 
 	killAjaxFunction($clipArray);
@@ -245,6 +239,15 @@ function getVotersForSlug($slug) {
 	);
 	
 	return $voterData;
+}
+
+function getScoreForSlug($slug) {
+	$votes = getVotersForSlug($slug);
+	$score = 0;
+	foreach ($votes as $vote) {
+		$score += (int)$vote['weight'];
+	}
+	return $score;
 }
 
 function deleteAllVotesForSlug($slug) {

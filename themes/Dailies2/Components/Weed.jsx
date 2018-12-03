@@ -339,6 +339,24 @@ export default class Weed extends React.Component{
 			youJudged: this.state.youJudged + 1,
 			clips,
 		});
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				slug: this.firstSlug,
+				judgment: lastVoteDirection,
+				action: 'judge_slug',
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: (data) => {
+				console.log(data);
+			}
+		});
 		// let dupeSlugs = this.findAllDupes(this.firstSlug);
 		// if (dupeSlugs) {
 		// 	dupeSlugs.forEach(function(slugToNuke) {

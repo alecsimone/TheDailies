@@ -40,6 +40,21 @@ function getCleanPulledClipsDB() {
 	return $pulledClipsDB;
 }
 
+function editPulledClip($clipArray) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'pulled_clips_db';
+
+	$where = array(
+		'slug' => $clipArray['slug'],
+	);
+
+	$wpdb->update(
+		$table_name,
+		$clipArray,
+		$where
+	);
+}
+
 function clipCutoffTimestamp() {
 	$lastNomTime = getLastNomTimestamp();
 	$eightHoursBeforeLastNom = $lastNomTime - 8 * 60 * 60;
@@ -47,28 +62,28 @@ function clipCutoffTimestamp() {
 	return $eightHoursBeforeLastNom < $twentyFourHoursAgo ? $eightHoursBeforeLastNom : $twentyFourHoursAgo;
 }
 
-add_action('init', 'populateKnownMoments');
-function populateKnownMoments() {
-	$momentsAreKnown = get_option("momentsAreKnown");
-	if ($momentsAreKnown) {return;}
+// add_action('init', 'populateKnownMoments');
+// function populateKnownMoments() {
+// 	$momentsAreKnown = get_option("momentsAreKnown");
+// 	if ($momentsAreKnown) {return;}
 
-	$pulledClips = getPulledClipsDB();
-	foreach ($pulledClips as $clip) {
-		$momentArray = array(
-			"time" => date("U", strtotime($clip['age'])),
-			"type" => $clip['type'],
-		);
-		if ($clip['type'] == "twitch") {
-			$moment = $clip['vodlink'] == "none" ? $clip['slug'] : $clip['vodlink'];
-		} else {
-			$moment = $clip['slug'];
-		}
-		$momentArray['moment'] = $moment;
-		$addedMoment = addKnownMoment($momentArray);
-		basicPrint($addedMoment);
-	}
-	update_option( "momentsAreKnown", true );
-}
+// 	$pulledClips = getPulledClipsDB();
+// 	foreach ($pulledClips as $clip) {
+// 		$momentArray = array(
+// 			"time" => date("U", strtotime($clip['age'])),
+// 			"type" => $clip['type'],
+// 		);
+// 		if ($clip['type'] == "twitch") {
+// 			$moment = $clip['vodlink'] == "none" ? $clip['slug'] : $clip['vodlink'];
+// 		} else {
+// 			$moment = $clip['slug'];
+// 		}
+// 		$momentArray['moment'] = $moment;
+// 		$addedMoment = addKnownMoment($momentArray);
+// 		basicPrint($addedMoment);
+// 	}
+// 	update_option( "momentsAreKnown", true );
+// }
 
 function convertPostDataObjectToClipdata($postDataObject) {
 	$slug = getSlugByPostID($postDataObject['id']);
