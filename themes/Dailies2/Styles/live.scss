@@ -27,6 +27,7 @@
 	display: flex;
 	background: $blueGlass;
 	color: $white;
+	text-shadow: 0 0 3px black;
 	border: 3px solid $whiteTrans07;
 	border-radius: 3px;
 	font-size: 1.6em;
@@ -45,6 +46,7 @@
 		    margin-left: 1em;
 		    font-weight: normal;
 		    color: hsla(0,0%,94%,0.4);
+		    text-shadow: none;
 		    position: absolute;
 		    right: 0;
 		    bottom: 0;
@@ -70,26 +72,34 @@
 	background: $thinBlueGlass;
 	font-size: 1.5em;
 	font-weight: bold;
-	color: hsla(42, 79%, 64%, .8);
+	// color: hsla(42, 79%, 64%, .8);
+	color: $whiteTrans75;
+	text-shadow: 0 0 3px black;
 }
 
 .contender:nth-of-type(6n+1) .contenderNumber, .contenderVoteSection:nth-of-type(6n+1) {
-	background: #1e2c38;
+	// background: #1e2c38;
+	background: hsla(210, 30%, 40%, .8);
 }
 .contender:nth-of-type(6n+2) .contenderNumber, .contenderVoteSection:nth-of-type(6n+2)  {
-	background: #211c14;
+	// background: #211c14;
+	background: hsla(270, 30%, 40%, .8);	
 }
 .contender:nth-of-type(6n+3) .contenderNumber, .contenderVoteSection:nth-of-type(6n+3)  {
-	background: #2e3b21;
+	// background: #2e3b21;
+	background: hsla(0, 30%, 40%, .8);
 }
 .contender:nth-of-type(6n+4) .contenderNumber, .contenderVoteSection:nth-of-type(6n+4)  {
-	background: hsla(0, 70%, 42%, 0.3);
+	// background: hsla(0, 70%, 42%, 0.3);
+	background: hsla(30, 30%, 40%, .8);
 }
 .contender:nth-of-type(6n+5) .contenderNumber, .contenderVoteSection:nth-of-type(6n+5)  {
-	background: #101010;
+	// background: #101010;
+	background: hsla(50, 100%, 35%, .8);
 }
 .contender:nth-of-type(6n+6) .contenderNumber, .contenderVoteSection:nth-of-type(6n+6)  {
-	background: hsla(47, 75%, 50%, 0.5);
+	// background: hsla(47, 75%, 50%, 0.5);
+	background: hsla(150, 30%, 40%, .8);
 }
 
 .littleThingsContainer {
