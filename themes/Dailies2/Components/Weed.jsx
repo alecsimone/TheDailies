@@ -332,6 +332,7 @@ export default class Weed extends React.Component{
 		clips[this.firstSlug].votecount = clips[this.firstSlug].votecount + 1;
 		this.setState({
 			newClip: false,
+			commentsLoading: true,
 			lastVoteDirection,
 			voters: "loading",
 			seenSlugs,
@@ -610,13 +611,13 @@ export default class Weed extends React.Component{
 	}
 
 	componentDidMount() {
-		this.getComments();
+		// this.getComments();
 		this.getVotes();
 	}
 
 	componentDidUpdate() {
 		if (this.state.commentsLoading) {
-			this.getComments();
+			// this.getComments();
 		}
 		if (this.state.voters === "loading") {
 			this.getVotes();

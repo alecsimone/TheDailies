@@ -1,7 +1,6 @@
 <?php get_header(); 
 
-$a = count(getVotersForSlug("ResilientBadNikudonHeyGuys"));
-basicPrint($a);
+
 
 ?>
 

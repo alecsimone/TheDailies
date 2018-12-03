@@ -30,8 +30,8 @@ export default class Leader extends React.Component{
 		// this.getVoters();
 	}
 
-	componentDidUpdate() {
-		if (this.state.commentsLoading) {
+	componentDidUpdate(prevProps) {
+		if (prevProps.clipdata.slug !== this.props.clipdata.slug) {
 			this.getComments();
 		}
 		if (this.state.votersLoading) {
@@ -40,6 +40,7 @@ export default class Leader extends React.Component{
 	}
 
 	getComments() {
+		console.log(`getting new comments for ${this.props.clipdata.slug}`);
 		let queryURL = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/clipcomments/slug=${this.props.clipdata.slug}`
 		let currentState = this.state;
 		let boundThis = this;
