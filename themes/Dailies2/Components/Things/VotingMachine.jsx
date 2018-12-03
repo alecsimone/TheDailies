@@ -63,7 +63,7 @@ export default class VotingMachine extends React.Component{
 
 		if (this.props.voterData == "loading") {
 			return (
-				<div className="votingMachine">
+				<div className="votingMachine loadingVotes">
 					Voters Loading...
 				</div>
 			);

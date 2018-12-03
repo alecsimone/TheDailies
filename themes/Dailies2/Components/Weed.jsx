@@ -200,7 +200,15 @@ export default class Weed extends React.Component{
 			}
 		});
 
-		let sortedClipViewsArray = Object.keys(clipViewsObject).sort( (a, b) => clipViewsObject[b] - clipViewsObject[a]);
+		let sortedClipViewsArray = Object.keys(clipViewsObject).sort( (a, b) => {
+			if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
+				return -1;
+			}
+			if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
+				return 1;
+			}
+			return clipViewsObject[b] - clipViewsObject[a];
+		});
 
 		let sortedClipsArray = [];
 
@@ -324,21 +332,12 @@ export default class Weed extends React.Component{
 		let lastVoteDirection;
 		e.currentTarget.classList.contains("yeaButton") ? lastVoteDirection = "up" : lastVoteDirection = "down";
 		console.log(`You ${lastVoteDirection}voted ${this.firstSlug}`);
-		let seenSlugs = this.state.seenSlugs;
-		let clipsArray = this.state.clipsArray;
-		seenSlugs.push({slug: this.firstSlug});
-		clipsArray.shift();
-		let clips = this.state.clips;
-		clips[this.firstSlug].votecount = clips[this.firstSlug].votecount + 1;
 		this.setState({
 			newClip: false,
 			commentsLoading: true,
 			lastVoteDirection,
 			voters: "loading",
-			seenSlugs,
-			clipsArray,
 			youJudged: this.state.youJudged + 1,
-			clips,
 		});
 		jQuery.ajax({
 			type: "POST",
@@ -355,7 +354,18 @@ export default class Weed extends React.Component{
 				console.log(three);
 			},
 			success: (data) => {
-				console.log(data);
+				let seenSlugs = this.state.seenSlugs;
+				let clipsArray = this.state.clipsArray;
+				seenSlugs.push({slug: this.firstSlug});
+				clipsArray.shift();
+				let clips = this.state.clips;
+				clips[this.firstSlug].votecount = clips[this.firstSlug].votecount + 1;
+				this.setState({
+					newClip: true,
+					seenSlugs,
+					clipsArray,
+					clips,
+				});
 			}
 		});
 		// let dupeSlugs = this.findAllDupes(this.firstSlug);
@@ -615,11 +625,9 @@ export default class Weed extends React.Component{
 		this.getVotes();
 	}
 
-	componentDidUpdate() {
-		if (this.state.commentsLoading) {
-			// this.getComments();
-		}
-		if (this.state.voters === "loading") {
+	componentDidUpdate(prevProps, prevState) {
+		// if (this.state.voters === "loading") {
+		if (prevState.newClip === false) {
 			this.getVotes();
 		}
 	}
@@ -650,7 +658,7 @@ export default class Weed extends React.Component{
 			success: (data) => {
 				this.setState({
 					voters: data,
-					newClip: true,
+					// newClip: true,
 				});
 			}
 		});

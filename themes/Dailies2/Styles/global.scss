@@ -467,6 +467,10 @@ img#lightboxCloseButton {
 	background: $whiteTrans03;
 	overflow: hidden;
 	font-size: 36px;
+	&.loadingVotes {
+		font-size: 24px;
+		height: 45px;
+	}
 	& .nayVoters {
 		justify-self: end;
 	}
