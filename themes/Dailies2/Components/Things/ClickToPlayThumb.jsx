@@ -24,7 +24,7 @@ export default class ClickToPlayThumb extends React.Component {
 
 		let thumbSlotContents;
 		if (this.state.embedding) {
-			thumbSlotContents = <ClipPlayer type={this.props.clipdata.type} slug={this.props.clipdata.slug} autoplay={true}/>;
+			thumbSlotContents = <ClipPlayer type={this.props.clipdata.type} slug={this.props.clipdata.slug} vodlink={this.props.clipdata.vodlink} autoplay={true}/>;
 		} else {
 			thumbSlotContents = thumb;	
 		}

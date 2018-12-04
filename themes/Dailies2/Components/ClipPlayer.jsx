@@ -25,6 +25,7 @@ export default class ClipPlayer extends React.Component{
 				}
 			} else {
 				console.log("adding a tweet because it's the first render and we haven't done that at all yet");
+				console.log(twttr);
 				twttr.widgets.createTweet(
 	  				this.props.slug,
 	  				document.getElementById(`twitterVideo${this.props.slug}`),
@@ -86,11 +87,21 @@ export default class ClipPlayer extends React.Component{
 			iframeSrc = `https://www.youtube.com/embed/${this.props.slug}?autoplay=${autoplay ? '1' : 0}`
 		}
 		if (this.props.type === "twitter") {
-			return (
-				<div className="embed-container">
-					<div id={`twitterVideo${this.props.slug}`}></div>
-				</div>
-			)
+			if (this.props.vodlink !== "none") {
+				let isAutoPlay;
+				autoplay ? isAutoPlay = {autoPlay: true} : isAutoPlay = {};
+				return (
+					<div className="embed-container">
+						<video controls {...isAutoPlay} loop muted src={this.props.vodlink} type="video/mp4" onClick={ (e) => {e.target.paused ? e.target.play() : e.target.pause()} } />
+					</div>
+				)
+			} else {
+				return (
+					<div className="embed-container">
+						<div id={`twitterVideo${this.props.slug}`} className="twitterVideoContainer"></div>
+					</div>
+				)
+			}
 		}
 		return(
 			<div className="embed-container">

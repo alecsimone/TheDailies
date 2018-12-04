@@ -79,27 +79,33 @@
 
 .contender:nth-of-type(6n+1) .contenderNumber, .contenderVoteSection:nth-of-type(6n+1) {
 	// background: #1e2c38;
-	background: hsla(210, 30%, 40%, .8);
+	// background: hsla(210, 30%, 40%, .8);
+	background: hsla(210, 70%, 16%, .9);
 }
 .contender:nth-of-type(6n+2) .contenderNumber, .contenderVoteSection:nth-of-type(6n+2)  {
 	// background: #211c14;
-	background: hsla(270, 30%, 40%, .8);	
+	// background: hsla(270, 30%, 40%, .8);
+	background: hsla(30, 70%, 20%, .9);	
 }
 .contender:nth-of-type(6n+3) .contenderNumber, .contenderVoteSection:nth-of-type(6n+3)  {
 	// background: #2e3b21;
-	background: hsla(0, 30%, 40%, .8);
+	// background: hsla(0, 30%, 40%, .8);
+	background: hsla(0, 70%, 17%, .9);    
 }
 .contender:nth-of-type(6n+4) .contenderNumber, .contenderVoteSection:nth-of-type(6n+4)  {
 	// background: hsla(0, 70%, 42%, 0.3);
-	background: hsla(30, 30%, 40%, .8);
+	// background: hsla(30, 30%, 40%, .8);
+	background: hsla(42, 84%, 42%, .8);
 }
 .contender:nth-of-type(6n+5) .contenderNumber, .contenderVoteSection:nth-of-type(6n+5)  {
 	// background: #101010;
-	background: hsla(50, 100%, 35%, .8);
+	// background: hsla(50, 100%, 35%, .8);
+	background: hsla(270, 70%, 15%, .9);
 }
 .contender:nth-of-type(6n+6) .contenderNumber, .contenderVoteSection:nth-of-type(6n+6)  {
 	// background: hsla(47, 75%, 50%, 0.5);
-	background: hsla(150, 30%, 40%, .8);
+	// background: hsla(150, 30%, 40%, .8);
+    background: hsla(120, 70%, 12%, .9);
 }
 
 .littleThingsContainer {

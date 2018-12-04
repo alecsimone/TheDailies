@@ -2,6 +2,7 @@
 	'Monday' => array(
 		//'vapour' => ['Vapour Esports', 'vapour-esports', 882, 'OCE - 2v2', '5AM EST'],
 		//'rlrsSilent' => ['RLRS Matches', 'rlesports', 1033, 'Silent Stream', '12PM EST'],
+		'jboi' => ['Johnnyboi_i', 'johnnyboi_i', 215, 'Mannfield 5K', '12PM EST'],
 		// 'baguette' => ['Rocket Baguette', 'rocket-baguette', 585, 'PGW Qualifiers', '2PM EST'],
 		// 'rams' => ['GFinity Journey', 'rams', 1519, 'Method', '1PM EST'],
 		'ballistix' => ['Ballistix Gaming', 'ballistix', 1372, 'EU - $3500 - Qualifiers', '1PM EST'],
