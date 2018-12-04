@@ -258,6 +258,7 @@ p.userbox {
 	max-width: 100%;
 	& video {
 		max-width: 100%;
+		width: 100%;
 	}
 } 
 .embed-container iframe, .embed-container object, .embed-container embed { 
@@ -476,6 +477,7 @@ img#lightboxCloseButton {
 	}
 	& .nayVoters {
 		justify-self: end;
+		text-align: right;
 	}
 	& .voterBubblePod {
 		line-height: 0.8em;

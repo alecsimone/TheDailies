@@ -15,11 +15,26 @@ export default class VotingMachine extends React.Component{
 			return;
 		}
 		let direction;
+		let voters = Object.keys(this.props.voterData);
+		let existingVote = false;
+		voters.forEach( (key) => {
+			if (this.props.voterData[key].name === dailiesGlobalData.userData.userName) {
+				this.props.voterData[key].weight > 0 ? existingVote = "yea" : existingVote = "nay";
+			}
+		});
 		if (jQuery(e.target).hasClass("yeaButton")) {
-			this.setState({localOnlyVote: "yea"});
+			if (existingVote === "yea") {
+				this.setState({localOnlyVote: "unYea"});
+			} else {
+				this.setState({localOnlyVote: "yea"});
+			}
 			direction = 'yea';
 		} else if (jQuery(e.target).hasClass("nayButton")) {
-			this.setState({localOnlyVote: "nay"});
+			if (existingVote === "nay") {
+				this.setState({localOnlyVote: "unNay"});
+			} else {
+				this.setState({localOnlyVote: "nay"});
+			}
 			direction = 'nay';
 		}
 		e.target.blur();
@@ -49,12 +64,17 @@ export default class VotingMachine extends React.Component{
 	componentDidUpdate() {
 		if (this.state.localOnlyVote) {
 			let voters = Object.keys(this.props.voterData);
+			let userHasVoted = false;
 			voters.forEach( (key) => {
 				if (this.props.voterData[key].name === dailiesGlobalData.userData.userName) {
+					userHasVoted = true;
 					if ( (this.state.localOnlyVote === "yea" && this.props.voterData[key].weight > 0) || (this.state.localOnlyVote === "nay" && this.props.voterData[key].weight < 0) )
 					this.setState({localOnlyVote: false});
 				}
 			});
+			if ( !userHasVoted && (this.state.localOnlyVote === "unNay" || this.state.localOnlyVote === "unYea") ) {
+				this.setState({localOnlyVote: false});
+			}
 		}
 	}
 
@@ -75,9 +95,9 @@ export default class VotingMachine extends React.Component{
 			return (
 				<div className="votingMachine">
 					<div className="nayVoters voterBubblePod">{nayVoters}</div>
-					<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
+					<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" || this.state.localOnlyVote === "unNay" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
 					<p className="score">0</p>
-					<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
+					<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" || this.state.localOnlyVote === "unYea" ? " spin" : ""}`} onClick={(e) => this.vote(e)}/>
 					<div className="yeaVoters voterBubblePod">{yeaVoters}</div>
 				</div>
 			);
@@ -124,9 +144,9 @@ export default class VotingMachine extends React.Component{
 		return (
 			<div className="votingMachine">
 				<div className="nayVoters voterBubblePod">{nayVoters}</div>
-				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${this.state.localOnlyVote === "nay" ? " spin" : ""} ${ourVote === "nay" ? " currentlyChosenVoteButton" : ""}`} onClick={(e) => this.vote(e)}/>
+				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/votenay.png`} className={`nayButton voteButton${(this.state.localOnlyVote === "nay" || this.state.localOnlyVote === "unNay") ? " spin" : ""} ${ourVote === "nay" ? " currentlyChosenVoteButton" : ""}`} onClick={!this.state.localOnlyVote ? (e) => this.vote(e) : () => {console.log("we're still processing your vote")}}/>
 				<p className="score">{score > 0 ? `+${score}` : `${score}`}</p>
-				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${this.state.localOnlyVote === "yea" ? " spin" : ""} ${ourVote === "yea" ? " currentlyChosenVoteButton" : ""}`} onClick={(e) => this.vote(e)}/>
+				<img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/07/voteyea.png`} className={`yeaButton voteButton${(this.state.localOnlyVote === "yea" || this.state.localOnlyVote === "unYea") ? " spin" : ""} ${ourVote === "yea" ? " currentlyChosenVoteButton" : ""}`} onClick={!this.state.localOnlyVote ? (e) => this.vote(e) : () => {console.log("we're still processing your vote")}}/>
 				<div className="yeaVoters voterBubblePod">{yeaVoters}</div>
 			</div>
 		);
