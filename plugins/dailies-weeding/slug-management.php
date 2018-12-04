@@ -30,45 +30,6 @@ function deleteJudgmentFromSeenSlugsDB($id) {
 // 	}
 // }
 
-function nukeSlug($slug) {
-	$slugToNuke = getSlugInPulledClipsDB($slug);
-	if ($slugToNuke === null) {
-		$slugData = array(
-			'slug' => $slug,
-			'nuked' => 1,
-		);
-		addSlugToDB($slugData);
-	} else {
-		$slugToNuke['nuked'] = 1;
-		editPulledClip($slugToNuke);
-	}
-	deleteAllVotesForSlug($slug);
-	return $slug;
-
-	// $time = time() * 1000;
-	// $slugObj = array(
-	// 	'slug' => $slug,
-	// 	'createdAt' => $time,
-	// 	'cutBoolean' => true,
-	// 	'VODBase' => "null",
-	// 	'VOD' => "null",
-	// );
-	// $gardenPostObject = get_page_by_path('secret-garden');
-	// $gardenID = $gardenPostObject->ID;
-	// $globalSlugList = get_post_meta($gardenID, 'slugList', true);
-	// $newGlobalSlugList = $globalSlugList;
-	// $newGlobalSlugList[$slug] = $slugObj;
-	// update_post_meta($gardenID, 'slugList', $newGlobalSlugList );
-}
-
-add_action( 'wp_ajax_nuke_slug', 'nuke_slug_handler' );
-function nuke_slug_handler() {
-	$slugToNuke = $_POST['slug'];
-	nukeSlug($slugToNuke);
-	// nukeAllDupeSlugs($slug);
-	killAjaxFunction($slugToNuke);
-}
-
 function store_slug_judgment($person, $slug, $judgment, $vodlink) {
 	$vote = 0;
 	if ($judgment === 'strongNo') {

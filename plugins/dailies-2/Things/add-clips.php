@@ -65,6 +65,9 @@ function checkSlugFreshness($slugData) {
 		$ourVodTime = (int)$ourVodMomentArray['vodTime'];
 		
 		foreach ($sameVodMoments as $vodMomentArray) {
+			if (strpos($vodMomentArray['moment'], "?t=all")) {
+				return false;
+			}
 			$thisVodMomentArray = convertVodlinkToMomentObject($vodMomentArray['moment']);
 			$thisVodTime = (int)$thisVodMomentArray['vodTime'];
 			if ($ourVodTime + 20 > $thisVodTime && $ourVodTime - 20 < $thisVodTime) {
@@ -108,6 +111,10 @@ function addKnownMoment($momentArray) {
 
 	if ($existingRow !== null) {
 		return false;
+	}
+
+	if (!array_key_exists("time", $momentArray)) {
+		$momentArray["time"] = time();
 	}
 
 	$insertionSuccess = $wpdb->insert(

@@ -62,6 +62,32 @@ function clipCutoffTimestamp() {
 	return $eightHoursBeforeLastNom < $twentyFourHoursAgo ? $eightHoursBeforeLastNom : $twentyFourHoursAgo;
 }
 
+function nukeSlug($slug) {
+	$slugToNuke = getSlugInPulledClipsDB($slug);
+	if ($slugToNuke === null) {
+		$slugData = array(
+			'slug' => $slug,
+			'nuked' => 1,
+		);
+		addSlugToDB($slugData);
+	} else {
+		$slugToNuke['nuked'] = 1;
+		editPulledClip($slugToNuke);
+	}
+	deleteAllVotesForSlug($slug);
+	return $slug;
+}
+
+add_action( 'wp_ajax_nuke_slug', 'nuke_slug_handler' );
+function nuke_slug_handler() {
+	if (!currentUserIsAdmin()) {
+		wp_die("You are not an admin, sorry");
+	}
+	$slugToNuke = $_POST['slug'];
+	nukeSlug($slugToNuke);
+	killAjaxFunction($slugToNuke);
+}
+
 // add_action('init', 'populateKnownMoments');
 // function populateKnownMoments() {
 // 	$momentsAreKnown = get_option("momentsAreKnown");
@@ -110,6 +136,35 @@ function convertPostDataObjectToClipdata($postDataObject) {
 		$clipdata['vodlink'] = $vodlink;
 	}
 	return $clipdata;
+}
+
+add_action( 'wp_ajax_blacklist_vod', 'blacklist_vod_handler' );
+function blacklist_vod_handler() {
+	if (!currentUserIsAdmin()) {
+		wp_die("You are not an admin, sorry");
+	}
+	blacklist_vod($_POST['vodID']);
+	killAjaxFunction("Vod blacklisted!");
+}
+
+function blacklist_vod($vodID) {
+	$rawVodlink = "https://www.twitch.tv/videos/" . $vodID;
+	$moment = $rawVodlink . "?t=all";
+	$momentArray = array(
+		"moment" => $moment,
+		'type' => "twitch", 
+	);
+	addKnownMoment($momentArray);
+
+	global $wpdb;
+	$pulled_clips_table_name = $wpdb->prefix . "pulled_clips_db";
+
+	$query = "SELECT slug FROM $pulled_clips_table_name WHERE vodlink LIKE '{$rawVodlink}%'";
+	$sameVodSlugs = $wpdb->get_results($query, ARRAY_A);
+
+	foreach ($sameVodSlugs as $slugArray) {
+		nukeSlug($slugArray["slug"]);
+	}
 }
 
 ?>

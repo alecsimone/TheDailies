@@ -440,9 +440,10 @@ img#lightboxCloseButton {
     & .AdminRight {
     	display: flex;
     	align-items: center;
-    	& a.editPostButton {
-    		line-height: 0;
-    	}
+    }
+    & .AdminLeft {
+    	display: inline-flex;
+    	align-items: center;
     }
     & img {
 		width: 1.3em;
@@ -457,6 +458,13 @@ img#lightboxCloseButton {
 		background: none;
 		border-bottom: 1px solid $whiteTrans50;
 		color: $white;
+	}
+	& a.editPostButton {
+		line-height: 0;
+	}
+	& .checkbox {
+		width: 24px;
+		height: 24px;
 	}
 }
 

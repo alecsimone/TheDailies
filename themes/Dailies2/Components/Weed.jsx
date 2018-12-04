@@ -88,6 +88,7 @@ export default class Weed extends React.Component{
 		this.yeaComment = this.yeaComment.bind(this);
 		this.delComment = this.delComment.bind(this);
 		this.sortByVOD = this.sortByVOD.bind(this);
+		this.blacklistVod = this.blacklistVod.bind(this);
 		
 		// this.state.clipsArray = this.sortClips(Object.keys(weedData.clips));
 		this.state.clipsArray = this.sortByGravitas(Object.keys(weedData.clips));
@@ -620,6 +621,58 @@ export default class Weed extends React.Component{
 		});
 	}
 
+	blacklistVod(e, slug) {
+		e.target.checked = false;
+		if (this.state.clips[slug].type !== "twitch") {
+			window.alert("that's not a twitch clip, idiot.");
+			return;
+		}
+		if (this.state.clips[slug].vodlink === "none") {
+			window.alert("That clip doesn't have a vodlink");
+			return;
+		}
+		const vodlink = this.state.clips[slug].vodlink;
+		const {vodID} = this.turnVodlinkIntoMomentObject(vodlink);
+		const rawVodlink = `twitch.tv/videos/${vodID}`
+
+		if (window.confirm(`Do you want to blacklist ${rawVodlink}?`)) {
+			jQuery.ajax({
+				type: "POST",
+				url: dailiesGlobalData.ajaxurl,
+				dataType: 'json',
+				data: {
+					vodID,
+					action: 'blacklist_vod',
+				},
+				error: function(one, two, three) {
+					console.log(one);
+					console.log(two);
+					console.log(three);
+				},
+				success: (data) => {
+					let clipsArray = this.state.clipsArray;
+					let totalClips = this.state.totalClips;
+					let clips = this.state.clips;
+					let indicesToSplice = [];
+					clipsArray.forEach((slug, index) => {	
+						let thisSlugsVodlink = this.state.clips[slug].vodlink;
+						if (thisSlugsVodlink.indexOf(rawVodlink) !== -1) {
+							indicesToSplice.unshift(index);
+							totalClips--;
+							clips[slug].nuked = 1;
+						}
+					});
+					indicesToSplice.forEach((index) => {clipsArray.splice(index, 1)});
+					this.setState({
+						clips,
+						clipsArray,
+						totalClips,
+					});
+				}
+			});
+		}
+	}
+
 	componentDidMount() {
 		// this.getComments();
 		this.getVotes();
@@ -747,6 +800,7 @@ export default class Weed extends React.Component{
 		let admin = {};
 		if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
 			admin.cut = this.nukeButtonHandler;
+			admin.toggle = this.blacklistVod;
 		}
 
 		console.groupEnd("render");

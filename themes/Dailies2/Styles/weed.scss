@@ -27,6 +27,7 @@ div#weedPlaceholder {
 	margin: auto;
 	text-align: left;
     border-radius: 4px;
+    height: 100vh;
     @media #{$bp800} {
     	width: 95%;
     }
@@ -59,7 +60,7 @@ div#weedPlaceholder {
     & .playerContainer {
 		@media #{$bp1900} {
 			max-width: calc(100% - 500px);
-			height: calc(100vh - 240px);
+			// height: calc(100vh - 240px);
 			max-height: none;
 		}
     }

@@ -36,6 +36,10 @@ const AdminBox = ({adminFunctions, identifier}) => {
 		edit = <a href={`${dailiesGlobalData.thisDomain}/wp-admin/post.php?post=${identifier}&action=edit`} className="editPostButton" target="_blank"><img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/edit-this.png`} className="editThisImg" /></a>
 
 	}
+	let checkBox;
+	if (adminFunctions.toggle) {
+		checkBox = <input type="checkbox" className="checkbox" onClick={(e) => adminFunctions.toggle(e, identifier)} />
+	}
 	return(
 		<div className="AdminBox">
 			<div className="AdminLeft">
@@ -45,7 +49,7 @@ const AdminBox = ({adminFunctions, identifier}) => {
 				{keep}{input}
 			</div>
 			<div className="AdminRight">
-				{promote} {edit}
+				{checkBox} {promote} {edit}
 			</div>
 		</div>
 	);

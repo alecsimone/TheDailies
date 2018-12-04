@@ -141,7 +141,7 @@ function gussyTwitch($twitchCode) {
 
 	$editSuccess = editPulledClip($clipArray);
 	if ($editSuccess >= 0) {
-		return true;
+		return $clipArray;
 	} else {
 		return false;
 	}

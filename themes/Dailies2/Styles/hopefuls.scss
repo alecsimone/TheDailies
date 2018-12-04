@@ -20,7 +20,7 @@
 		@media #{$bp1280} {
 			width: calc(100% - 424px);
 			max-width: 1280px;
-			height: calc(100vh - 170px);
+			// height: calc(100vh - 170px);
 			max-height: 720px;
 			margin-right: 12px;
 		}
