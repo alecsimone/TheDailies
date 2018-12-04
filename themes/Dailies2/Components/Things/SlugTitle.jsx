@@ -15,6 +15,10 @@ const SlugTitle = (titleData) => {
 	let rawTitle = titleData.title.stripSlashes();
 	let title = window.htmlEntityFix(rawTitle);
 
+	if (title.length > 140) {
+		title = title.substring(0, 137) + "...";
+	}
+
 	return <a href={titleLink} target="_blank">{title}</a>;
 };
 
