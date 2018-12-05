@@ -77,7 +77,6 @@ export default class Live extends React.Component{
 
 	promotePost(postID) {
 		console.log(`Promoting ${postID}`);
-		playAppropriatePromoSound();
 		jQuery.ajax({
 			type: "POST",
 			url: dailiesGlobalData.ajaxurl,
@@ -95,6 +94,17 @@ export default class Live extends React.Component{
 				console.log(data);
 			}
 		});
+	}
+
+	highlightPost(e, slug) {
+		let checkBox = jQuery(e.target);
+		let contenderToHighlight = checkBox.closest(".contender");
+		if (e.target.checked) {
+			playAppropriatePromoSound();
+			contenderToHighlight.addClass("highlight");
+		} else {
+			contenderToHighlight.removeClass("highlight");
+		}
 	}
 
 	resetLive() {
@@ -149,6 +159,7 @@ export default class Live extends React.Component{
 		if (dailiesGlobalData.userData.userRole === "administrator") {
 			admin.cut = this.cutPost;
 			admin.promote = this.promotePost;
+			admin.toggle = this.highlightPost;
 			admin.edit = true;
 		}
 
