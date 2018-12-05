@@ -70,7 +70,7 @@ export default class KeepBar extends React.Component{
 	render() {
 		return(
 			<form className='keepbox' onSubmit={this.keepHandler}>
-				<input type="text" className="keepbar" name="keepbar" placeholder="Who and Why?" autoComplete="off"/><input type="submit" value="keep" className="keepbutton" />
+				<input type="text" className="keepbar" name="keepbar" placeholder="Who and Why?" autoComplete="off"/>
 			</form>
 		)
 	}

@@ -23,7 +23,7 @@ export default class Weed extends React.Component{
 				delete weedData.clips[slug];
 			}
 			if (Number(slugObj.score) < -40) {
-				delete weedData.clips[slug];
+				// delete weedData.clips[slug];
 			}
 		});
 
