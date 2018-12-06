@@ -143,6 +143,13 @@ function choose_live_slug() {
 			"slug" => $_POST['slug'],
 		);
 		foreach ($liveVoters as $vote) {
+			$existingVote = $wpdb->get_row(
+				"SELECT *
+				FROM $table
+				WHERE hash = '{$vote['hash']}' AND slug = '{$_POST['slug']}'",
+				'ARRAY_A'
+			);
+			if ($existingVote) {continue;}
 			$where = array(
 				"id" => $vote["id"],
 				"hash" => $vote["hash"],
