@@ -14,6 +14,8 @@ function getHopefuls() {
 	);
 
 	$hopefuls = [];
+	$liveSlug = get_option("liveSlug");
+	$liveSlugIsHopeful = false;
 	foreach ($allClips as $key => $clipData) {
 	// foreach ($hopefuls as $key => $clipData) {
 		// $hopefuls[$key]['voters'] = [];
@@ -38,15 +40,23 @@ function getHopefuls() {
 		if ($score > 0) {
 			$clipData['voters'] = $theseVoters;
 			$clipData['score'] = $score;
+			if ($clipData['slug'] == $liveSlug) {$liveSlugIsHopeful = true;}
 			$hopefuls[] = $clipData;
 			// $hopefuls[$key] = $clipData;
 			// $hopefuls[$key]['voters'] = $theseVoters;
 		}
 	}
 
+	if (!$liveSlugIsHopeful) {update_option("liveSlug", "false");}
+
+	$hopefulsData = array(
+		"clips" => $hopefuls,
+		"liveSlug" => get_option("liveSlug"),
+	);
+
 	// basicPrint($hopefuls);
 
-	return $hopefuls;
+	return $hopefulsData;
 }
 
 add_action( 'wp_ajax_keepSlug', 'keepSlug' );
@@ -110,8 +120,7 @@ function keepSlug() {
 	// 	}
 	// }
 	nukeSlug($slugData['slug']);
-	deleteAllVotesForSlug("live");
-
+	deleteVotesIfSlugIsLive($slugData['slug']);
 	killAjaxFunction("Post added for " . $slugData['slug']);
 }
 
@@ -119,8 +128,38 @@ add_action( 'wp_ajax_hopefuls_cutter', 'hopefuls_cutter' );
 function hopefuls_cutter() {
 	$slugToNuke = $_POST['slug'];
 	nukeSlug($slugToNuke);
-	reset_chat_votes();
+	deleteVotesIfSlugIsLive($_POST['slug']);
 	killAjaxFunction($slugToNuke);
+}
+
+add_action( 'wp_ajax_choose_live_slug', 'choose_live_slug' );
+function choose_live_slug() {
+	update_option( "liveSlug", $_POST['slug'] );
+	if ($_POST['slug']) {
+		$liveVoters = getVotersForSlug("live");
+		global $wpdb;
+		$table = $wpdb->prefix . "vote_db";
+		$data = array(
+			"slug" => $_POST['slug'],
+		);
+		foreach ($liveVoters as $vote) {
+			$where = array(
+				"id" => $vote["id"],
+				"hash" => $vote["hash"],
+			);
+			$wpdb->update($table, $data, $where);
+		}
+	}
+	killAjaxFunction($liveVoters);
+	// killAjaxFunction($_POST['slug'] . " is now selected!");
+}
+
+function deleteVotesIfSlugIsLive($slug) {
+	$liveSlug = get_option("liveSlug");
+	if ($liveSlug === $slug) {
+		deleteAllVotesForSlug($slug);
+		update_option( "liveSlug", "false" );
+	}
 }
 
 ?>

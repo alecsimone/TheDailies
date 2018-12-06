@@ -81,6 +81,10 @@ export default class AddProspectForm extends React.Component{
 		if (isGfy > -1) {
 			isMultipleURLS = url.indexOf('gfycat.com/', isGfy);
 		}
+		var isGifyourgame = url.indexOf('gifyourgame.com/');
+		if (isGifyourgame > -1) {
+			isMultipleURLS = url.indexOf('gifyourgame.com/', isGifyourgame);
+		}
 
 		// if (isMultipleURLS > -1) {
 		// 	jQuery('#AddProspectInstructions').text("One submission at a time, please");
@@ -88,8 +92,14 @@ export default class AddProspectForm extends React.Component{
 		// 	return
 		// }
 
-		if (isTwitch === -1 && isYouTube === -1 && isYtbe === -1 && isTwitter === -1 && isGfy === -1) {
+		if (isTwitch === -1 && isYouTube === -1 && isYtbe === -1 && isTwitter === -1 && isGfy === -1 && isGifyourgame === -1) {
 			jQuery('#AddProspectInstructions').text("Invalid URL");
+			redFlash(urlBox);
+			return
+		}
+
+		if (isGifyourgame > -1) {
+			jQuery('#AddProspectInstructions').text("We're currently not taking gifyourgame.com clips because they aren't embeddable. Should be able to fix this soon, sorry!");
 			redFlash(urlBox);
 			return
 		}

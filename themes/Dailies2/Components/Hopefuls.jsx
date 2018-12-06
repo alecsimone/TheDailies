@@ -15,6 +15,7 @@ export default class Hopefuls extends React.Component{
 
 		this.keepSlug = this.keepSlug.bind(this);
 		this.cutSlug = this.cutSlug.bind(this);
+		this.makeLive = this.makeLive.bind(this);
 	}
 
 	keepSlug(newThingName, slug) {
@@ -107,14 +108,15 @@ export default class Hopefuls extends React.Component{
 			dataType: 'json',
 			success: (data) => {
 				let locallyCutSlugs = this.state.locallyCutSlugs;
-				data.forEach((hopeful, index) => {
+				data.clips.forEach((hopeful, index) => {
 					if (locallyCutSlugs.indexOf(hopeful.slug) > -1) {
-						data.splice(index, 1);
+						data.clips.splice(index, 1);
 					}
 				});
-				this.sortHopefuls(data);
+				this.sortHopefuls(data.clips);
 				this.setState({
-					clips: data,
+					clips: data.clips,
+					liveSlug: data.liveSlug,
 					hasData: true,
 				});
 			}
@@ -122,7 +124,10 @@ export default class Hopefuls extends React.Component{
 	}
 
 	sortHopefuls(hopefulsData) {
+		let liveSlug = this.state.liveSlug;
 		hopefulsData.sort(function(a,b) {
+			if (a.slug == liveSlug) {return -1;}
+			if (b.slug == liveSlug) {return 1;}
 			let scoreA = Number(a.score);
 			let scoreB = Number(b.score);
 			if (scoreA === scoreB) {
@@ -130,7 +135,7 @@ export default class Hopefuls extends React.Component{
 				let timeB = new Date(b.age).getTime();
 				return timeB - timeA;
 			}
-			return scoreA - scoreB;
+			return scoreB - scoreA;
 			// let timeA = new Date(a.age).getTime();
 			// let timeB = new Date(b.age).getTime();
 			// if (timeA === timeB) {
@@ -173,6 +178,35 @@ export default class Hopefuls extends React.Component{
 		});
 	}
 
+	makeLive(e, slug) {
+		let checkboxes = document.getElementsByClassName('checkbox');
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (e.target !== checkboxes[i]) {
+				checkboxes[i].checked = false
+			}
+		};
+		if (this.state.liveSlug == slug) {
+			slug = false;
+		}
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				action: 'choose_live_slug',
+				slug,
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
+	}
+
 	render() {
 		if (!this.state.hasData) {
 			return(
@@ -196,6 +230,8 @@ export default class Hopefuls extends React.Component{
 		if (dailiesGlobalData.userData.userRole === "administrator") {
 			admin.cut = this.cutSlug;
 			admin.keep = this.keepSlug;
+			admin.toggle = this.makeLive;
+			admin.toggled = this.state.liveSlug;
 		}
 
 		let leader = this.state.clips[0];

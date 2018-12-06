@@ -7,6 +7,7 @@ function clipTypeDetector($clipURLRaw) {
 	$isYtbe = strpos($clipURL, 'youtu.be');
 	$isTwitter = strpos($clipURL, 'twitter');
 	$isGfy = strpos($clipURL, 'gfycat');
+	$isGYG = strpos($clipURL, 'gifyourgame.com');
 
 	if ($isTwitch !== false ) {
 		return 'twitch';
@@ -18,16 +19,22 @@ function clipTypeDetector($clipURLRaw) {
 		return 'twitter';
 	} elseif ($isGfy !== false) {
 		return 'gfycat';
+	} elseif ($isGYG !== false) {
+		return 'gifyourgame';
 	}
 }
 
 function turnURLIntoTwitchCode($url) {
 	$unCasedUrl = strtolower($url);
-	if (!strpos($unCasedUrl, 'clips.twitch.tv')) {
+	if (!strpos($unCasedUrl, 'twitch.tv/')) {
 		return false;
 	}
 
-	$twitchCodePosition = strpos($unCasedUrl, 'twitch.tv/') + 10;
+	if (strpos($unCasedUrl, 'clips.twitch.tv/')) {
+		$twitchCodePosition = strpos($unCasedUrl, 'clips.twitch.tv/') + 16;
+	} elseif (strpos($unCasedUrl, '/clip/')) {
+		$twitchCodePosition = strpos($unCasedUrl, '/clip/') + 6;
+	}
 	if (strpos($unCasedUrl, '?')) {
 		$twitchCodeEnd = strpos($unCasedUrl, '?');
 		$twitchCodeLength = $twitchCodeEnd - $twitchCodePosition;
@@ -35,6 +42,16 @@ function turnURLIntoTwitchCode($url) {
 	} else {
 		$twitchCode = substr($url, $twitchCodePosition);
 	}
+	// } else {
+	// 	$twitchCodePosition = strpos($unCasedUrl, '/clip/') + 6;
+	// 	if (strpos($unCasedUrl, '?')) {
+	// 		$twitchCodeEnd = strpos($unCasedUrl, '?');
+	// 		$twitchCodeLength = $twitchCodeEnd - $twitchCodePosition;
+	// 		$twitchCode = substr($url, $twitchCodePosition, $twitchCodeLength);
+	// 	} else {
+	// 		$twitchCode = substr($url, $twitchCodePosition);
+	// 	}
+	// }
 
 	return $twitchCode;
 }

@@ -82,7 +82,9 @@ function post_trasher($postID) {
 }
 
 function getLiveVoters() {
-	$liveVoters = getVoterDisplayInfoForSlug("live");
+	$liveSlug = get_option("liveSlug");
+	if ($liveSlug == "false") {$liveSlug = "live";}
+	$liveVoters = getVoterDisplayInfoForSlug($liveSlug);
 	return $liveVoters;
 }
 

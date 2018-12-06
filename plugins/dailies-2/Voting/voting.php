@@ -92,10 +92,12 @@ function chat_vote() {
 		$weight = floatval(get_option("nayCoefficient")) * (int)$person['rep'] * -1;
 	}
 
+	$liveSlug = get_option("liveSlug");
+	if ($liveSlug == "false") {$liveSlug = "live";}
 	$voteArray = array(
 		"hash" => $person['hash'],
 		"weight" => $weight,
-		"slug" => "live",
+		"slug" => $liveSlug,
 	);
 
 	$addVoteResult = addVoteToDB($voteArray);

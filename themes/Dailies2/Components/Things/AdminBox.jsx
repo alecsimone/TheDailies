@@ -38,7 +38,7 @@ const AdminBox = ({adminFunctions, identifier}) => {
 	}
 	let checkBox;
 	if (adminFunctions.toggle) {
-		checkBox = <input type="checkbox" className="checkbox" onClick={(e) => adminFunctions.toggle(e, identifier)} />
+		checkBox = <input type="checkbox" className="checkbox" defaultChecked={adminFunctions.toggled == identifier ? true : false} onChange={(e) => adminFunctions.toggle(e, identifier)} />
 	}
 	return(
 		<div className="AdminBox">

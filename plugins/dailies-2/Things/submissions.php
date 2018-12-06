@@ -22,6 +22,8 @@ function submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter) {
 		$slug = turnURLIntoTwitterCode($newSeedlingUrl);
 	} elseif ($clipType === 'gfycat') {
 		$slug = turnURLIntoGfycode($newSeedlingUrl);
+	} elseif ($clipType === 'gifyourgame') {
+		return "We're currently not taking gifyourgame.com clips because they aren't embeddable. Should be able to fix this soon, sorry!";
 	} else {
 		return "Invalid URL";
 	}

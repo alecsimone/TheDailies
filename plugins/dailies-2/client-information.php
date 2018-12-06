@@ -31,7 +31,7 @@ function client_information() {
 	} else if (is_page('hopefuls')) {
 		wp_register_script( 'hopefulsScripts', get_template_directory_uri() . '/Bundles/hopefuls-bundle' . $version . '.js', ['jquery'], '', true );
 		// $hopefulsData = generateHopefulsData();
-		// wp_localize_script('hopefulsScripts', 'hopefulsData', $hopefulsData);
+		// wp_localize_script('hopefulsScripts', 'selected', $selected);
 		wp_enqueue_script('hopefulsScripts');
 	} else if (is_page('Live')) {
 		wp_register_script( 'liveScripts', get_template_directory_uri() . '/Bundles/live-bundle' . $version . '.js', ['jquery'], '', true );
@@ -63,8 +63,11 @@ function client_information() {
 		wp_enqueue_script( 'contenderVoteboardScripts');
 	} else if (is_page('live-voting-machine')) {
 		wp_register_script( 'liveVotingMachineScripts', get_template_directory_uri() . '/Bundles/livevotingmachine-bundle' . $version . '.js', ['jquery'], '', true );
-		$liveVoters = getVoterDisplayInfoForSlug("live");
+		$liveSlug = get_option("liveSlug");
+		if ($liveSlug == "false") {$liveSlug = "live";}
+		$liveVoters = getVoterDisplayInfoForSlug($liveSlug);
 		wp_localize_script('liveVotingMachineScripts', 'liveVoters', $liveVoters);
+		wp_localize_script('liveVotingMachineScripts', 'liveSlug', $liveSlug);
 		wp_enqueue_script( 'liveVotingMachineScripts');
 	} else if (is_page('live-votebar')) {
 		wp_register_script( 'liveVoteBarScripts', get_template_directory_uri() . '/Bundles/livevotebar-bundle' . $version . '.js', ['jquery'], '', true );
