@@ -28,6 +28,12 @@ foreach ($specialPeopleObjects as $specialPersonObject) {
 		<div id="botContainer"></div>
 	</div>
 	<input id="channelInput" type="text" placeholder="Rocket_Dailies"></input>
+	<?php $userID = get_current_user_id();
+	$personRow = getPersonInDB($userID);
+	$userRole = $personRow['role'];
+	if ($userRole == "administrator") { ?>
+		<input id="updateServerBox" type="checkbox"></input>
+	<?php } ?>
 </div>
 
 <style>
@@ -78,6 +84,12 @@ foreach ($specialPeopleObjects as $specialPersonObject) {
 		border-radius: 3px;
 		border: 1px solid black;
 	}
+	#updateServerBox {
+		    width: 24px;
+		    height: 24px;
+		    margin-top: 18px;
+		    margin-left: 0;
+	}
 
 </style>
 
@@ -86,15 +98,12 @@ foreach ($specialPeopleObjects as $specialPersonObject) {
 	window.viewerData = false;
 
 	function updateViewcount() {
-		console.log("updating...");
 		var url = `https://tmi.twitch.tv/group/user/${window.channel}/chatters`
-		console.log(url);
 		jQuery.ajax({
 			url: url,
 			dataType: 'jsonp',
 			success: function(data) {
 				var viewerData = data.data;
-				console.log(viewerData);
 
 				var botlist = JSON.parse(jQuery('#bots').attr("data-botlist"));
 				var bots = [];
@@ -161,11 +170,34 @@ foreach ($specialPeopleObjects as $specialPersonObject) {
 				jQuery('#viewerCounter').text(viewerCount);
 
 				window.viewerData = viewerData;
+
+				let updateServerBox = document.getElementById("updateServerBox");
+				if (updateServerBox.checked) {
+					let ajaxurl = jQuery('#viewerApp').attr("data-ajaxurl");
+					jQuery.ajax({
+						type: "POST",
+						url: ajaxurl,
+						dataType: 'json',
+						data: {
+							viewerCount,
+							action: 'update_viewer_count',
+						},
+						error: function(one, two, three) {
+							console.log(one);
+							console.log(two);
+							console.log(three);
+						},
+						success: function(data) {
+							console.log(data);
+						}
+					});
+				}
+
 			}
 		});
 	}
 	updateViewcount();
-	window.setInterval(updateViewcount, 60000);
+	window.setInterval(updateViewcount, 15000);
 
 	$("#channelInput").keydown(function(e) {
 		if (e.which === 13) {
