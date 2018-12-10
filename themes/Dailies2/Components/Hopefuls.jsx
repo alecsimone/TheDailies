@@ -10,6 +10,7 @@ export default class Hopefuls extends React.Component{
 		super();
 		this.state = {
 			hasData: false,
+			liveSlug: "false",
 			locallyCutSlugs: [],
 		}
 
