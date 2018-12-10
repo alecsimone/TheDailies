@@ -226,6 +226,8 @@ function submitTweet($tweetData) {
 		foreach ($tweetData->entities->urls as $urlArray) {
 			if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
 				$submissionURL = $urlArray->expanded_url;
+			} else {
+				$submissionURL = "https://twitter.com/" . $tweeter . "/status/" . $tweetID;
 			}
 		}
 	} else {
@@ -287,9 +289,9 @@ function addProspect () {
 		'meta_input' => $clipMeta,
 	);
 	$didPost = wp_insert_post($prospectArray, true);
-	// if ($didPost > 0) {
-	// 	absorb_votes($didPost);
-	// }
+	if ($didPost > 0) {
+		deleteAllVotesForSlug("live");
+	}
 
 	killAjaxFunction($didPost);
 }

@@ -113,6 +113,12 @@ export default class Hopefuls extends React.Component{
 						data.clips.splice(index, 1);
 					}
 				});
+				if (this.state.liveSlug != "false" && data.liveSlug == "false" && data.promotedAHopeful == false) {
+					window.playAppropriateKillSound();
+				}
+				if (data.promotedAHopeful) {
+					window.playAppropriatePromoSound();
+				}
 				this.sortHopefuls(data.clips);
 				this.setState({
 					clips: data.clips,
@@ -128,14 +134,14 @@ export default class Hopefuls extends React.Component{
 		hopefulsData.sort(function(a,b) {
 			if (a.slug == liveSlug) {return -1;}
 			if (b.slug == liveSlug) {return 1;}
-			let scoreA = Number(a.score);
-			let scoreB = Number(b.score);
-			if (scoreA === scoreB) {
-				let timeA = new Date(a.age).getTime();
-				let timeB = new Date(b.age).getTime();
-				return timeB - timeA;
+			let timeA = new Date(a.age).getTime();
+			let timeB = new Date(b.age).getTime();
+			if (timeA === timeB) {
+				let scoreA = Number(a.score);
+				let scoreB = Number(b.score);
+				return scoreB - scoreA;
 			}
-			return scoreB - scoreA;
+			return timeA - timeB;
 			// let timeA = new Date(a.age).getTime();
 			// let timeB = new Date(b.age).getTime();
 			// if (timeA === timeB) {

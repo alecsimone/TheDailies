@@ -172,6 +172,8 @@ function pull_twitter_mentions() {
 
 	$cutoffTimestamp = clipCutoffTimestamp();
 	foreach ($responseBody as $key => $tweetData) {
+		basicPrint($tweetData->id_str);
+
 		// basicPrint($key);
 		$tweetTimestamp = date(U, strtotime($tweetData->created_at));
 		if ($tweetTimestamp < $cutoffTimestamp) {continue;}

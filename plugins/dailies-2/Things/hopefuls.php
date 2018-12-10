@@ -14,6 +14,7 @@ function getHopefuls() {
 	);
 
 	$hopefuls = [];
+	$promotedAHopeful = false;
 	$liveSlug = get_option("liveSlug");
 	$liveSlugIsHopeful = false;
 	foreach ($allClips as $key => $clipData) {
@@ -23,24 +24,46 @@ function getHopefuls() {
 		$score = 0;
 		$voters = getVotersForSlug($clipData['slug']);
 		foreach ($voters as $voter) {
-			$person = getPersonInDB($voter['hash']);
-			$voterData = array(
-				"name" => $person['dailiesDisplayName'],
-				"picture" => $person['picture'],
-				"weight" => $voter['weight'],
-			);
-			if (!$person) {
-				$voterData["name"] = "Deleted User";
-				$voterData["picture"] = get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg";
-			}
 			$score = $score + (int)$voter['weight'];
-			// $hopefuls[$key]['voters'][] = $voterData;
-			$theseVoters[] = $voterData;
 		}
 		if ($score > 0) {
+			foreach ($voters as $voter) {
+				$person = getPersonInDB($voter['hash']);
+				$voterData = array(
+					"name" => $person['dailiesDisplayName'],
+					"picture" => $person['picture'],
+					"weight" => $voter['weight'],
+				);
+				if (!$person) {
+					$voterData["name"] = "Deleted User";
+					$voterData["picture"] = get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg";
+				}
+				$theseVoters[] = $voterData;
+			}
 			$clipData['voters'] = $theseVoters;
 			$clipData['score'] = $score;
-			if ($clipData['slug'] == $liveSlug) {$liveSlugIsHopeful = true;}
+			if ($clipData['slug'] == $liveSlug) {
+				$liveSlugIsHopeful = true;
+				$lastViewerCountUpdateTime = get_option("lastViewerCountUpdateTime");
+				if ($lastViewerCountUpdateTime > time() - 30) {
+					$viewerCount = get_option("viewerCount");
+					$magicNumberConstant = get_option("magicNumberConstant");
+					$liveSlugYeaCount = 0;
+					foreach ($voters as $voter) {
+						if ((int)$voter['weight'] > 0) {
+							$liveSlugYeaCount++;
+						}
+					}
+					if ( $liveSlugYeaCount >= round( ($viewerCount + $clipData['votecount']) * $magicNumberConstant, 0, PHP_ROUND_HALF_UP) && $liveSlugYeaCount >= 4 ) {
+						addPostForSlug($clipData['slug']);
+						nukeSlug($clipData['slug']);
+						deleteAllVotesForSlug($clipData['slug']);
+						update_option("liveSlug", "false");
+						$promotedAHopeful = true;
+					}
+				}
+
+			}
 			$hopefuls[] = $clipData;
 			// $hopefuls[$key] = $clipData;
 			// $hopefuls[$key]['voters'] = $theseVoters;
@@ -52,6 +75,7 @@ function getHopefuls() {
 	$hopefulsData = array(
 		"clips" => $hopefuls,
 		"liveSlug" => get_option("liveSlug"),
+		"promotedAHopeful" => $promotedAHopeful,
 	);
 
 	// basicPrint($hopefuls);
@@ -63,7 +87,15 @@ add_action( 'wp_ajax_keepSlug', 'keepSlug' );
 function keepSlug() {
 	$slug = $_POST['slug'];
 	$postTitle = $_POST['newThingName'];
+	addPostForSlug($slug, $postTitle);
+	nukeSlug($slugData['slug']);
+	deleteVotesIfSlugIsLive($slugData['slug']);
+	killAjaxFunction("Post added for " . $slugData['slug']);
+}
+
+function addPostForSlug($slug, $title = false) {
 	$slugData = getSlugInPulledClipsDB($slug);
+	if (!$title) {$title = $slugData['title'];}
 
 	if ($slugData['source'] === "User Submit") {
 		$postSource = 632; //This is the source ID for user submits
@@ -71,7 +103,7 @@ function keepSlug() {
 		$postSource = sourceFinder($slugData['source']);
 	}
 
-	$postStar = starChecker($postTitle);
+	$postStar = starChecker($title);
 
 	// $slugVoters = getVotersForSlug($slugData['slug']);
 	// $voteledger = array();
@@ -80,14 +112,15 @@ function keepSlug() {
 	// }
 
 	$thingArray = array(
-		'post_title' => $postTitle,
+		'post_title' => $title,
+		'post_author' => 1,
 		'post_content' => '',
 		'post_excerpt' => '',
 		'post_status' => 'publish',
+		'post_category' => [1125],
 		'tax_input' => array(
 			'source' => $postSource,
 			'stars' => $postStar,
-			'category' => 1125,
 		),
 		'meta_input' => array(
 			'defaultThumb' => $slugData['thumb'],
@@ -109,19 +142,6 @@ function keepSlug() {
 	}
 
 	$didPost = wp_insert_post($thingArray, true);
-	// if ($didPost > 0) {
-	// 	absorb_votes($didPost);
-	// }
-
-	// $dupes = get_dupe_clips($slugData['slug']);
-	// if ($dupes) {
-	// 	foreach ($dupes as $dupe) {
-	// 		nukeSlug($dupe);
-	// 	}
-	// }
-	nukeSlug($slugData['slug']);
-	deleteVotesIfSlugIsLive($slugData['slug']);
-	killAjaxFunction("Post added for " . $slugData['slug']);
 }
 
 add_action( 'wp_ajax_hopefuls_cutter', 'hopefuls_cutter' );
@@ -167,6 +187,14 @@ function deleteVotesIfSlugIsLive($slug) {
 		deleteAllVotesForSlug($slug);
 		update_option( "liveSlug", "false" );
 	}
+}
+
+add_action( 'wp_ajax_update_viewer_count', 'update_viewer_count' );
+function update_viewer_count() {
+	$viewerCount = $_POST['viewerCount'];
+	update_option("viewerCount", $viewerCount);
+	update_option("lastViewerCountUpdateTime", time());
+	killAjaxFunction("Viewer count updated!");
 }
 
 ?>

@@ -168,7 +168,8 @@ export default class Weed extends React.Component{
 				console.log(`${slug} has been nuked, but is still showing up`);
 				clipsArray.splice(index, 1);
 			}
-			if (clipsData[slug].vodlink !== "none" && clipsData[slug].vodlink.indexOf("twimg.com") == -1 ) {
+			if (clipsData[slug].vodlink !== "none" && clipsData[slug].vodlink.indexOf("twimg.com") == -1 && clipsData[slug].vodlink.indexOf("gfycat") == -1) {
+				console.log(clipsData[slug].vodlink);
 				let currentMoment = this.turnVodlinkIntoMomentObject(clipsData[slug].vodlink);
 				if (clipVods[currentMoment['vodID']]) {
 					clipVods[currentMoment['vodID']].push(slug);
@@ -719,6 +720,7 @@ export default class Weed extends React.Component{
 
 	render() {
 		console.groupCollapsed("render");
+		console.log(this.state.clipsArray);
 		console.log(`Rendering ${this.state.clipsArray[0]}`);
 		// let slugsArray = Object.keys(this.state.clips);
 		// let sortedClips = this.sortClips(slugsArray);
