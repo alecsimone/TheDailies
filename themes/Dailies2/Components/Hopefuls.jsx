@@ -109,12 +109,15 @@ export default class Hopefuls extends React.Component{
 			dataType: 'json',
 			success: (data) => {
 				let locallyCutSlugs = this.state.locallyCutSlugs;
+				let liveSlugStillLive = false;
 				data.clips.forEach((hopeful, index) => {
+					if (this.state.liveSlug === hopeful.slug) {liveSlugStillLive = true;}
 					if (locallyCutSlugs.indexOf(hopeful.slug) > -1) {
 						data.clips.splice(index, 1);
 					}
 				});
-				if (this.state.liveSlug != "false" && data.liveSlug == "false" && data.promotedAHopeful == false) {
+				console.log(liveSlugStillLive);
+				if (this.state.liveSlug !== "false" && !liveSlugStillLive && !data.promotedAHopeful) {
 					window.playAppropriateKillSound();
 				}
 				if (data.promotedAHopeful) {

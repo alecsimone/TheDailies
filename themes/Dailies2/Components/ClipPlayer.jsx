@@ -10,7 +10,6 @@ export default class ClipPlayer extends React.Component{
 				if (embeddedTweet) {
 					if (embeddedTweet != this.props.slug) {
 						tweetWidget.remove();
-						console.log("adding a tweet because we just removed the old one");
 						twttr.widgets.createTweet(
 			  				this.props.slug,
 			  				document.getElementById(`twitterVideo${this.props.slug}`),
@@ -24,8 +23,6 @@ export default class ClipPlayer extends React.Component{
 					}
 				}
 			} else {
-				console.log("adding a tweet because it's the first render and we haven't done that at all yet");
-				console.log(twttr);
 				twttr.widgets.createTweet(
 	  				this.props.slug,
 	  				document.getElementById(`twitterVideo${this.props.slug}`),
