@@ -31,7 +31,7 @@ export default class LiveVotingMachine extends React.Component{
 	render() {
 		return(
 			<section id="LiveVotingMachine">
-				<VotingMachine key="votingMachine-live" slug={liveSlug} voterData={this.state.voters} />
+				<VotingMachine key="votingMachine-live" slug="live" voterData={this.state.voters} />
 			</section>
 		)
 	}

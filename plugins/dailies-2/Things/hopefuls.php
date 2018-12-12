@@ -44,31 +44,39 @@ function getHopefuls() {
 			$clipData['score'] = $score;
 			if ($clipData['slug'] == $liveSlug) {
 				$liveSlugIsHopeful = true;
-				$lastViewerCountUpdateTime = get_option("lastViewerCountUpdateTime");
-				if ($lastViewerCountUpdateTime > time() - 30) {
-					$viewerCount = get_option("viewerCount");
-					$magicNumberConstant = get_option("magicNumberConstant");
-					$liveSlugYeaCount = 0;
-					foreach ($voters as $voter) {
-						if ((int)$voter['weight'] > 0) {
-							$liveSlugYeaCount++;
-						}
-					}
-					if ( $liveSlugYeaCount >= round( ($viewerCount + $clipData['votecount']) * $magicNumberConstant, 0, PHP_ROUND_HALF_UP) && $liveSlugYeaCount >= 4 ) {
-						addPostForSlug($clipData['slug']);
-						nukeSlug($clipData['slug']);
-						deleteAllVotesForSlug($clipData['slug']);
-						update_option("liveSlug", "false");
-						$promotedAHopeful = true;
-					}
-				}
-
 			}
 			$hopefuls[] = $clipData;
 			// $hopefuls[$key] = $clipData;
 			// $hopefuls[$key]['voters'] = $theseVoters;
 		}
 	}
+
+	if ($liveSlug !== "false") {	
+		$lastViewerCountUpdateTime = get_option("lastViewerCountUpdateTime");
+		if ($lastViewerCountUpdateTime > time() - 30) {
+			$viewerCount = get_option("viewerCount");
+			$magicNumberConstant = get_option("magicNumberConstant");
+			$liveSlugYeaCount = 0;
+			$liveSlugNayCount = 0;
+			$liveVoters = getVotersForSlug("live");
+			foreach ($liveVoters as $voter) {
+				if ((int)$voter['weight'] > 0) {
+					$liveSlugYeaCount++;
+				} elseif ((int)$voter['weight'] < 0) {
+					$liveSlugNayCount++;
+				}
+			}
+			if ( $liveSlugYeaCount >= round($viewerCount * $magicNumberConstant, 0, PHP_ROUND_HALF_UP) && $liveSlugYeaCount >= 2 ) {
+				addPostForSlug($liveSlug);
+				nukeSlug($liveSlug);
+				deleteAllVotesForSlug($liveSlug);
+				deleteAllVotesForSlug("live");
+				update_option("liveSlug", "false");
+				$promotedAHopeful = true;
+			}
+		}
+	}
+
 
 	if (!$liveSlugIsHopeful) {update_option("liveSlug", "false");}
 
@@ -156,28 +164,28 @@ function hopefuls_cutter() {
 add_action( 'wp_ajax_choose_live_slug', 'choose_live_slug' );
 function choose_live_slug() {
 	update_option( "liveSlug", $_POST['slug'] );
-	if ($_POST['slug']) {
-		$liveVoters = getVotersForSlug("live");
-		global $wpdb;
-		$table = $wpdb->prefix . "vote_db";
-		$data = array(
-			"slug" => $_POST['slug'],
-		);
-		foreach ($liveVoters as $vote) {
-			$existingVote = $wpdb->get_row(
-				"SELECT *
-				FROM $table
-				WHERE hash = '{$vote['hash']}' AND slug = '{$_POST['slug']}'",
-				'ARRAY_A'
-			);
-			if ($existingVote) {continue;}
-			$where = array(
-				"id" => $vote["id"],
-				"hash" => $vote["hash"],
-			);
-			$wpdb->update($table, $data, $where);
-		}
-	}
+	// if ($_POST['slug']) {
+	// 	$liveVoters = getVotersForSlug("live");
+	// 	global $wpdb;
+	// 	$table = $wpdb->prefix . "vote_db";
+	// 	$data = array(
+	// 		"slug" => $_POST['slug'],
+	// 	);
+	// 	foreach ($liveVoters as $vote) {
+	// 		$existingVote = $wpdb->get_row(
+	// 			"SELECT *
+	// 			FROM $table
+	// 			WHERE hash = '{$vote['hash']}' AND slug = '{$_POST['slug']}'",
+	// 			'ARRAY_A'
+	// 		);
+	// 		if ($existingVote) {continue;}
+	// 		$where = array(
+	// 			"id" => $vote["id"],
+	// 			"hash" => $vote["hash"],
+	// 		);
+	// 		$wpdb->update($table, $data, $where);
+	// 	}
+	// }
 	killAjaxFunction($liveVoters);
 	// killAjaxFunction($_POST['slug'] . " is now selected!");
 }

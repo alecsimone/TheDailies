@@ -94,9 +94,10 @@ function post_trasher($postID) {
 }
 
 function getLiveVoters() {
-	$liveSlug = get_option("liveSlug");
-	if ($liveSlug == "false") {$liveSlug = "live";}
-	$liveVoters = getVoterDisplayInfoForSlug($liveSlug);
+	// $liveSlug = get_option("liveSlug");
+	// if ($liveSlug == "false") {$liveSlug = "live";}
+	// $liveVoters = getVoterDisplayInfoForSlug($liveSlug);
+	$liveVoters = getVoterDisplayInfoForSlug("live");
 	return $liveVoters;
 }
 
