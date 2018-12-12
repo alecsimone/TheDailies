@@ -2,7 +2,7 @@
 
 add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
-	$version = '-v2.011';
+	$version = '-v2.011b';
 	if ( !is_page() && !is_attachment() ) {
 		wp_register_script( 'mainScripts', get_template_directory_uri() . '/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
@@ -86,7 +86,7 @@ function generateDayOneData() {
 
 	$dayOneArgs = array(
 		// 'category_name' => 'noms',
-		'posts_per_page' => 10,
+		'posts_per_page' => 20,
 		'orderby' => 'meta_value_num',
 		'meta_key' => 'votecount',
 		'date_query' => array(
@@ -107,7 +107,7 @@ function generateDayOneData() {
 		$day = $today->format('j');
 		$newNomArgs = array(
 			'category_name' => 'noms',
-			'posts_per_page' => 10,
+			'posts_per_page' => 20,
 			'orderby' => 'meta_value_num',
 			'meta_key' => 'votecount',
 			'date_query' => array(

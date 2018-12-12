@@ -88,9 +88,10 @@ function keepSlug() {
 	$slug = $_POST['slug'];
 	$postTitle = $_POST['newThingName'];
 	addPostForSlug($slug, $postTitle);
-	nukeSlug($slugData['slug']);
-	deleteVotesIfSlugIsLive($slugData['slug']);
-	killAjaxFunction("Post added for " . $slugData['slug']);
+	nukeSlug($slug);
+	deleteAllVotesForSlug($slug);
+	deleteAllVotesForSlug("live");
+	killAjaxFunction("Post added for " . $slug);
 }
 
 function addPostForSlug($slug, $title = false) {

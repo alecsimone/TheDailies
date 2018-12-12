@@ -89,6 +89,9 @@
 	&.highlight::after {
 		opacity: 1;
 	}
+	&.eliminated {
+		display: none;
+	}
 }
 
 .contenderNumber {

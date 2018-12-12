@@ -162,6 +162,9 @@ function togglePersonSpecialness($person) {
 
 function getValidRep($person) {
 	$userData = getPersonInDB($person);
+    if ($userData === false) {
+        return false;
+    }
 	$rep = $userData['rep'];
 	if ($rep == '' || $rep == 0) {
 		$rep = 1;
@@ -214,6 +217,5 @@ function getPicForPerson($person) {
     }
 	return $userPic;
 }
-
 
 ?>

@@ -205,4 +205,21 @@ function dailies_rest_live_voters() {
 	));
 }
 
+add_action( 'rest_api_init', 'dailies_add_giveable_rep_check_to_rest' );
+function dailies_add_giveable_rep_check_to_rest() {
+	register_rest_route('dailies-rest/v1', 'giveablerep/person=(?P<person>[\w\-\,]+)', array(
+		'methods' => 'GET',
+		'callback' => 'get_giveable_rep_for_rest',
+	));
+}
+
+function get_giveable_rep_for_rest($data) {
+	$person = $data['person'];
+	$rep = getValidRep($person);
+	if (!$rep) {
+		return 0;
+	}
+	return $rep;
+}
+
 ?>

@@ -188,6 +188,7 @@ String.prototype.stripSlashes = function() {
 
 function turnContenderDataIntoVoteData(contenderData) {
 	let voteData = contenderData.map( (clipdata) => {
+		if (clipdata.eliminated === "true") {return 0;}
 		let score = 0;
 		clipdata.voters.forEach((voterData) => score += parseFloat(voterData.weight));
 		if (score < 0) {score = 0;}

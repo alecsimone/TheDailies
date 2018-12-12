@@ -18,7 +18,10 @@ function getLive() {
 	foreach ($livePosts as $post) {
 		setup_postdata($post);
 		$postData = buildPostDataObject($post->ID);
-		$liveData[] = convertPostDataObjectToClipdata($postData);
+		$clipdata = convertPostDataObjectToClipdata($postData);
+		$clipdata['eliminated'] = get_post_meta($post->ID, "eliminated", true);
+		if ($clipdata['eliminated'] === "") {$clipdata['eliminated'] = "false";}
+		$liveData[] = $clipdata;
 	}
 	return $liveData;
 }
@@ -71,6 +74,15 @@ function post_demoter() {
 	};
 
 	killAjaxFunction($postID);
+}
+
+add_action( 'wp_ajax_eliminate_post', 'eliminate_post' );
+function eliminate_post() {
+	if (!currentUserIsAdmin()) {
+		wp_die("You are not an admin, sorry");
+	}
+	update_post_meta($_POST['id'], 'eliminated', "true");
+	killAjaxFunction("Eliminated post " . $_POST['id']);
 }
 
 function post_trasher($postID) {

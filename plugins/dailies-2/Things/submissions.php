@@ -222,12 +222,15 @@ function submitTweet($tweetData) {
 		$tweet = $tweeter . " Twitter Submission";
 	}
 	$tweetID = $tweetData->id_str;
+	$submissionURL = "";
 	if ($tweetData->entities->urls) {
 		foreach ($tweetData->entities->urls as $urlArray) {
 			if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
 				$submissionURL = $urlArray->expanded_url;
 			} else {
-				$submissionURL = "https://twitter.com/" . $tweeter . "/status/" . $tweetID;
+				if ($submissionURL === "") {
+					$submissionURL = "https://twitter.com/" . $tweeter . "/status/" . $tweetID;
+				}
 			}
 		}
 	} else {

@@ -44,6 +44,26 @@ export default class Live extends React.Component{
 		});
 	}
 
+	hidePost(postID) {
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				id: postID,
+				action: 'eliminate_post',
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: function(data) {
+				console.log(data);
+			}
+		});
+	}
+
 	cutPost(postID) {
 		console.log(`Cutting ${postID}`);
 		let clips = this.state.clips;
@@ -157,7 +177,8 @@ export default class Live extends React.Component{
 
 		let admin = {};
 		if (dailiesGlobalData.userData.userRole === "administrator") {
-			admin.cut = this.cutPost;
+			// admin.cut = this.cutPost;
+			admin.cut = this.hidePost;
 			admin.promote = this.promotePost;
 			admin.toggle = this.highlightPost;
 			admin.edit = true;
@@ -167,7 +188,7 @@ export default class Live extends React.Component{
 		let contenderComponents = this.state.clips.map(function(clipdata) {
 			contenderCounter++;
 			return(
-				<article className="contender" key={contenderCounter}>
+				<article className={`contender${clipdata.eliminated === "true" ? " eliminated" : ""}`} key={contenderCounter}>
 					<div className="contenderNumber">{`!vote${contenderCounter}`}</div>
 				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin}/>
 				</article>
