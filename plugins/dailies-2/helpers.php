@@ -98,7 +98,13 @@ function turnURLIntoTwitterCode($url) {
 		return false;
 	}
 	$twitterCodePosition = strpos($unCasedUrl, '/status/') + 8;
-	$twitterCode = substr($url, $twitterCodePosition);
+	if (strpos($unCasedUrl, '?')) {
+		$twitterCodeEndPosition = strpos($unCasedUrl, '?');
+		$twitterCodeLength = $twitterCodeEndPosition - $twitterCodePosition;
+		$twitterCode = substr($url, $twitterCodePosition, $twitterCodeLength);
+	} else {
+		$twitterCode = substr($url, $twitterCodePosition);
+	}
 
 	return $twitterCode;
 }
