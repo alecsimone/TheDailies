@@ -99,11 +99,12 @@ class Homepage extends React.Component {
 		}
 		let currentFormattedDate = currentYear + '-' + currentMonth + '-' + currentDay;
 		let nextFormattedDate = newYear + '-' + newMonth + '-' + newDay;
-		let nextDateQuery = dailiesGlobalData.thisDomain + '/wp-json/wp/v2/posts?after=' + nextFormattedDate + 'T00:00:00&before=' + currentFormattedDate + 'T00:00:00';
+		let nextDateQuery = dailiesGlobalData.thisDomain + '/wp-json/wp/v2/posts?after=' + nextFormattedDate + 'T00:00:00&before=' + currentFormattedDate + 'T00:00:00&per_page=100';
 		jQuery.get({
 			url: nextDateQuery,
 			dataType: 'json',
 			success: function(data) {
+				console.log(data);
 				if (data.length === 0) {
 					this.stepBackDayAndQuery(newDayObject, newYear, newMonth, newDay);
 				} else {
