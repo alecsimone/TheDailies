@@ -248,6 +248,7 @@ function deleteVotesIfSlugIsLive($slug) {
 	$liveSlug = get_option("liveSlug");
 	if ($liveSlug === $slug) {
 		deleteAllVotesForSlug($slug);
+		deleteAllVotesForSlug("live");
 		update_option( "liveSlug", "false" );
 	}
 }
