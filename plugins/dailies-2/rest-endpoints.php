@@ -215,11 +215,8 @@ function dailies_add_giveable_rep_check_to_rest() {
 
 function get_giveable_rep_for_rest($data) {
 	$person = $data['person'];
-	$rep = getValidRep($person);
-	if (!$rep) {
-		return 0;
-	}
-	return $rep;
+	$giveableRep = getGiveableRep($person);
+	return $giveableRep;
 }
 
 ?>

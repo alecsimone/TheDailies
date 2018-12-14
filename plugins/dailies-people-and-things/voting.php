@@ -140,23 +140,6 @@ function unvote($person, $thing) {
 	deleteVoteFromHistory($person, $thing);
 }
 
-function checkForRepIncrease($person) {
-	$person = getPersonInDB($person);
-	$lastNomTime = ensureTimestampInSeconds(getLastNomTimestamp());
-	$lastRepTime = ensureTimestampInSeconds($person['lastRepTime']);
-	$deservesNewRep = false;
-	if ($lastRepTime <= $lastNomTime) {
-		$newRep = increase_rep($person['hash'], 1);
-		updateRepTime($person['hash']);
-		$deservesNewRep = true;
-	}
-	if ($deservesNewRep) {
-		return $newRep;
-	} else {
-		return false;
-	}
-}
-
 function absorb_votes($postID) {
 	$currentVotersList = getCurrentVotersList();
 	$twitchUserDB = getTwitchUserDB();

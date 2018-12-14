@@ -171,9 +171,18 @@ function getValidRep($person) {
 	}
 	return (int)$rep;
 }
+function getGiveableRep($person) {
+    $personData = getPersonInDB($person);
+    if (!$personData) {
+        return 0;
+    }
+    $giveableRep = (int)$personData['giveableRep'];
+    return $giveableRep;
+}
 
 function increase_rep($person, $additionalRep) {
     $oldRep = getValidRep($person);
+    if ($oldRep == 100) {return false;}
     $newRep = $oldRep + $additionalRep;
     if ($newRep > 100) {$newRep = 100;}
     if (is_numeric($person)) {
@@ -185,6 +194,27 @@ function increase_rep($person, $additionalRep) {
         $typeOfString = checkIfStringIsHashOrTwitchName($person);
         $personArray = array(
             'rep' => $newRep,
+        );
+        $personArray[$typeOfString] = $person;
+    }
+    editPersonInDB($personArray);
+    return $newRep;
+}
+
+function increase_giveable_rep($person, $additionalRep) {
+    $oldRep = getGiveableRep($person);
+    $newRep = $oldRep + $additionalRep;
+    if ($newRep > 200) {$newRep = 200;}
+    if ($newRep < 0) {return false;}
+    if (is_numeric($person)) {
+        $personArray = array(
+            'dailiesID' => intval($person),
+            'giveableRep' => $newRep,
+        );
+    } elseif (is_string($person)) {
+        $typeOfString = checkIfStringIsHashOrTwitchName($person);
+        $personArray = array(
+            'giveableRep' => $newRep,
         );
         $personArray[$typeOfString] = $person;
     }
@@ -216,6 +246,94 @@ function getPicForPerson($person) {
         $userPic = "https://dailies.gg/wp-content/uploads/2017/03/default_pic.jpg";
     }
 	return $userPic;
+}
+
+function checkForRepIncrease($person) {
+    $person = getPersonInDB($person);
+    $lastNomTime = ensureTimestampInSeconds(getLastNomTimestamp());
+    $lastRepTime = ensureTimestampInSeconds($person['lastRepTime']);
+    $deservesNewRep = false;
+    if ($lastRepTime <= $lastNomTime) {
+        $newRep = increase_giveable_rep($person['hash'], 1);
+        updateRepTime($person['hash']);
+        $deservesNewRep = true;
+    }
+    if ($deservesNewRep) {
+        return $newRep;
+    } else {
+        return false;
+    }
+}
+
+add_action( 'wp_ajax_give_rep', 'give_rep' );
+function give_rep() {
+    if (!currentUserIsAdmin()) {
+        $response = array(
+            'message' => "You're not an admin!", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    }
+
+    $giver = $_POST['speaker'];
+    $giverData = getPersonInDB($giver);
+    if (!$giverData) {
+        $response = array(
+            'message' => $giver . ", you're not in our database!", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    }
+
+    $receiver = $_POST['target'];
+    $receiverData = getPersonInDB($receiver);
+    if (!$receiverData) {
+        $response = array(
+            'message' => $receiver . " isn't in our database!", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    }
+
+    $amount = $_POST['amount'];
+    if (!is_numeric($amount)) {
+        $response = array(
+            'message' => "You tried to give a non-numeric amount of rep!", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    } else {
+        $amount = (int)$amount;
+    }
+
+    $newGiverGiveableRep = increase_giveable_rep($giverData['hash'], $amount * -1);
+    if (!$newGiverGiveableRep) {
+        killAjaxFunction($receiver . ", you don't have that much giveable rep.");
+    }
+    $newReceiverRep = increase_rep($receiverData['hash'], $amount);
+    if (!$newReceiverRep) {
+        $response = array(
+            'message' => $receiver . " already has 100 rep!", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    }
+
+    global $wpdb;
+    $table = $wpdb->prefix . "rep_transfers_db";
+    $data = array(
+        "giver" => $giverData['hash'],
+        "receiver" => $receiverData['hash'],
+        "rep" => $amount,
+        "time" => time(),
+    );
+    $wpdb->insert($table, $data);
+
+    $response = array(
+            'message' => $giver . " is giving " . $receiver . " " . $amount . " rep!", 
+            "tone" => "success",
+        );
+    killAjaxFunction($response);
 }
 
 ?>

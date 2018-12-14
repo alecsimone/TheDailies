@@ -15,27 +15,6 @@ function getLiveContenders() {
 	return get_posts($livePostArgs);
 }
 
-function generateUserData() {
-	$userID = get_current_user_id();
-	$personRow = getPersonInDB($userID);
-	if ($userID === 0) {
-		$userPic = get_site_url() . '/wp-content/uploads/2017/03/default_pic.jpg';
-	} else {
-		$userPic = $personRow['picture'];
-	}
-	$personData = array(
-		'userID' => $userID,
-		'userName' => $personRow['dailiesDisplayName'],
-		'userRep' => $personRow['rep'],
-		'userRepTime' => $personRow['lastRepTime'],
-		'userRole' => $personRow['role'],
-		'clientIP' => $_SERVER['REMOTE_ADDR'],
-		'userPic' => $userPic,
-		'hash' => $personRow['hash'],
-	);
-	return $personData;
-}
-
 function generateArchiveHeaderData() {
 	$thisTerm = get_queried_object();
 	$headerData = array(

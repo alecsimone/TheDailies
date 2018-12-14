@@ -2,7 +2,7 @@
 
 add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
-	$version = '-v2.012';
+	$version = '-v2.100';
 	if ( !is_page() && !is_attachment() ) {
 		wp_register_script( 'mainScripts', get_template_directory_uri() . '/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
@@ -75,6 +75,28 @@ function client_information() {
 		wp_localize_script('liveVoteBarScripts', 'liveData', $liveData);
 		wp_enqueue_script( 'liveVoteBarScripts');
 	}
+}
+
+function generateUserData() {
+	$userID = get_current_user_id();
+	$personRow = getPersonInDB($userID);
+	if ($userID === 0) {
+		$userPic = get_site_url() . '/wp-content/uploads/2017/03/default_pic.jpg';
+	} else {
+		$userPic = $personRow['picture'];
+	}
+	$personData = array(
+		'userID' => $userID,
+		'userName' => $personRow['dailiesDisplayName'],
+		'userRep' => $personRow['rep'],
+		'userRepTime' => $personRow['lastRepTime'],
+		'userRole' => $personRow['role'],
+		'clientIP' => $_SERVER['REMOTE_ADDR'],
+		'userPic' => $userPic,
+		'hash' => $personRow['hash'],
+		'giveableRep' => $personRow['giveableRep'],
+	);
+	return $personData;
 }
 
 function generateDayOneData() {

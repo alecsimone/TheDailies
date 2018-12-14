@@ -19,4 +19,60 @@ function getCurrentUsersSeenSlugs() {
 	return $seenSlugs;
 }
 
+add_action( 'wp_ajax_judge_slug', 'judge_slug' );
+function judge_slug() {
+	$slug = $_POST['slug'];
+	$judgment = $_POST['judgment'];
+	$userID = get_current_user_id();
+
+	$clipArray = getSlugInPulledClipsDB($slug);
+
+	if ($clipArray === null) {
+		killAjaxFunction("Unknown Clip: " . $slug);
+	}
+
+	if ($judgment === 'down') {
+		$clipArray['score'] = $clipArray['score'] - getValidRep($userID) * floatval(get_option("nayCoefficient"));
+	} elseif ($judgment === 'up') {
+		$clipArray['score'] = $clipArray['score'] + getValidRep($userID);
+	}
+	if (!is_int($clipArray['votecount'])) {
+		$clipArray['votecount'] = 0;
+	}
+	$clipArray['votecount'] = (int)$clipArray['votecount'] + 1;
+	editPulledClip($clipArray);
+
+	checkForScoutRepIncrease($userID);
+
+	killAjaxFunction($clipArray);
+}
+
+function checkForScoutRepIncrease($person) {
+	$person = getPersonInDB($person);
+    $lastScoutRepTime = ensureTimestampInSeconds($person['lastScoutRepTime']);
+    $deservesNewRep = false;
+    if ($lastScoutRepTime <= time() - 12 * 60 * 60) {
+        $newRep = increase_giveable_rep($person['hash'], 1);
+        updateScoutRepTime($person['hash']);
+        $deservesNewRep = true;
+    }
+    if ($deservesNewRep) {
+        return $newRep;
+    } else {
+        return false;
+    }
+}
+
+function updateScoutRepTime($person) {
+	$personArray = array(
+        'lastScoutRepTime' => time(),
+    );
+    if (is_string($person)) {
+        $personArray[checkIfStringIsHashOrTwitchName($person)] = $person;
+    } elseif (is_int($person)) {
+        $personArray['dailiesID'] = $person;
+    }
+    editPersonInDB($personArray);
+}
+
 ?>

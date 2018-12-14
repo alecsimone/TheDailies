@@ -11,6 +11,9 @@ function printKeyValue($key, $value) {
 }
 
 function ensureTimestampInSeconds($timestamp) {
+	if ($timestamp === "--") {
+		return 0;
+	}
 	$timestampInteger = intval($timestamp);
 	if ($timestampInteger <= 9999999999) {
 		return $timestampInteger;

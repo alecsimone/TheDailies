@@ -53,6 +53,8 @@ function slug_vote() {
 	);
 	$addVoteResult = addVoteToDB($voterArray);
 
+	checkForRepIncrease($person['hash']);
+
 	killAjaxFunction($addVoteResult);
 }
 
@@ -200,34 +202,6 @@ function getPersonVoteIDs($person) {
 // 		editPulledClip($clipArray);
 // 	}
 // }
-
-add_action( 'wp_ajax_judge_slug', 'judge_slug' );
-function judge_slug() {
-	$slug = $_POST['slug'];
-	$judgment = $_POST['judgment'];
-	$userID = get_current_user_id();
-
-	$clipArray = getSlugInPulledClipsDB($slug);
-
-	if ($clipArray === null) {
-		killAjaxFunction("Unknown Clip: " . $slug);
-	}
-
-	if ($judgment === 'down') {
-		$clipArray['score'] = $clipArray['score'] - getValidRep($userID) * floatval(get_option("nayCoefficient"));
-	} elseif ($judgment === 'up') {
-		$clipArray['score'] = $clipArray['score'] + getValidRep($userID);
-	}
-	if (!is_int($clipArray['votecount'])) {
-		$clipArray['votecount'] = 0;
-	}
-	$clipArray['votecount'] = (int)$clipArray['votecount'] + 1;
-	editPulledClip($clipArray);
-
-	checkForRepIncrease($userID);
-
-	killAjaxFunction($clipArray);
-}
 
 function getVotersForSlug($slug) {
 	global $wpdb;

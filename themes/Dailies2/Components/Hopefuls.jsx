@@ -116,11 +116,10 @@ export default class Hopefuls extends React.Component{
 						data.clips.splice(index, 1);
 					}
 				});
-				console.log(liveSlugStillLive);
-				if (this.state.liveSlug !== "false" && !liveSlugStillLive && !data.promotedAHopeful) {
+				if (!data.promotedAHopeful && this.state.liveSlug !== "false" && !liveSlugStillLive && !data.promotedAHopeful) {
 					window.playAppropriateKillSound();
 				}
-				if (data.promotedAHopeful) {
+				if (data.promotedAHopeful && this.state.liveSlug !== "false" && !liveSlugStillLive) {
 					window.playAppropriatePromoSound();
 				}
 				this.sortHopefuls(data.clips);
@@ -166,6 +165,7 @@ export default class Hopefuls extends React.Component{
 		this.setState({
 			clips,
 			locallyCutSlugs,
+			liveSlug: this.state.liveSlug === slug ? "false" : this.state.liveSlug,
 		});
 		window.playAppropriateKillSound();
 		console.log(slug);

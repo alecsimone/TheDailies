@@ -51,7 +51,7 @@ function getHopefuls() {
 		}
 	}
 
-	if ($liveSlug !== "false" && currentUserIsAdmin()) {	
+	if ($liveSlug !== "false") {	
 		$lastViewerCountUpdateTime = get_option("lastViewerCountUpdateTime");
 		if ($lastViewerCountUpdateTime > time() - 30) {
 			$viewerCount = get_option("viewerCount");
@@ -66,13 +66,20 @@ function getHopefuls() {
 					$liveSlugNayCount++;
 				}
 			}
-			if ( $liveSlugYeaCount >= round($viewerCount * $magicNumberConstant, 0, PHP_ROUND_HALF_UP) && $liveSlugYeaCount >= 2 ) {
-				addPostForSlug($liveSlug);
-				nukeSlug($liveSlug);
-				deleteAllVotesForSlug($liveSlug);
-				deleteAllVotesForSlug("live");
-				update_option("liveSlug", "false");
-				$promotedAHopeful = true;
+			if ( $liveSlugYeaCount >= round($viewerCount * $magicNumberConstant, 0, PHP_ROUND_HALF_DOWN) && $liveSlugYeaCount >= 2 ) {
+				$postWasAdded = addPostForSlug($liveSlug);
+				if ($postWasAdded) {
+					basicPrint("Success!");
+				} else {
+					basicPrint("Failure!");
+				}
+				if ($postWasAdded) {
+					nukeSlug($liveSlug);
+					deleteAllVotesForSlug($liveSlug);
+					deleteAllVotesForSlug("live");
+					update_option("liveSlug", "false");
+					update_option("lastAutoAction", "true");
+				}
 			}
 		}
 	}
@@ -83,7 +90,7 @@ function getHopefuls() {
 	$hopefulsData = array(
 		"clips" => $hopefuls,
 		"liveSlug" => get_option("liveSlug"),
-		"promotedAHopeful" => $promotedAHopeful,
+		"promotedAHopeful" => get_option("lastAutoAction"),
 	);
 
 	// basicPrint($hopefuls);
@@ -149,17 +156,55 @@ function addPostForSlug($slug, $title = false) {
 		$thingArray['meta_input']['vodlink'] = $slugData['vodlink'];
 	}
 
+	$args = array();
+
 	if ($slugData['type'] === "twitch") {
 		$thingArray['meta_input']['TwitchCode'] = $slugData['slug'];
+		$args['meta_query'] = array(
+			array(
+				"key" => "TwitchCode",
+				"value" => $slugData['slug'],
+				"compare" => "=",
+			),
+		);
 	} elseif ($slugData['type'] === "gfycat") {
 		$thingArray['meta_input']['GFYtitle'] = $slugData['slug'];
+		$args['meta_query'] = array(
+			array(
+				"key" => "GFYtitle",
+				"value" => $slugData['slug'],
+				"compare" => "=",
+			),
+		);
 	} elseif ($slugData['type'] === "youtube" || $slugData['type'] === "ytbe") {
 		$thingArray['meta_input']['YouTubeCode'] = $slugData['slug'];
+		$args['meta_query'] = array(
+			array(
+				"key" => "YouTubeCode",
+				"value" => $slugData['slug'],
+				"compare" => "=",
+			),
+		);
 	} elseif ($slugData['type'] === "twitter") {
 		$thingArray['meta_input']['TwitterCode'] = $slugData['slug'];
+		$args['meta_query'] = array(
+			array(
+				"key" => "TwitterCode",
+				"value" => $slugData['slug'],
+				"compare" => "=",
+			),
+		);
 	}
 
-	$didPost = wp_insert_post($thingArray, true);
+	$query = new WP_Query($args);
+
+	if (!$query->have_posts()) {
+		$didPost = wp_insert_post($thingArray, true);
+		return true;
+	} else {
+		return false;
+	}
+
 }
 
 add_action( 'wp_ajax_hopefuls_cutter', 'hopefuls_cutter' );
