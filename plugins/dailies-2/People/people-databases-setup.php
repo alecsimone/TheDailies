@@ -1,7 +1,7 @@
 <?php
 
 global $people_db_version;
-$people_db_version = '0.3';
+$people_db_version = '0.4';
 
 function createPeopleDB() {
 	global $wpdb;
@@ -21,7 +21,7 @@ function createPeopleDB() {
 			dailiesDisplayName NVARCHAR(255) DEFAULT '--',
 			twitchName NVARCHAR(64) DEFAULT '--',
 			rep TINYINT DEFAULT 1,
-			giveableRep TINYINT DEFAULT 0,
+			giveableRep SMALLINT DEFAULT 0,
 			lastRepTime VARCHAR(64) DEFAULT '--',
 			lastScoutRepTime VARCHAR(64) DEFAULT '--',
 			email NVARCHAR(320) DEFAULT '--',

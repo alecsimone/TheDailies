@@ -68,11 +68,11 @@ function getHopefuls() {
 			}
 			if ( $liveSlugYeaCount >= round($viewerCount * $magicNumberConstant, 0, PHP_ROUND_HALF_DOWN) && $liveSlugYeaCount >= 2 ) {
 				$postWasAdded = addPostForSlug($liveSlug);
-				if ($postWasAdded) {
-					basicPrint("Success!");
-				} else {
-					basicPrint("Failure!");
-				}
+				// if ($postWasAdded) {
+				// 	basicPrint("Success!");
+				// } else {
+				// 	basicPrint("Failure!");
+				// }
 				if ($postWasAdded) {
 					nukeSlug($liveSlug);
 					deleteAllVotesForSlug($liveSlug);
@@ -218,6 +218,7 @@ function hopefuls_cutter() {
 add_action( 'wp_ajax_choose_live_slug', 'choose_live_slug' );
 function choose_live_slug() {
 	update_option( "liveSlug", $_POST['slug'] );
+	update_option("lastAutoAction", "false");
 	// if ($_POST['slug']) {
 	// 	$liveVoters = getVotersForSlug("live");
 	// 	global $wpdb;

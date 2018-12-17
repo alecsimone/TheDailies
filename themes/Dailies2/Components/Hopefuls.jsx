@@ -116,9 +116,9 @@ export default class Hopefuls extends React.Component{
 						data.clips.splice(index, 1);
 					}
 				});
-				if (!data.promotedAHopeful && this.state.liveSlug !== "false" && !liveSlugStillLive && !data.promotedAHopeful) {
-					window.playAppropriateKillSound();
-				}
+				// if (!data.promotedAHopeful && this.state.liveSlug !== "false" && !liveSlugStillLive && !data.promotedAHopeful) {
+				// 	window.playAppropriateKillSound();
+				// }
 				if (data.promotedAHopeful && this.state.liveSlug !== "false" && !liveSlugStillLive) {
 					window.playAppropriatePromoSound();
 				}

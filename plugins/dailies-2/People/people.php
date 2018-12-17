@@ -275,7 +275,7 @@ function give_rep() {
         killAjaxFunction($response);
     }
 
-    $giver = $_POST['speaker'];
+    $giver = sanitize_text_field($_POST['speaker']);
     $giverData = getPersonInDB($giver);
     if (!$giverData) {
         $response = array(
@@ -285,7 +285,8 @@ function give_rep() {
         killAjaxFunction($response);
     }
 
-    $receiver = $_POST['target'];
+
+    $receiver = sanitize_text_field($_POST['target']);
     $receiverData = getPersonInDB($receiver);
     if (!$receiverData) {
         $response = array(
@@ -295,7 +296,7 @@ function give_rep() {
         killAjaxFunction($response);
     }
 
-    $amount = $_POST['amount'];
+    $amount = sanitize_text_field($_POST['amount']);
     if (!is_numeric($amount)) {
         $response = array(
             'message' => "You tried to give a non-numeric amount of rep!", 
@@ -306,14 +307,39 @@ function give_rep() {
         $amount = (int)$amount;
     }
 
+    $receiverReceivableRep = 100 - (int)$receiverData['rep'];
+    if ($amount > $receiverReceivableRep) {
+        $amount = $receiverReceivableRep;
+    }
+    if ($receiverReceivableRep == 0) {
+        $response = array(
+            'message' => $receiver . " already has 100 rep", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    }
+    
+    $giverGiveableRep = (int)$giverData['giveableRep'];
+    if ($giverGiveableRep < $amount) {
+        $response = array(
+            'message' => $giver . ", you don't have that much giveable rep.", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    }
+
     $newGiverGiveableRep = increase_giveable_rep($giverData['hash'], $amount * -1);
-    if (!$newGiverGiveableRep) {
-        killAjaxFunction($receiver . ", you don't have that much giveable rep.");
+    if ($newGiverGiveableRep === false) {
+        $response = array(
+            'message' => $giver . ", you don't have that much giveable rep.", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
     }
     $newReceiverRep = increase_rep($receiverData['hash'], $amount);
     if (!$newReceiverRep) {
         $response = array(
-            'message' => $receiver . " already has 100 rep!", 
+            'message' => $receiver . " already has 100 rep", 
             "tone" => "error",
         );
         killAjaxFunction($response);
@@ -330,7 +356,7 @@ function give_rep() {
     $wpdb->insert($table, $data);
 
     $response = array(
-            'message' => $giver . " is giving " . $receiver . " " . $amount . " rep!", 
+            'message' => $giver . " gave " . $receiver . " " . $amount . " rep!", 
             "tone" => "success",
         );
     killAjaxFunction($response);

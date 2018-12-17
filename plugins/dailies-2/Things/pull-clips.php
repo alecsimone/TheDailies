@@ -55,12 +55,12 @@ function pull_twitch_clips() {
 			continue;
 		}
 		if ((int)convertTwitchTimeToTimestamp($clipData->created_at) < $cutoffTime) {
-			basicPrint("Too old!");
+			// basicPrint("Too old!");
 			unset($clipsArray[$key]);
 			continue;
 		}
 		if ((int)$existingClipData[$clipData->slug]['nuked'] === 1) {
-			basicPrint("Already nuked!");
+			// basicPrint("Already nuked!");
 			unset($clipsArray[$key]);
 			continue;
 		}
