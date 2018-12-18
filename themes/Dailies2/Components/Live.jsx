@@ -11,9 +11,12 @@ export default class Live extends React.Component{
 		this.state = {
 			hasData: false,
 			locallyCutSlugs: [],
+			editableTitles: [],
 		}
 
 		this.cutPost = this.cutPost.bind(this);
+		this.editTitle = this.editTitle.bind(this);
+		this.changeTitle = this.changeTitle.bind(this);
 	}
 
 	componentDidMount() {
@@ -127,6 +130,48 @@ export default class Live extends React.Component{
 		}
 	}
 
+	editTitle(e, identifier) {
+		e.preventDefault();
+		let editableTitles = this.state.editableTitles;
+		let titleIsEditable = editableTitles.findIndex((id) => id === identifier);
+		if (titleIsEditable > -1) {
+			let editableTitleToRemoveIndex = editableTitles.findIndex((editablePostID) => editablePostID === identifier);
+			editableTitles.splice(editableTitleToRemoveIndex, 1);
+		} else {
+			editableTitles.push(identifier);
+		}
+		this.setState({editableTitles});
+	}
+
+	changeTitle(e, slug) {
+		if (e.which === 13) {
+			e.preventDefault();
+			let clipsIndex = this.state.clips.findIndex((clipdata) => clipdata.slug === slug);
+			let postID = this.state.clips[clipsIndex].postID;
+			jQuery.ajax({
+				type: "POST",
+				url: dailiesGlobalData.ajaxurl,
+				dataType: 'json',
+				data: {
+					postID,
+					newTitle: e.target.value,
+					action: 'edit_live_title',
+				},
+				error: function(one, two, three) {
+					console.log(one);
+					console.log(two);
+					console.log(three);
+				},
+				success: (data) => {
+					let editableTitles = this.state.editableTitles;
+					let editableTitleToRemoveIndex = editableTitles.findIndex((editablePostID) => editablePostID === postID);
+					editableTitles.splice(editableTitleToRemoveIndex, 1);
+					this.setState({editableTitles});
+				}
+			});
+		}
+	}
+
 	resetLive() {
 		var date = Date.now();
 		if (confirm('Are you sure you want to reset the posts?')) {
@@ -181,16 +226,17 @@ export default class Live extends React.Component{
 			admin.cut = this.hidePost;
 			admin.promote = this.promotePost;
 			admin.toggle = this.highlightPost;
-			admin.edit = true;
+			admin.edit = this.editTitle;
 		}
 
 		let contenderCounter = 0;
+		let component = this;
 		let contenderComponents = this.state.clips.map(function(clipdata) {
 			contenderCounter++;
 			return(
 				<article className={`contender${clipdata.eliminated === "true" ? " eliminated" : ""}`} key={contenderCounter}>
 					<div className="contenderNumber">{`!vote${contenderCounter}`}</div>
-				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin}/>
+				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin} editableTitle={component.state.editableTitles.includes(clipdata.postID) ? true : false} changeTitle={component.changeTitle} />
 				</article>
 			);
 		});

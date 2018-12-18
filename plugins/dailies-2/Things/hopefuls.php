@@ -133,7 +133,7 @@ function addPostForSlug($slug, $title = false) {
 	} else {
 		$dateToPostOn = (int)date('d');
 	}
-	$postDate = date('Y-m-') . $dateToPostOn . " 00:00:00";
+	$postDate = date('Y-m-') . $dateToPostOn . " 00:01:00";
 
 	$thingArray = array(
 		'post_title' => $title,

@@ -6,6 +6,7 @@ function getLive() {
 		'category_name' => 'contenders',
 		'posts_per_page' => 50,
 		'order' => 'asc',
+		'orderby' => 'ID',
 		'date_query' => array(
 			array(
 			//	'after' => '240 hours ago',
@@ -91,6 +92,18 @@ function post_trasher($postID) {
 	};
 	reset_chat_votes();
 	return ($postID);
+}
+
+add_action( 'wp_ajax_edit_live_title', 'edit_live_title' );
+function edit_live_title() {
+	$newTitle = sanitize_text_field($_POST['newTitle']);
+	$postID = $_POST['postID'];
+	$postArray = array(
+		"ID" => $postID,
+		"post_title" => $newTitle,
+	);
+	wp_update_post($postArray);
+	killAjaxFunction("You edited the title!");
 }
 
 function getLiveVoters() {

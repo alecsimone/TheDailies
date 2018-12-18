@@ -33,7 +33,7 @@ const AdminBox = ({adminFunctions, identifier}) => {
 	}
 	let edit;
 	if (adminFunctions.edit) {
-		edit = <a href={`${dailiesGlobalData.thisDomain}/wp-admin/post.php?post=${identifier}&action=edit`} className="editPostButton" target="_blank"><img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/edit-this.png`} className="editThisImg" /></a>
+		edit = <a href={`${dailiesGlobalData.thisDomain}/wp-admin/post.php?post=${identifier}&action=edit`} className="editPostButton" target="_blank"><img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/edit-this.png`} className="editThisImg" onClick={(e) => adminFunctions.edit(e, identifier)}/></a>
 
 	}
 	let checkBox;
