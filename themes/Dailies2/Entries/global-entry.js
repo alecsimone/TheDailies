@@ -6,4 +6,5 @@ require('../Styles/weed.scss');
 require('../Styles/hopefuls.scss');
 require('../Styles/schedule.scss');
 require('../Styles/dailieschat.scss');
+require('../Styles/rep.scss');
 require('../Scripts/global.js');

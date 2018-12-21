@@ -307,6 +307,14 @@ function give_rep() {
         $amount = (int)$amount;
     }
 
+    if ($amount <= 0) {
+        $response = array(
+            'message' => "You have to give a positive amount of rep, asshole!", 
+            "tone" => "error",
+        );
+        killAjaxFunction($response);
+    } 
+
     $receiverReceivableRep = 100 - (int)$receiverData['rep'];
     if ($amount > $receiverReceivableRep) {
         $amount = $receiverReceivableRep;

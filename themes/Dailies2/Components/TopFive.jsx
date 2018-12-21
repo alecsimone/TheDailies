@@ -197,7 +197,7 @@ export default class TopFive extends React.Component{
 			<div className="TopFive">
 				<ClickToPlayThumb clipdata={this.props.clipdata} />
 				<div className="hopefuls-meta">
-					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} editable={this.props.editableTitle ? this.props.editableTitle : false} changeTitle={this.props.changeTitle ? this.props.changeTitle : false} /></div>
+					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} editable={this.props.editableTitle ? this.props.editableTitle : false} submitNewTitle={this.props.submitNewTitle ? this.props.submitNewTitle : false} editTitle={this.props.editTitle} /></div>
 					{voters}
 					<MetaBox metaData={this.props.clipdata} />
 					<WeedComments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />

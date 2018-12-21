@@ -1,0 +1,41 @@
+@import '../Styles/vars.scss';
+
+#repInfo {
+	font-size: 24px;
+	width: 90%;
+	max-width: 1200px;
+    margin: auto;
+    background: $darkBlack;
+    padding: 2em 1em;
+	& span.bold {
+	    font-size: 1.1em;
+	    font-weight: bold;
+	    color: $gold;
+	}
+	& span.highlight {
+		font-weight: bold;
+		color: $blue;
+	}
+	& .mainLine {
+		font-size: 1.5em;
+	}
+}
+
+.repPageSection {
+	margin-bottom: 48px;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	max-width: 600px;
+	margin: auto;
+	padding: 8px;
+	& img {
+	    width: 48px;
+	    margin-right: .5em;
+	}
+	&:nth-of-type(odd) {
+		background: $whiteTrans07;
+	}
+}

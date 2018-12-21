@@ -15,8 +15,9 @@ export default class Live extends React.Component{
 		}
 
 		this.cutPost = this.cutPost.bind(this);
+		this.makeTitleEditable = this.makeTitleEditable.bind(this);
+		this.submitNewTitle = this.submitNewTitle.bind(this);
 		this.editTitle = this.editTitle.bind(this);
-		this.changeTitle = this.changeTitle.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,6 +38,10 @@ export default class Live extends React.Component{
 				data.forEach((post, index) => {
 					if (locallyCutSlugs.indexOf(post.slug) > -1) {
 						data.splice(index, 1);
+					}
+					if (this.state.editableTitles.indexOf(post.postID) > -1) {
+						let currentStateEditableTitleIndex = this.state.clips.findIndex((clipdata) => clipdata.postID === post.postID);
+						data[index].title = this.state.clips[currentStateEditableTitleIndex].title;
 					}
 				});
 				this.setState({
@@ -130,7 +135,7 @@ export default class Live extends React.Component{
 		}
 	}
 
-	editTitle(e, identifier) {
+	makeTitleEditable(e, identifier) {
 		e.preventDefault();
 		let editableTitles = this.state.editableTitles;
 		let titleIsEditable = editableTitles.findIndex((id) => id === identifier);
@@ -143,7 +148,7 @@ export default class Live extends React.Component{
 		this.setState({editableTitles});
 	}
 
-	changeTitle(e, slug) {
+	submitNewTitle(e, slug) {
 		if (e.which === 13) {
 			e.preventDefault();
 			let clipsIndex = this.state.clips.findIndex((clipdata) => clipdata.slug === slug);
@@ -170,6 +175,13 @@ export default class Live extends React.Component{
 				}
 			});
 		}
+	}
+
+	editTitle(e, slug) {
+		let clips = this.state.clips;
+		let clipsIndexToEdit = clips.findIndex((clipdata) => slug === clipdata.slug);
+		clips[clipsIndexToEdit].title = e.target.value;
+		this.setState({clips});
 	}
 
 	resetLive() {
@@ -226,7 +238,7 @@ export default class Live extends React.Component{
 			admin.cut = this.hidePost;
 			admin.promote = this.promotePost;
 			admin.toggle = this.highlightPost;
-			admin.edit = this.editTitle;
+			admin.edit = this.makeTitleEditable;
 		}
 
 		let contenderCounter = 0;
@@ -236,7 +248,7 @@ export default class Live extends React.Component{
 			return(
 				<article className={`contender${clipdata.eliminated === "true" ? " eliminated" : ""}`} key={contenderCounter}>
 					<div className="contenderNumber">{`!vote${contenderCounter}`}</div>
-				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin} editableTitle={component.state.editableTitles.includes(clipdata.postID) ? true : false} changeTitle={component.changeTitle} />
+				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin} editableTitle={component.state.editableTitles.includes(clipdata.postID) ? true : false} submitNewTitle={component.submitNewTitle} editTitle={component.editTitle} />
 				</article>
 			);
 		});

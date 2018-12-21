@@ -3,14 +3,6 @@ import React from "react";
 export default class SlugTitle extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			// editable: this.props.editable ? this.props.editable : false,
-			title: this.props.title,
-		}
-	}
-
-	editTitle(e) {
-		this.setState({title: e.target.value});
 	}
 
 	render() {
@@ -25,14 +17,14 @@ export default class SlugTitle extends React.Component {
 			titleLink = `https://www.youtube.com/watch?v=${this.props.slug}`;
 		}
 
-		let rawTitle = this.state.title.stripSlashes();
+		let rawTitle = this.props.title.stripSlashes();
 		let title = window.htmlEntityFix(rawTitle);
 
 		if (title.length > 140) {
 			title = title.substring(0, 137) + "...";
 		}
 		if (this.props.editable) {
-			return <textarea className="editableTitle" type="text" value={title} onChange={(e) => this.editTitle(e)} onKeyPress={(e) => this.props.changeTitle(e, this.props.slug)} />
+			return <textarea className="editableTitle" type="text" value={title} onChange={(e) => this.props.editTitle(e, this.props.slug)} onKeyPress={(e) => this.props.submitNewTitle(e, this.props.slug)} />
 		} else {
 			return <a href={titleLink} target="_blank">{title}</a>;
 		}

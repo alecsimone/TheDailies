@@ -78,7 +78,7 @@ function getHopefuls() {
 					deleteAllVotesForSlug($liveSlug);
 					deleteAllVotesForSlug("live");
 					update_option("liveSlug", "false");
-					update_option("lastAutoAction", "true");
+					update_option("lastPromotedSlug", $liveSlug);
 				}
 			}
 		}
@@ -89,8 +89,8 @@ function getHopefuls() {
 
 	$hopefulsData = array(
 		"clips" => $hopefuls,
-		"liveSlug" => get_option("liveSlug"),
-		"promotedAHopeful" => get_option("lastAutoAction"),
+		"liveSlug" => $liveSlugIsHopeful ? $liveSlug : false,
+		"lastPromotedSlug" => get_option("lastPromotedSlug"),
 	);
 
 	// basicPrint($hopefuls);
@@ -241,7 +241,7 @@ function choose_live_slug() {
 	// 		$wpdb->update($table, $data, $where);
 	// 	}
 	// }
-	killAjaxFunction($liveVoters);
+	killAjaxFunction($_POST['slug']);
 	// killAjaxFunction($_POST['slug'] . " is now selected!");
 }
 
