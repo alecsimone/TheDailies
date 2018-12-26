@@ -26,38 +26,6 @@ function buildPostDataObject($id) {
 	);
 	$postDataObject['votecount'] = get_post_meta($id, 'votecount', true);
 	if ($postDataObject['votecount'] === '') {$postDataObject['votecount'] = 0;}
-	$postDataObject['voteledger'] = get_post_meta($id, 'voteledger', true);
-	if ($postDataObject['voteledger'] === '' || $postDataObject['voteledger'] === [] || $postDataObject['voteledger'] === null) {
-		$postDataObject['voteledger'] = [];
-		$postDataObject['voterData'] = [];
-	}
-	foreach ($postDataObject['voteledger'] as $voterID => $votedRep) {
-		$voter = getPersonInDB($voterID);
-		$voterName = $voter['dailiesDisplayName'];
-		if ($voterName === '--') {
-			$voterName = $voter['twitchName'];
-		}
-		$postDataObject['voterData'][$voterID] = array(
-			'name' => $voterName,
-			'picture' => getPicForPerson($voterID),
-			'rep' => getValidRep($voterID),
-		);
-	}
-	$postDataObject['guestlist'] = getValidGuestlist($id);
-	$postDataObject['twitchVoters'] = get_post_meta($id, 'twitchVoters', true);
-	if (is_array($postDataObject['twitchVoters'])) {
-		foreach ($postDataObject['twitchVoters'] as $voter => $pic) {
-			if ($pic === 'none' || $pic === null) {
-				//if $pic is none, we want to replace it with the current twitchpic from the twitchUserDB
-				$livePageObject = get_page_by_path('live');
-				$liveID = $livePageObject->ID;
-				$twitchUserDB = get_post_meta($liveID, 'twitchUserDB', true);
-				$newPic = $twitchUserDB[$voter]['twitchPic'];
-				$postDataObject['twitchVoters'][$voter] = $newPic;
-			}
-		}
-		update_post_meta($id, 'twitchVoters', $postDataObject['twitchVoters']);
-	}
 	$postDataObject['EmbedCodes'] = array(
 		'TwitchCode' => get_post_meta($id, 'TwitchCode', true),
 		'GFYtitle' => get_post_meta($id, 'GFYtitle', true),

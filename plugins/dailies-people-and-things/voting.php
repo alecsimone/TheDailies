@@ -189,25 +189,6 @@ function prepareVoteHistoryArray($person, $thing) {
 	return $voteArray;
 }
 
-function getPostIDForVoteNumber($voteNumber) {
-	$postDataArray = getLiveContenders();
-	$voteIndex = $voteNumber - 1;
-	if (!voteChoiceIsValid($voteIndex, $postDataArray)) {
-		return false;
-	} else {
-		return $postDataArray[$voteIndex]->ID;
-	}
-}
-
-function voteChoiceIsValid($voteChoice, $postDataArray) {
-	$postCount = count($postDataArray);
-	if ($voteChoice > $postCount) {
-		return false;
-	} else {
-		return true;
-	}
-}
-
 function changeVotecount($amountToChange, $postID) {
 	$currentScore = get_post_meta($postID, 'votecount', true);
 	$newScore = $currentScore + $amountToChange;

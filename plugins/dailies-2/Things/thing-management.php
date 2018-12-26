@@ -167,4 +167,25 @@ function blacklist_vod($vodID) {
 	}
 }
 
+add_action('publish_post', 'set_default_custom_fields');
+function set_default_custom_fields($ID){
+	global $wpdb;
+    if( !wp_is_post_revision($ID) ) {add_post_meta($ID, 'votecount', 0, true);};
+};
+
+add_action( 'wp_ajax_declare_winner', 'declare_winner' );
+function declare_winner() {
+	$nonce = $_POST['vote_nonce'];
+	if (!wp_verify_nonce($nonce, 'vote_nonce')) {
+		die("Busted!");
+	}
+	$postID = $_POST['id'];
+	if (!current_user_can('edit_others_posts', $postID)) {
+		die("You can't do that!");
+	}
+	wp_set_post_tags($postID, 'Winners', true);
+	buildPostDataObject($postID);
+	wp_die();
+}
+
 ?>

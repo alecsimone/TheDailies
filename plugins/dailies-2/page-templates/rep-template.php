@@ -1,6 +1,12 @@
 <?php /* Template Name: Rep */ 
 get_header(); ?>
 
+<div id="repIntro">
+	<div class="repIntroRow"><span class="bold">Rep</span> determines how much your vote counts for</div>
+	<div class="repIntroRow">When you participate in the Dailies process, you get the ability to <span class="highlight">give other people rep</span></div>
+	<div class="repIntroRow">You only get rep when someone else gives it to you</div>
+</div>
+
 <section id="repInfo">
 
 	<div id="totalRep" class="repPageSection">
@@ -21,9 +27,10 @@ get_header(); ?>
 		?>
 		<div class='mainLine'>There is <span class='bold'><?php echo $formattedTotalRep?></span> total rep</div>
 		
-		There are <span class='highlight'><?php echo $formattedTotalPeople?></span> people, so people have an average of <span class='highlight'><?php echo $averageRep?></span> rep.
+		There are <span class='highlight'><?php echo $formattedTotalPeople?></span> people, so people have an average of <span class='highlight'><?php echo $averageRep?></span> rep
 
 	</div>
+
 	<div id="multiRepPeople" class="repPageSection">
 
 		<?php
@@ -35,8 +42,8 @@ get_header(); ?>
 		}
 		$averageRep = round($totalRep / $totalPeople, 1, PHP_ROUND_HALF_DOWN);
 		$formattedTotalRep = number_format($totalRep);
-		basicPrint("If we exclude people who only have 1 rep, There is <span class='bold'>$formattedTotalRep</span> total rep out there");
-		basicPrint("There are <span class='highlight'>$totalPeople</span> people with more than 1 rep, so those people have an average of <span class='highlight'>$averageRep</span> rep.");
+		basicPrint("If we exclude people who only have 1 rep, There is <span class='bold'>$formattedTotalRep</span> rep");
+		basicPrint("There are <span class='highlight'>$totalPeople</span> people with more than 1 rep, so those people have an average of <span class='highlight'>$averageRep</span> rep");
 		?>
 
 	</div>
@@ -52,7 +59,7 @@ get_header(); ?>
 		$averageGiveableRep = round($totalGiveableRep / $totalPeople, 1, PHP_ROUND_HALF_DOWN);
 
 		$formattedTotalGiveableRep = number_format($totalGiveableRep);
-		basicPrint("There is <span class='bold'>$formattedTotalGiveableRep</span> total giveable rep, so people have an average of <span class='highlight'>$averageGiveableRep</span> giveable rep.");
+		basicPrint("There is <span class='bold'>$formattedTotalGiveableRep</span> total giveable rep, so people have an average of <span class='highlight'>$averageGiveableRep</span> giveable rep");
 
 		$multirepPeoplesGiveableRep = $wpdb->get_col("SELECT giveableRep FROM $table_name WHERE rep > 1");
 		$totalGiveableRep = 0;
@@ -63,7 +70,7 @@ get_header(); ?>
 		$averageGiveableRep = round($totalGiveableRep / $totalPeople, 1, PHP_ROUND_HALF_DOWN);
 
 		$formattedTotalGiveableRep = number_format($totalGiveableRep);
-		basicPrint("Among people with more than 1 rep, there is <span class='bold'>$formattedTotalGiveableRep</span> total giveable rep, so those people have an average of <span class='highlight'>$averageGiveableRep</span> giveable rep.");
+		basicPrint("Among people with more than 1 rep, there is <span class='bold'>$formattedTotalGiveableRep</span> giveable rep, so those people have an average of <span class='highlight'>$averageGiveableRep</span> giveable rep");
 		?>
 
 	</div>
@@ -76,7 +83,7 @@ get_header(); ?>
 			WHERE rep = 100
 		", ARRAY_A);
 
-		basicPrint("The people who currently have 100 Rep are:");
+		?><div class='repTableHeader'>The people who currently have 100 Rep are:</div><?php
 
 		$var = 5;
 		$var_is_greater_than_two = ($var > 2 ? true : false); 
@@ -101,7 +108,7 @@ get_header(); ?>
 			LIMIT 25
 		", ARRAY_A);
 
-		basicPrint("The next 25 reppiest people are: ");
+		?><div class='repTableHeader'>The next 25 reppiest people are:</div><?php
 
 		foreach ($nextTwentyFive as $highRepPerson) {
 			$highRepPersonDisplayName = ($highRepPerson['dailiesDisplayName'] !== "--" ? $highRepPerson['dailiesDisplayName'] : $highRepPerson['twitchName']);

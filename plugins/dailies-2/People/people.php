@@ -135,6 +135,26 @@ function buildFreshTwitchDB() {
     );
     return $twitchAccounts;
 }
+add_action( 'wp_ajax_share_twitch_user_db', 'share_twitch_user_db' );
+function share_twitch_user_db() {
+    // $twitchUserDB = buildFreshTwitchUserDB();
+    $twitchDB = buildFreshTwitchDB();
+    killAjaxFunction($twitchDB);
+}
+
+function update_twitch_db() {
+    if (!currentUserIsAdmin()) {
+        wp_die("You are not an admin, sorry");
+    }
+    $twitchName = $_POST['twitchName'];
+    $twitchPic = $_POST['twitchPic'];
+    $userArray = array(
+        'twitchName' => $twitchName,
+        'picture' => $twitchPic,
+    );
+    editPersonInDB($userArray);
+    killAjaxFunction($userArray);
+}
 
 function getSpecialPeople() {
     global $wpdb;
@@ -272,6 +292,7 @@ function give_rep() {
             'message' => "You're not an admin!", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
 
@@ -282,6 +303,7 @@ function give_rep() {
             'message' => $giver . ", you're not in our database!", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
 
@@ -293,6 +315,7 @@ function give_rep() {
             'message' => $receiver . " isn't in our database!", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
 
@@ -302,6 +325,7 @@ function give_rep() {
             'message' => "You tried to give a non-numeric amount of rep!", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     } else {
         $amount = (int)$amount;
@@ -312,6 +336,7 @@ function give_rep() {
             'message' => "You have to give a positive amount of rep, asshole!", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     } 
 
@@ -324,6 +349,7 @@ function give_rep() {
             'message' => $receiver . " already has 100 rep", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
     
@@ -333,6 +359,7 @@ function give_rep() {
             'message' => $giver . ", you don't have that much giveable rep.", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
 
@@ -342,6 +369,7 @@ function give_rep() {
             'message' => $giver . ", you don't have that much giveable rep.", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
     $newReceiverRep = increase_rep($receiverData['hash'], $amount);
@@ -350,6 +378,7 @@ function give_rep() {
             'message' => $receiver . " already has 100 rep", 
             "tone" => "error",
         );
+        send_nightbot_message($response['message']);
         killAjaxFunction($response);
     }
 
@@ -367,7 +396,13 @@ function give_rep() {
             'message' => $giver . " gave " . $receiver . " " . $amount . " rep!", 
             "tone" => "success",
         );
+    send_nightbot_message($response['message']);
     killAjaxFunction($response);
 }
+
+function validateUserInfo() {
+    //When I figure out what needs to be fixed when people login, do it here
+}
+add_action('wp_login', 'validateUserInfo');
 
 ?>

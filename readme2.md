@@ -1,0 +1,1 @@
+The purpose of the Dailies is to bring people together to decide what's great. For themselves, but also with each other. We find things worth talking about, then we all get together and talk about them.

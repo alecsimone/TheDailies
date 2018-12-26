@@ -204,4 +204,8 @@ function getClipTypeByPostID($postID) {
 	if ($youtube) {return "youtube";}
 }
 
+function convertTwitchTimeToTimestamp($twitchTime) {
+	return date("U",strtotime($twitchTime));
+}
+
 ?>

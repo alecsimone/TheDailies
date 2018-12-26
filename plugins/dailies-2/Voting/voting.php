@@ -172,6 +172,25 @@ function chat_contender_vote() {
 	killAjaxFunction($voter. " voted " . $_POST['direction'] . " on slug " . $slug);
 }
 
+function getPostIDForVoteNumber($voteNumber) {
+	$postDataArray = getLiveContenders();
+	$voteIndex = $voteNumber - 1;
+	if (!voteChoiceIsValid($voteIndex, $postDataArray)) {
+		return false;
+	} else {
+		return $postDataArray[$voteIndex]->ID;
+	}
+}
+
+function voteChoiceIsValid($voteChoice, $postDataArray) {
+	$postCount = count($postDataArray);
+	if ($voteChoice > $postCount) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 function getPersonVoteIDs($person) {
 	$personRow = getPersonInDB($person);
 	$hash = $personRow['hash'];
