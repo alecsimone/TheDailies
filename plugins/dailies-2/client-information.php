@@ -2,7 +2,8 @@
 
 add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
-	$version = '-v2.102d';
+	$version = '-v2.201';
+	$styleVersion = '-v2.200';
 	wp_register_script('globalScripts', plugins_url() . '/dailies-2/React/Bundles/global-bundle' . $version . '.js', ['jquery'], '', true );
 	$thisDomain = get_site_url();
 	$global_data = array(
@@ -14,7 +15,7 @@ function client_information() {
 	);
 	wp_localize_script( 'globalScripts', 'dailiesGlobalData', $global_data );
 	wp_enqueue_script( 'globalScripts' );
-	wp_enqueue_style( 'globalStyles', get_template_directory_uri() . '/style' . $version . '.css');
+	wp_enqueue_style( 'globalStyles', get_template_directory_uri() . '/style' . $styleVersion . '.css');
 	if ( !is_page() && !is_attachment() ) {
 		wp_register_script( 'mainScripts', plugins_url() . '/dailies-2/React/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
