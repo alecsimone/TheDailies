@@ -35,7 +35,8 @@ module.exports = {
 					fallback: 'style-loader',
 					use: ['css-loader', 'sass-loader'],
 				}), 
-				exclude: /node_modules/},
+				exclude: /node_modules/
+			},
 			{
                 test: /\.jsx?$/,
                 loaders: 'babel-loader',
