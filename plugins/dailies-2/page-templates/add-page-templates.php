@@ -29,6 +29,7 @@ class PageTemplater {
 			'schedule-template.php' => 'Schedule',
 			'submit-template.php' => 'Submit',
 			'viewers-template.php' => 'Viewers',
+			'votenumber-template.php' => 'Votenumber',
 			'weed-template.php' => 'Weed',
 			'your-votes-template.php' => 'Your Votes',
 			'your-submissions-template.php' => 'Your Submissions',

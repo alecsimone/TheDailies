@@ -9,7 +9,7 @@ get_header(); ?>
 		display: none;
 	}
 	body::before {
-		background: #0055ff;
+		background: none;
 	}
 	body {
 		color: black;
@@ -27,14 +27,14 @@ get_header(); ?>
 
 
 <script>
-	// window.setInterval(updateVotenumber, 500);
+	window.setInterval(updateVotenumber, 500);
 	function updateVotenumber() {
 		jQuery.ajax({
 			type: "POST",
 			url: dailiesGlobalData.ajaxurl,
 			dataType: 'json',
 			data: {
-				action: 'return_vote_number',
+				action: 'returnVoteNumber',
 			},
 			error: function(one, two, three) {
 				console.log(one);
@@ -47,7 +47,7 @@ get_header(); ?>
 				if (data === 'false' || data === '') {
 					voteText = '';
 				} else {
-					voteText = `!vote${data}`
+					voteText = data
 				}
 				jQuery("#votenumber").text(voteText);
 			}

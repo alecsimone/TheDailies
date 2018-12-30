@@ -27,6 +27,9 @@ export default class Live extends React.Component{
 		} else {
 			window.setInterval(() => this.updateLive(), 3000);
 		}
+		document.addEventListener("fullscreenchange", this.fullScreenListener);
+		document.addEventListener("webkitfullscreenchange", this.fullScreenListener);
+		document.addEventListener("mozfullscreenchange", this.fullScreenListener);
 	}
 
 	updateLive() {
@@ -48,6 +51,32 @@ export default class Live extends React.Component{
 					clips: data,
 					hasData: true,
 				});
+			}
+		});
+	}
+
+	fullScreenListener(e) {
+		let contenderNumber = "";
+		if (document.fullscreenElement !== null) {
+			let fullscreenedContender = jQuery(document.fullscreenElement).parent().parent().parent().parent();
+			let contenderNumberElement = fullscreenedContender.find(".contenderNumber");
+			contenderNumber = contenderNumberElement[0].innerText;
+		}
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				contenderNumber,
+				action: 'updateVoteNumber',
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: function(data) {
+				console.log(data);
 			}
 		});
 	}

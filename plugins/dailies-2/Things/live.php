@@ -200,4 +200,20 @@ function specialButtonHandler() {
 	killAjaxFunction($twitchName);
 }
 
+add_action( 'wp_ajax_updateVoteNumber', 'updateVoteNumber' );
+function updateVoteNumber() {
+	$votenumber = $_POST['contenderNumber'];
+	$votenumberPageID = getPageIDBySlug('votenumber');
+	update_post_meta($votenumberPageID, 'votenumber', $votenumber);
+	killAjaxFunction($votenumber);
+}
+
+add_action( 'wp_ajax_returnVoteNumber', 'returnVoteNumber' );
+add_action( 'wp_ajax_nopriv_returnVoteNumber', 'returnVoteNumber' );
+function returnVoteNumber() {
+	$votenumberPageID = getPageIDBySlug('votenumber');
+	$votenumber = get_post_meta($votenumberPageID, 'votenumber', true);
+	killAjaxFunction($votenumber);
+}
+
 ?>
