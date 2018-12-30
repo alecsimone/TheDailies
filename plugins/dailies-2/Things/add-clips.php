@@ -1,8 +1,8 @@
 <?php 
 	
 function addSlugToDB($slugData) {
-	$slugIsFresh = checkSlugFreshness($slugData);
-	if (!$slugIsFresh) {return false;}
+	// $slugIsFresh = checkSlugFreshness($slugData);
+	// if (!$slugIsFresh) {return false;}
 
 	$clipArray = array(
 		'slug' => $slugData['slug'],

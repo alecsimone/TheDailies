@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import TopFive from './TopFive.jsx';
+import LittleThing from './Things/LittleThing.jsx';
 import ContenderVoteBar from './ContenderVoteBar.jsx';
 import {playAppropriatePromoSound, playAppropriateKillSound} from '../Scripts/sounds.js';
 import {turnContenderDataIntoVoteData} from '../Scripts/global.js';
@@ -248,7 +248,7 @@ export default class Live extends React.Component{
 			return(
 				<article className={`contender${clipdata.eliminated === "true" ? " eliminated" : ""}`} key={contenderCounter}>
 					<div className="contenderNumber">{`!vote${contenderCounter}`}</div>
-				 	<TopFive key={clipdata.slug} clipdata={clipdata} adminFunctions={admin} editableTitle={component.state.editableTitles.includes(clipdata.postID) ? true : false} submitNewTitle={component.submitNewTitle} editTitle={component.editTitle} />
+				 	<LittleThing key={clipdata.slug} clipdata={clipdata} adminFunctions={admin} editableTitle={component.state.editableTitles.includes(clipdata.postID) ? true : false} submitNewTitle={component.submitNewTitle} editTitle={component.editTitle} />
 				</article>
 			);
 		});

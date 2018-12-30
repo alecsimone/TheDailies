@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import Leader from './Leader.jsx';
-import TopFive from './TopFive.jsx';
-import Pleb from './Pleb.jsx';
+import Thing from './Things/Thing.jsx';
+import LittleThing from './Things/LittleThing.jsx';
+import TinyThing from './Things/TinyThing.jsx';
 import {playAppropriatePromoSound, playAppropriateKillSound} from '../Scripts/sounds.js';
 
 export default class Hopefuls extends React.Component{
@@ -133,6 +133,8 @@ export default class Hopefuls extends React.Component{
 					liveSlug: alreadyPlayedAPromoSound ? "false" : data.liveSlug,
 					hasData: true,
 					lastPromotedSlug: data.lastPromotedSlug,
+					pulledClipsCount: data.pulledClipsCount,
+					pulledClipsVotecount: data.pulledClipsVotecount,
 				});
 			}
 		});
@@ -256,19 +258,22 @@ export default class Hopefuls extends React.Component{
 			topfive.push(this.state.clips[i]);
 		}
 		let topfivecomponents = topfive.map(function(clipdata) {
-			return <TopFive key={clipdata.id} clipdata={clipdata} adminFunctions={admin} />;
+			return <LittleThing key={clipdata.id} clipdata={clipdata} adminFunctions={admin} />;
 		});
 		let plebs = [];
 		for (var i = 7; i < this.state.clips.length; i++) {
 			plebs.push(this.state.clips[i]);
 		}
 		let plebcomponents = plebs.map(function(clipdata) {
-			return <Pleb key={clipdata.id} clipdata={clipdata} />;
+			return <TinyThing key={clipdata.id} clipdata={clipdata} />;
 		});
 		return(
 			<section id="hopefuls">
+				<div id="hopefulsIntroData">
+					<h5>{this.state.pulledClipsCount} plays, <span class="lightbluetext">{this.state.pulledClipsVotecount} votes</span>, <span class="goldtext">{this.state.clips.length} Hopefuls.</span></h5>
+				</div>
 				<div id="leader">
-					<Leader key={leader.id} clipdata={leader} adminFunctions={admin} autoplay={false} />
+					<Thing key={leader.id} clipdata={leader} adminFunctions={admin} autoplay={false} />
 				</div>
 				<div id="topfive">
 					{topfivecomponents}

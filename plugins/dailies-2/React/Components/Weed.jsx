@@ -2,10 +2,8 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import ClipPlayer from './ClipPlayer.jsx';
-import WeedMeta from './WeedMeta.jsx';
-import WeedBallot from './WeedBallot.jsx';
 import WeedComments from './WeedComments.jsx';
-import Leader from './Leader.jsx';
+import Thing from './Things/Thing.jsx';
 import {privateData} from '../Scripts/privateData.jsx';
 
 export default class Weed extends React.Component{
@@ -863,7 +861,7 @@ export default class Weed extends React.Component{
 					}}
 				>
 					<section id="scoutThing">
-						<Leader clipdata={firstSlugData} voteCallback={this.judgeClip} autoplay={true} adminFunctions={admin} />
+						<Thing clipdata={firstSlugData} voteCallback={this.judgeClip} autoplay={true} adminFunctions={admin} />
 					</section>
 				</CSSTransition>
 			</section>

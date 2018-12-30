@@ -3,10 +3,12 @@ global $seen_slugs_db_version;
 global $pulled_clips_db_version;
 global $cip_comments_db_version;
 global $known_moments_db_version;
+global $submissions_db_version;
 $seen_slugs_db_version = '0.2';
 $pulled_clips_db_version = '0.7';
 $clip_comments_db_version = '0.1';
 $known_moments_db_version = '0.1';
+$submissions_db_version = '0.2';
 
 function createSeenSlugsDB() {
 	global $wpdb;
@@ -156,6 +158,41 @@ function update_known_moments_db_check() {
 	global $known_moments_db_version;
 	if (get_site_option("known_moments_db_version") != $known_moments_db_version) {
 		createKnownMomentsDB();
+	}
+}
+
+function createSubmissionsDB() {
+	global $wpdb;
+	global $submissions_db_version;
+	$installed_version = get_option("submissions_db_version");
+
+	if ($installed_version != $submissions_db_version) {
+		$table_name = $wpdb->prefix . "submissions_db";
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = 
+			"CREATE TABLE " . $table_name . " (
+			id INT NOT NULL AUTO_INCREMENT,
+			slug NVARCHAR(255) NOT NULL,
+			submitter NVARCHAR(64) NOT NULL,
+			type VARCHAR(64) NOT NULL,
+			title NVARCHAR(1024) NOT NULL,
+			PRIMARY KEY  (id)
+		) " . $charset_collate . ";";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+		basicPrint($wpdb->last_error);
+
+		update_option('submissions_db_version', $submissions_db_version);
+	}
+}
+
+add_action('plugins_loaded', 'update_submissions_db_check');
+function update_submissions_db_check() {
+	global $submissions_db_version;
+	if (get_site_option("submissions_db_version") != $submissions_db_version) {
+		createSubmissionsDB();
 	}
 }
 

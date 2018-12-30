@@ -1,10 +1,10 @@
 import React from "react";
-import SlugTitle from './Things/SlugTitle.jsx';
-import MetaBox from './Things/MetaBox.jsx';
-import VotingMachine from './Things/VotingMachine.jsx';
+import SlugTitle from './SlugTitle.jsx';
+import MetaBox from './MetaBox.jsx';
+import VotingMachine from './VotingMachine.jsx';
 
 
-export default class Pleb extends React.Component{
+export default class TinyThing extends React.Component{
 	constructor() {
 		super();
 		this.state = {
@@ -70,10 +70,10 @@ export default class Pleb extends React.Component{
 		}
 
 		return(
-			<div className="Pleb">
+			<div className="TinyThing">
 				<img className="plebPic" src={sourcePic} />
-				<div className="hopefuls-meta">
-					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
+				<div className="thing-meta">
+					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}
 					<MetaBox metaData={this.props.clipdata} />
 				</div>

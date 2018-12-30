@@ -1,13 +1,13 @@
 import React from "react";
-import WeedComments from './WeedComments.jsx';
-import VotingMachine from './Things/VotingMachine.jsx';
-import SlugTitle from './Things/SlugTitle.jsx';
-import MetaBox from './Things/MetaBox.jsx';
-import AdminBox from './Things/AdminBox.jsx';
-import ClickToPlayThumb from './Things/ClickToPlayThumb.jsx';
+import WeedComments from '../WeedComments.jsx';
+import VotingMachine from './VotingMachine.jsx';
+import SlugTitle from './SlugTitle.jsx';
+import MetaBox from './MetaBox.jsx';
+import AdminBox from './AdminBox.jsx';
+import ClickToPlayThumb from './ClickToPlayThumb.jsx';
 
 
-export default class TopFive extends React.Component{
+export default class LittleThing extends React.Component{
 	constructor() {
 		super();
 		this.state = {
@@ -194,10 +194,10 @@ export default class TopFive extends React.Component{
 		}
 
 		return(
-			<div className="TopFive">
+			<div className="LittleThing">
 				<ClickToPlayThumb clipdata={this.props.clipdata} />
-				<div className="hopefuls-meta">
-					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} editable={this.props.editableTitle ? this.props.editableTitle : false} submitNewTitle={this.props.submitNewTitle ? this.props.submitNewTitle : false} editTitle={this.props.editTitle} /></div>
+				<div className="thing-meta">
+					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} editable={this.props.editableTitle ? this.props.editableTitle : false} submitNewTitle={this.props.submitNewTitle ? this.props.submitNewTitle : false} editTitle={this.props.editTitle} /></div>
 					{voters}
 					<MetaBox metaData={this.props.clipdata} />
 					<WeedComments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />

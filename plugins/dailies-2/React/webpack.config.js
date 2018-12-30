@@ -1,23 +1,19 @@
 //webpack.config.js
+//For the Dailies 2 Plugin
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-var version = '-v2.201';
+var version = '-v2.300';
 
 module.exports = {
 	devtool: 'cheap-module-source-map',
     entry: {
     	main: "./Entries/main-entry.js",
-    	secretGarden: "./Entries/secret-garden-entry.js",
     	live: "./Entries/live-entry.js",
-    	schedule: "./Entries/schedule-entry.js",
     	submit: "./Entries/submit-entry.js",
-    	voteboard: "./Entries/voteboard-entry.js",
-    	contendervoteboard: "./Entries/contender-voteboard-entry.js",
     	livevotingmachine: "./Entries/live-voting-machine-entry.js",
     	livevotebar: "./Entries/live-votebar-entry.js",
-    	usermanagement: "./Entries/user-management-entry.js",
     	weed: "./Entries/weed-entry.js",
     	hopefuls: "./Entries/hopefuls-entry.js",
     	global: "./Entries/global-entry.js", //Global must be kept last because it contains all the CSS files to be combined
@@ -59,12 +55,12 @@ module.exports = {
 			new ExtractTextPlugin("../style" + version + ".css"),
 			new OptimizeCssAssetsPlugin(),
 			// Turn the following lines off for dev, on for prod
-			new webpack.DefinePlugin({
-				'process.env': {
-					'NODE_ENV': JSON.stringify('production')
-				}
-			}),
-			new webpack.optimize.AggressiveMergingPlugin(),
-			new webpack.optimize.UglifyJsPlugin(),
+			// new webpack.DefinePlugin({
+			// 	'process.env': {
+			// 		'NODE_ENV': JSON.stringify('production')
+			// 	}
+			// }),
+			// new webpack.optimize.AggressiveMergingPlugin(),
+			// new webpack.optimize.UglifyJsPlugin(),
 		],
 };

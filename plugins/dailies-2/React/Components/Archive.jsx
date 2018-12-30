@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ArchiveHeader from './ArchiveHeader.jsx';
 import Userbox from './Userbox.jsx';
 import SortBar from './SortBar.jsx';
-import Thing from './Thing.jsx';
+import Thing from './Things/Thing.jsx';
 
 class Archive extends React.Component{
 	constructor() {

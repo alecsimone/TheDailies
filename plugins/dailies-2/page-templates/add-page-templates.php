@@ -31,6 +31,7 @@ class PageTemplater {
 			'viewers-template.php' => 'Viewers',
 			'weed-template.php' => 'Weed',
 			'your-votes-template.php' => 'Your Votes',
+			'your-submissions-template.php' => 'Your Submissions',
 		);
 	}
 

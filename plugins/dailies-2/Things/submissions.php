@@ -23,39 +23,109 @@ function submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter) {
 	} elseif ($clipType === 'gfycat') {
 		$slug = turnURLIntoGfycode($newSeedlingUrl);
 	} elseif ($clipType === 'gifyourgame') {
-		return "We're currently not taking gifyourgame.com clips because they aren't embeddable. Should be able to fix this soon, sorry!";
+		$returnArray = array(
+			'message' => "We're currently not taking gifyourgame.com clips because they aren't embeddable. Should be able to fix this soon, sorry!",
+			'tone' => "error",
+		);
+		return $returnArray;
 	} else {
-		return "Invalid URL";
+		$returnArray = array(
+			'message' => "Invalid URL",
+			'tone' => "error",
+		);
+		return $returnArray;
+	}
+
+	global $wpdb;
+	$knownMomentsTable = $wpdb->prefix . "known_moments_db";
+	$knownMoment = $wpdb->get_row("SELECT * FROM $knownMomentsTable WHERE moment = '$slug' AND type = '$clipType'");
+	if ($knownMoment !== null) {
+		$returnArray = array(
+			'message' => "That play has already been submitted",
+			'tone' => "error",
+		);
+		return $returnArray;
+	} else {
+		$momentArray = array(
+			'moment' => $slug,
+			"type" => $clipType,
+		);
+		addKnownMoment($momentArray);
 	}
 
 	$existingSlug = getSlugInPulledClipsDB($slug);
 	if ($existingSlug !== null) {
-		return "That clip has already been submitted";
-	} else {
-		$clipArray = array(
-			'slug' => $slug,
-			'title' => $newSeedlingTitle,
-			'views' => 0,
-			'age' => date('c'),
-			'source' => "User Submit",
-			'sourcepic' => 'unknown',
-			'vodlink' => 'none',
-			'thumb' => 'none',
-			'clipper' => $submitter,
-			'votecount' => 0,
-			'score' => 0,
-			'nuked' => 0,
-			'type' => $clipType,
+		$returnArray = array(
+			'message' => "That clip has already been submitted",
+			'tone' => "error",
 		);
-		$addSlugSuccess = addSlugToDB($clipArray);
-		if (!$addSlugSuccess) {
-			return "That clip has already been submitted";
-		}
+		return $returnArray;
 	}
 
 	$gussyResult = gussyClip($clipType, $slug);
 
-	return $addSlugSuccess;
+	if ($clipType === "twitch" && $gussyResult['vodlink'] !== 'null') {
+		$slugData = array(
+			"slug" => $slug,
+			"type" => "twitch",
+			"vodlink" => $gussyResult['vodlink'],
+		);
+		$slugIsFresh = checkSlugFreshness($slugData);
+		if (!$slugIsFresh) {
+			$returnArray = array(
+				'message' => "That play has already been submitted",
+				'tone' => "error",
+			);
+			return $returnArray;
+		}
+		$momentArray = array(
+			'moment' => $gussyResult['vodlink'],
+			"type" => $clipType,
+		);
+		addKnownMoment($momentArray);
+	}
+
+	$ourCutoff = clipCutoffTimestamp();
+	$clipTimestamp = convertTwitchTimeToTimestamp($gussyResult['age']);
+	if ($clipTimestamp < $ourCutoff - 24 * 60 * 60) {
+		$returnArray = array(
+			'message' => "That clip is too old, sorry",
+			'tone' => "error",
+		);
+		return $returnArray;
+	}
+
+	$clipArray = array(
+		'slug' => $slug,
+		'title' => $newSeedlingTitle,
+		'views' => $gussyResult['views'] ? $gussyResult['views'] : 0,
+		'age' => $gussyResult['age'] ? $gussyResult['age'] : date('c'),
+		'source' => $gussyResult['source'] ? $gussyResult['source'] : "User Submit",
+		'sourcepic' => $gussyResult['sourcepic'] ? $gussyResult['sourcepic'] : 'unknown',
+		'vodlink' => $gussyResult['vodlink'] ? $gussyResult['vodlink'] : 'none',
+		'thumb' => $gussyResult['thumb'] ? $gussyResult['thumb'] : 'none',
+		'clipper' => $submitter,
+		'votecount' => 0,
+		'score' => 0,
+		'nuked' => 0,
+		'type' => $clipType,
+	);
+
+	$addSlugSuccess = addSlugToDB($clipArray);
+	if (!$addSlugSuccess) {
+		$returnArray = array(
+			'message' => "That clip has already been submitted",
+			'tone' => "error",
+		);
+		return $returnArray;
+	}
+	addSubmissionToDB($slug, $submitter, $clipType, $newSeedlingTitle);
+
+	$returnArray = array(
+		'message' => "Your play has been successfully submitted! Check its status at Dailies.gg/Your-Submissions",
+		'tone' => "success",
+	);
+	return $returnArray;
 }
 
 function gussyClip($clipType, $slug) {
@@ -109,12 +179,13 @@ function gussyTweet($tweetID) {
 		'thumb' => $thumb,
 	);
 
-	$editSuccess = editPulledClip($clipArray);
-	if ($editSuccess >= 0) {
-		return true;
-	} else {
-		return false;
-	}
+	// $editSuccess = editPulledClip($clipArray);
+	return $clipArray;
+	// if ($editSuccess >= 0) {
+	// 	return true;
+	// } else {
+	// 	return false;
+	// }
 }
 
 function gussyTwitch($twitchCode) {
@@ -141,12 +212,13 @@ function gussyTwitch($twitchCode) {
 		'vodlink' => $responseBody->vod ? $responseBody->vod->url : 'null',
 	);
 
-	$editSuccess = editPulledClip($clipArray);
-	if ($editSuccess >= 0) {
-		return $clipArray;
-	} else {
-		return false;
-	}
+	// $editSuccess = editPulledClip($clipArray);
+	return $clipArray;
+	// if ($editSuccess >= 0) {
+	// 	return $clipArray;
+	// } else {
+	// 	return false;
+	// }
 }
 
 function gussyYoutube($youtubeCode) {
@@ -171,12 +243,13 @@ function gussyYoutube($youtubeCode) {
 		'views' => $responseBody->items[0]->statistics->viewCount,
 	);
 
-	$editSuccess = editPulledClip($clipArray);
-	if ($editSuccess >= 0) {
-		return true;
-	} else {
-		return false;
-	}
+	// $editSuccess = editPulledClip($clipArray);
+	return $clipArray;
+	// if ($editSuccess >= 0) {
+	// 	return true;
+	// } else {
+	// 	return false;
+	// }
 }
 
 function gussyGfy($gfyCode) {
@@ -196,12 +269,13 @@ function gussyGfy($gfyCode) {
 		"vodlink" => $responseBody->gfyItem->mp4Url,
 	);
 
-	$editSuccess = editPulledClip($clipArray);
-	if ($editSuccess >= 0) {
-		return true;
-	} else {
-		return false;
-	}
+	// $editSuccess = editPulledClip($clipArray);
+	return $clipArray;
+	// if ($editSuccess >= 0) {
+	// 	return true;
+	// } else {
+	// 	return false;
+	// }
 }
 
 function submitTweet($tweetData) {
@@ -214,7 +288,7 @@ function submitTweet($tweetData) {
 	$tweetWords = explode(" ", $fullTweet);
 	$tweet = "";
 	foreach ($tweetWords as $key => $word) {
-		if (strpos($word, "@") === false && strpos($word, "http") === false) {
+		if (strpos($word, "http") === false) {
 			$tweet .= " " . $word . " ";
 		}
 	}
@@ -241,6 +315,25 @@ function submitTweet($tweetData) {
 	// basicPrint($submissionURL);
 	$submission = submitClip($tweet, $submissionURL, $tweeter);
 	return $submission;
+}
+
+function addSubmissionToDB($slug, $submitter, $type, $title) {
+	global $wpdb;
+	$submissionsTable = $wpdb->prefix . "submissions_db";
+	$existingSubmission = $wpdb->get_row("SELECT * FROM '$submissionsTable' WHERE slug = '$slug' AND submitter = '$submitter'");
+	if ($existingSubmission !== null) {
+		return false;
+	}
+
+	$addedSubmission = $wpdb->insert($submissionsTable, 
+		array(
+			'slug' => $slug,
+			'submitter' => $submitter,
+			'type' => $type,
+			'title' => $title,
+		)
+	);
+	return $addedSubmission;
 }
 
 add_action( 'wp_ajax_addProspect', 'addProspect' );

@@ -1,15 +1,14 @@
 import React from "react";
-import ClipPlayer from './ClipPlayer.jsx';
-import VoterInfoBox from './VoterInfoBox.jsx';
-import WeedComments from './WeedComments.jsx';
-import KeepBar from './KeepBar.jsx';
-import VotingMachine from './Things/VotingMachine.jsx';
-import SlugTitle from './Things/SlugTitle.jsx';
-import MetaBox from './Things/MetaBox.jsx';
-import AdminBox from './Things/AdminBox.jsx';
+import ClipPlayer from '../ClipPlayer.jsx';
+import WeedComments from '../WeedComments.jsx';
+import KeepBar from '../KeepBar.jsx';
+import VotingMachine from './VotingMachine.jsx';
+import SlugTitle from './SlugTitle.jsx';
+import MetaBox from './MetaBox.jsx';
+import AdminBox from './AdminBox.jsx';
 
 
-export default class Leader extends React.Component{
+export default class Thing extends React.Component{
 	constructor() {
 		super();
 		this.state = {
@@ -244,13 +243,13 @@ export default class Leader extends React.Component{
 		}
 
 		return(
-			<div className="Leader">
+			<div className="Thing">
 				{winner}
 				<div className="playerContainer">
 					<ClipPlayer type={this.props.clipdata.type} slug={this.props.clipdata.slug} width={playerWidth} vodlink={this.props.clipdata.vodlink} autoplay={this.props.autoplay} />
 				</div>
-				<div className="hopefuls-meta">
-					<div className="hopefuls-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
+				<div className="thing-meta">
+					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}
 					<MetaBox metaData={this.props.clipdata} />
 					<WeedComments key={`weedComments-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />

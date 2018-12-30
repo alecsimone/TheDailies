@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import Thing from './Thing.jsx';
+import Thing from './Things/Thing.jsx';
 
 export default class Single extends React.Component{
 	constructor() {

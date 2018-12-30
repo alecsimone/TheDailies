@@ -1,6 +1,7 @@
 <?php /* Template Name: Schedule */ 
 get_header(); 
 include(locate_template('schedule.php'));
+$thisDomain = get_site_url();
 ?>
 
 <section id="schedule-container">

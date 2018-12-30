@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import HomeTop from './HomeTop.jsx';
-import Thing from './Thing.jsx';
-import Leader from './Leader.jsx';
+import Thing from './Things/Thing.jsx';
 import DayContainer from './DayContainer.jsx';
 
 class Homepage extends React.Component {
@@ -213,7 +212,7 @@ class Homepage extends React.Component {
 			<div id="appContainer">
 				<HomeTop user={this.state.user} />
 				<section id="homePagePosts">
-					<Leader clipdata={this.state.winner} autoplay={false} adminFunctions={admin} />
+					<Thing clipdata={this.state.winner} autoplay={false} adminFunctions={admin} />
 					{dayContainerComponents}
 				</section>
 				{this.state.loadingMore ? <div className="lds-ring"><div></div><div></div><div></div><div></div></div> : ""}

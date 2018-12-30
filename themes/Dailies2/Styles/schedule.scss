@@ -28,7 +28,7 @@ $textShadow: 0 0 8px #000;
 		padding: 1em 0;
 		border-bottom: $bottomBorder;
 		background: $blueGlass;
-		box-shadow: $lowShadowFromAbove;
+		box-shadow: 2px 6px rgba(0,0,0,.25);
 		& #suffix {
 			vertical-align: super;
 			font-size: .5em;
@@ -57,7 +57,7 @@ $textShadow: 0 0 8px #000;
 	box-sizing: border-box;
 	border-bottom: $bottomBorder;
 	background: $blueGlass;
-	box-shadow: $lowShadowFromAbove;
+	box-shadow: 0 2px 6px rgba(0,0,0,.25);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020a12', endColorstr='#000000',GradientType=0 );
 	@media #{$bp500} {
 		font-size: 18px;	

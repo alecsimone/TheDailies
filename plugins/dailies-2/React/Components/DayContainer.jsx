@@ -1,8 +1,7 @@
 import React from "react";
-import Thing from './Thing.jsx';
-import TopFive from './TopFive.jsx';
-import Leader from './Leader.jsx';
-import Pleb from './Pleb.jsx';
+import Thing from './Things/Thing.jsx';
+import LittleThing from './Things/LittleThing.jsx';
+import TinyThing from './Things/TinyThing.jsx';
 
 export default class DayContainer extends React.Component {
 	render() {
@@ -64,16 +63,16 @@ export default class DayContainer extends React.Component {
 		});
 		let winnerPost;
 		if (winner) {
-			winnerPost = <Leader clipdata={winner} key={winner.slug} adminFunctions={adminFunctions} autoplay={false} />
+			winnerPost = <Thing clipdata={winner} key={winner.slug} adminFunctions={adminFunctions} autoplay={false} />
 		}
 		let nomComponents = noms.map((thing) => {
 			return(
-				<TopFive clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+				<LittleThing clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
 			)
 		});
 		let contenderComponents = contenders.map((thing) => {
 			return(
-				<Pleb clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+				<TinyThing clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
 			)
 		});
 

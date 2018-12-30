@@ -1,16 +1,17 @@
- @import '../Styles/vars.scss';
+@import '../Styles/vars.scss';
 
- html, body {
- 	height: 100%; /* This and min-height help the background work on mobile */
- 	min-height: 100%;
- 	font-family: proxima-nova, sans-serif;
+html, body {
+	height: 100%;
+	min-height: 100%;
+	font-family: proxima-nova, sans-serif;
 	color: $white;
 	margin: 0;
 	padding: 0;
 	text-align: center;
 	transition: all .25s ease-out;
- }
- body:before { /* Background hack to play a little nicer on mobile */
+}
+
+body:before {
 	content: "";
 	display: block;
 	position: fixed;
@@ -19,29 +20,650 @@
 	width: 100%;
 	height: 100%;
 	z-index: -10;
-	background: #222426;
-	@media #{$bp800} {
-		background: url(https://dailies.gg/wp-content/uploads/2017/NewUtopia15.jpg) center/cover;
-	}
-	//background: $backgroundCore;
-	//background: -moz-linear-gradient(left, $backgroundEdge 0%, $backgroundCore 2%, $backgroundCore 98%, $backgroundEdge 100%);
-    //background: -webkit-linear-gradient(left, $backgroundEdge 0%, $backgroundCore 2%, $backgroundCore 98%, $backgroundEdge 100%);
-    //background: linear-gradient(to right, $backgroundEdge 0%, $backgroundCore 2%, $backgroundCore 98%, $backgroundEdge 100%);
- }
- body::-webkit-scrollbar {
- 	width: 9px;
- 	background: #000;
- }
- body::-webkit-scrollbar-track {
- 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3); 
- }
- body::-webkit-scrollbar-thumb {
- 	border-radius: 3px;
- 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.5);
- 	background: rgba(255,255,255,.25); 
- }
+	background: url(https://dailies.gg/wp-content/uploads/2017/NewUtopia15.jpg) center/cover;
+}
 
- button, input[type="submit"] {
+body::-webkit-scrollbar {
+	width: 9px;
+	background: #000;
+}
+body::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3); 
+}
+body::-webkit-scrollbar-thumb {
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.5);
+	background: rgba(255,255,255,.25); 
+}
+
+#return-to-top {
+	position: fixed;
+	bottom: 24px;
+	right: 12px;
+	width: 48px;
+	height: 48px;
+	display: none;
+	opacity: .75;
+	z-index: 2;
+	img {
+		width: 48px;
+		height: 48px;
+	}
+	&:hover {
+		opacity: 1;
+	}
+}
+
+#menu-links {
+	background: $darkBlack;
+	z-index: 3;
+	position: relative;
+	width: 100%;
+	top: 0;
+	height: 48px;
+	margin-bottom: 24px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	font-size: 24px;
+	line-height: 24px;
+	font-family: "proxima-nova-condensed", sans-serif;
+	a {
+		padding: 12px;
+		text-decoration: none;
+		flex-grow: 1;
+		color: $white;
+		&:visited {
+			color: $white;
+		}
+		&:hover {
+			background: hsla(0, 0%, 100%, .05);
+			text-decoration: underline;
+		}
+	}
+}
+a#medalLink, a#twitterLink, a#post {
+	padding: 8px 0;
+	flex-basis: 30px;
+	line-height: 0;
+}
+img.headermedal {
+	width: 32px;
+}
+a#searchToggle {
+	cursor: pointer;
+	display: none;
+	@media #{$bp850} {
+		display: inline-block;
+	}
+}
+#searchbox {
+	display: inline-block;
+	width: 300px;
+	max-width: 0;
+	overflow: hidden;
+	transition: max-width .3s;
+	position: relative;
+}
+input.search-submit {
+	position: absolute;
+	right: 8px;
+	top: 10px;
+	background: none;
+	padding: 0;
+	border: none;
+}
+input#searchform {
+	width: 300px;
+	height: 32px;
+	margin: 7px 0;
+	-webkit-appearance: none;
+	border: none;
+	border-radius: 2px;
+	padding: 0 42px 0 8px;
+	background: rgba(255,255,255,.2);
+	color: $white;
+	font-size: 16px;
+}
+#searchform::-webkit-search-cancel-button{
+	display: none;
+}
+a#Rules, a#Schedule {
+	display: none;
+	@media #{$bp500} {
+		display: inline-block;
+	}
+}
+a#submit {
+	display: none;
+	@media #{$bp850} {
+		display: inline-block;
+	}
+}
+a#Live {
+	color: $red;
+	&:visited {
+		color: $red;
+	}
+}
+a#twitterLink {
+	display: none;
+	@media #{$bp350} {
+		display: inline-block;
+	}
+}
+.socialimg {
+	width: 32px;
+	height: auto;
+	line-height: 0;
+}
+.submitimg {
+	width: 28px;
+	padding: 2px 0;
+}
+
+#userbox {
+	display: inline-flex;
+	flex-direction: column;
+	background: #fff;;
+	border-radius: 3px;
+	width: 100%;
+	max-width: 300px;
+	min-width: 264px;
+	color: black;
+	order: 3;
+	@media #{$bp800} {
+		width: 20%;
+		order: 0;
+	}
+}
+
+#repHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	border-radius: 3px 3px 0 0;
+	background: $gold;
+	color: black;
+	font-size: 24px;
+	font-weight: bold;
+	padding: 18px;
+}
+img.userboxProfilePic {
+	width: 48px;
+	border-radius: 24px;
+}
+p.userbox {
+	font-size: 18px;
+	margin: 1em 0;
+	a {
+		color: black;
+	}
+}
+.hidden {
+	display: none;
+}
+
+.wp-social-login-connect-with {
+    font-size: 18px;
+}
+a.wp-social-login-provider {
+	color: transparent;
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	display: inline-block;
+	margin: 0 6px;
+}
+.wp-social-login-provider-list {
+	padding: 12px 0;
+}
+.wp-social-login-provider-facebook {
+	background: url('https://dailies.gg/wp-content/uploads/2016/09/FB.png') center/cover;
+}
+.wp-social-login-provider-google {
+	background: url('https://dailies.gg/wp-content/uploads/2016/12/G.png') center/cover;
+}
+.wp-social-login-provider-twitter {
+	background: url('https://dailies.gg/wp-content/uploads/2016/09/TWT.png') center/cover;
+}
+.wp-social-login-provider-steam {
+	background: url('https://dailies.gg/wp-content/uploads/2016/12/St.png') center/cover;
+}
+.wp-social-login-provider-twitchtv {
+	background: url('https://dailies.gg/wp-content/uploads/2016/09/TW.png') center/cover;
+}
+
+.Thing, .LittleThing, .TinyThing {
+	background: $blueGlass;
+	border: 3px solid $whiteTrans07;
+	box-sizing: border-box;
+	width: 100%;
+	& textarea {
+		background: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-color: $whiteTrans25;
+		color: white;
+		&:focus {
+			outline: 1px solid $whiteTrans25;
+		}
+	}
+	& .playerContainer {
+		width: 100%;
+		@media #{$bp1280} {
+			width: calc(100% - 424px);
+			max-width: 1280px;
+			// height: calc(100vh - 170px);
+			max-height: 720px;
+			margin-right: 12px;
+		}
+	}
+	& a {
+		color: $white;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	& .hopefuls-score {
+		color: $blue;
+	}
+	& .hopefuls-data {
+		color: $whiteTrans50;
+		& .taxbox {
+			display: inline-block;
+		}
+		& .star, .source, .tag, .skill {
+			color: $whiteTrans50;
+			margin-left: 4px;
+			&:hover {
+				color: $white;
+			}
+		}
+		& h5.taxtitle {
+			margin: 0;
+			display: inline;
+			font-size: 1em;
+			font-weight: normal;
+		    // color: $goldTrans75;
+		}
+	}
+	& a.vodlink {
+		color: $blue;
+		text-decoration: underline;
+	}
+	@media #{$bp800} {
+		padding: 12px;
+		border-radius: 5px;
+	}
+	@media #{$bp1900} {
+		padding: 12px 8px;
+	}
+}
+
+.Thing {
+	display: flex;
+	flex-wrap: wrap;
+	text-align: left;
+	justify-content: center;
+	margin-bottom: 48px;
+	& .thing-title {
+		font-size: 36px;
+	}
+	& .winnerBannerBox {
+		width: 100%;
+		& .winnerBanner {
+			width: 100%;
+		}
+	}
+	& #hopefuls-admin-controls {
+		margin-bottom: 1em;
+		flex-basis: 70%;
+		display: flex;
+		align-items: center;
+		@media #{$bp1280} {
+			margin: 24px auto 12px;
+		}
+	}
+	& .cutButton {
+		width: 36px;
+		height: 36px;
+		cursor: pointer;
+		opacity: .5;
+		&:hover {
+			opacity: 1;
+		}
+	}
+	& .keepform {
+		margin: 0 0 0 12px;
+		width: calc(100% - 48px);
+	}
+	@media #{$bp1280} {
+		margin-bottom: 24px;
+		& .weedComments {
+			max-height: 300px;
+			@media #{$bp1900} {
+				max-height: 500px;
+			}
+		}
+	}
+}
+
+.LittleThing {
+	display: inline-flex;
+	align-items: end;
+	flex-wrap: wrap;
+	text-align: left;
+	justify-content: center;
+	& .thing-title {
+		font-size: 30px;
+	}
+	& .clickToPlayThumb {
+		width: 100%;
+		height: auto;
+		min-height: 200px;
+		position: relative;
+		@media #{$bp1280} {
+			width: calc(50% - 12px);
+			margin-right: 12px;
+		}
+		& img.topfivethumb {
+			width: 100%;
+		}
+		& img.playbutton {
+			max-width: 60px;
+		}
+	}
+}
+
+.embed-container { 
+	position: relative; 
+	padding-bottom: 56.25%; 
+	height: 0; 
+	overflow: hidden; 
+	max-width: 100%;
+	& video {
+		max-width: 100%;
+		width: 100%;
+	}
+}
+.playbutton {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	pointer-events: none;
+}
+.embed-container iframe, .embed-container object, .embed-container embed { 
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	width: 100%; 
+	height: 100%; 
+}
+.thing-meta {
+	width: 100%;
+	& .weedComments {
+		width: 100%;
+		margin: .5em auto;
+		max-height: 250px;
+		overflow-y: auto;
+		color: $whiteTrans75;
+		 &::-webkit-scrollbar {
+		 	width: 9px;
+		 	background: #000;
+		 }
+		 &::-webkit-scrollbar-track {
+		 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3); 
+		 }
+		 &::-webkit-scrollbar-thumb {
+		 	border-radius: 3px;
+		 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.5);
+		 	background: rgba(255,255,255,.25); 
+		 }
+		@media #{$bp1280} {
+			margin: .5em 0;
+		}
+	}
+	& .weedCommentBox {
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 800px;
+	    font-family: proxima-nova,sans-serif;
+		font-size: 18px;
+		padding: .6em .3em;
+		border-radius: 3px;
+	}
+	@media #{$bp1280} {
+		flex-basis: 400px;
+		flex-grow: 1;
+		margin-left: 12px;
+	}
+}
+
+.weedComment {
+	display: flex;
+	justify-content: space-between;
+	max-width: 800px;
+	text-align: left;
+	font-size: 18px;
+	line-height: 1.3em;
+	margin-bottom: .8em;
+}
+.commentLeft {
+	display: flex;
+}
+.commentPic {
+	padding: 3px 6px;
+	& img {
+		width: 36px;
+		border-radius: 50%;
+	}
+}
+
+.comment {
+	margin-left: 6px;
+}
+.commenter {
+	font-weight: bold;
+	color: $blue;
+}
+.commentMeta {
+	font-size: 16px;
+}
+.commentTime {
+	color: hsla(210, 0%, 90%, .6);
+	font-weight: 300;
+}
+.commentScore {
+	margin-left: .5em;
+	color: hsla(100, 100%, 70%, .6);
+}
+.commentsLoader {
+	max-width: 800px;
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.yeaButton, .delButton {
+	width: 24px;
+	height: 24px;
+	margin-right: 6px;
+	opacity: .25;
+	cursor: pointer;
+	&:hover {
+		opacity: .8;
+	}
+}
+
+.TinyThing {
+	display: flex;
+	text-align: left;
+	justify-content: flex-start;
+	align-items: center;
+	margin-bottom: 18px;
+	color: $whiteTrans50;
+	& .thing-title {
+		font-size: 26px;
+		margin-bottom: 6px;
+	}
+	& .plebPic {
+		width: auto;
+		height: 100px;
+		margin: 0 18px;
+	}
+}
+
+.AdminBox {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+    margin-top: 12px;
+    font-size: 24px;
+    & .AdminMiddle {
+    	flex-grow: 1;
+    }
+    & .AdminRight {
+    	display: flex;
+    	align-items: center;
+    }
+    & .AdminLeft {
+    	display: inline-flex;
+    	align-items: center;
+    }
+    & img {
+		width: 1.3em;
+		margin: 0 12px;
+		cursor: pointer;
+		opacity: .3;
+		&:hover {
+			opacity: .8;
+		}
+	}
+	& input {
+		background: none;
+		border-bottom: 1px solid $whiteTrans50;
+		color: $white;
+	}
+	& a.editPostButton {
+		line-height: 0;
+	}
+	& .checkbox {
+		width: 24px;
+		height: 24px;
+	}
+	& .addScoreBox {
+		margin-right: 24px;
+		font-size: 24px;
+		height: 36px;
+		width: 120px;
+		text-align: center;
+	}
+	& input.keepbar {
+		background: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: 1px solid $whiteTrans25;
+		color: $white;
+		width: 100%;
+		height: 36px;
+		font-size: 18px;
+		&:focus {
+			outline: 1px solid $whiteTrans25;
+		}
+	}
+	& .keepbox {
+		margin: 0 0 0 12px;
+		width: calc(100% - 48px);
+	}
+}
+
+.votingMachine {
+	display: grid;
+	grid-template-columns: 1fr auto auto auto 1fr;
+	align-items: center;
+	justify-content: center;
+	margin: 0 0 6px 0;
+	border-radius: 3px;
+	border: 1px solid $whiteTrans07;
+	background: $whiteTrans03;
+	overflow: hidden;
+	font-size: 36px;
+	&.loadingVotes {
+		font-size: 24px;
+		height: 45px;
+	}
+	& .nayVoters {
+		justify-self: end;
+		text-align: right;
+	}
+	& .voterBubblePod {
+		line-height: 0.8em;
+	}
+	& .voterBubble {
+		margin: 2px 4px;
+		width: 30px;
+		height: 30px;
+		border-radius: 100%;
+	}
+	& .voteButton {
+		width: 0.8em;
+		height: 0.8em;
+		opacity: 0.25;
+		cursor: pointer;
+		&:hover, &.currentlyChosenVoteButton {
+			opacity: 0.8;
+			transform: scale(1.1);
+		}
+		&.hasVoted {
+			opacity: 1;
+			&:hover {
+				opacity: 0.25;
+			}
+		}
+		&.spin {
+			-webkit-animation-name: spin;
+			-webkit-animation-duration: 1500ms;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-timing-function: linear;
+			-moz-animation-name: spin;
+			-moz-animation-duration: 1500ms;
+			-moz-animation-iteration-count: infinite;
+			-moz-animation-timing-function: linear;
+			-ms-animation-name: spin;
+			-ms-animation-duration: 1500ms;
+			-ms-animation-iteration-count: infinite;
+			-ms-animation-timing-function: linear;
+			-o-transition: rotate(3600deg);
+		}
+	}
+	& .score {
+		color: $blueTrans75;
+		font-size: 1em;
+		font-weight: bold;
+		margin: 0 0.25em;
+	}
+}
+
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+button, input[type="submit"] {
  	-webkit-appearance: none;
  	-moz-appearance: none;
  	appearance: none;
@@ -82,222 +704,6 @@
  	font-weight: bold;
  	font-size: 1.1em;
  }
-
- #return-to-top {
- 	position: fixed;
- 	bottom: 24px;
- 	right: 12px;
- 	width: 48px;
- 	height: 48px;
- 	display: none;
- 	opacity: .75;
- 	z-index: 2;
- 	img {
- 		width: 48px;
- 		height: 48px;
- 	}
- 	&:hover {
- 		opacity: 1;
- 	}
- }
-
- #menu-links {
- 	background: $darkBlack;
- 	z-index: 3;
- 	position: relative;
- 	width: 100%;
- 	top: 0;
- 	height: 48px;
- 	margin-bottom: 24px;
- 	display: flex;
- 	justify-content: space-around;
- 	align-items: center;
- 	font-size: 24px;
- 	line-height: 24px;
- 	font-family: "proxima-nova-condensed", sans-serif;
- 	a {
- 		padding: 12px;
- 		text-decoration: none;
- 		flex-grow: 1;
- 		color: $white;
- 		&:visited {
- 			color: $white;
- 		}
- 		&:hover {
- 			background: hsla(0, 0%, 100%, .05);
- 			text-decoration: underline;
- 		}
- 	}
- }
- a#medalLink, a#twitterLink, a#post {
- 	padding: 8px 0;
- 	flex-basis: 30px;
- 	line-height: 0;
- }
- img.headermedal {
- 	width: 32px;
- }
- a#searchToggle {
- 	cursor: pointer;
- 	display: none;
- 	@media #{$bp850} {
- 		display: inline-block;
- 	}
- }
- #searchbox {
- 	display: inline-block;
- 	width: 300px;
- 	max-width: 0;
- 	overflow: hidden;
- 	transition: max-width .3s;
- 	position: relative;
- }
- input.search-submit {
- 	position: absolute;
- 	right: 8px;
- 	top: 10px;
- 	background: none;
- 	padding: 0;
- 	border: none;
- }
- input#searchform {
- 	width: 300px;
- 	height: 32px;
- 	margin: 7px 0;
- 	-webkit-appearance: none;
- 	border: none;
- 	border-radius: 2px;
- 	padding: 0 42px 0 8px;
- 	background: rgba(255,255,255,.2);
- 	color: $white;
- 	font-size: 16px;
- }
- #searchform::-webkit-search-cancel-button{
- 	display: none;
- }
- a#Rules, a#Schedule {
- 	display: none;
- 	@media #{$bp500} {
- 		display: inline-block;
- 	}
- }
- a#submit {
- 	display: none;
- 	@media #{$bp850} {
- 		display: inline-block;
- 	}
- }
- a#Live {
- 	color: $red;
- 	&:visited {
- 		color: $red;
- 	}
- }
- a#twitterLink {
- 	display: none;
- 	@media #{$bp350} {
- 		display: inline-block;
- 	}
- }
- .socialimg {
- 	width: 32px;
- 	height: auto;
- 	line-height: 0;
- }
- .submitimg {
- 	width: 28px;
- 	padding: 2px 0;
- }
-
- #userbox {
-	display: inline-flex;
-	flex-direction: column;
-	background: #fff;;
-	border-radius: 3px;
-	width: 100%;
-	max-width: 300px;
-	min-width: 264px;
-	color: black;
-	order: 3;
-	@media #{$bp800} {
-		width: 20%;
-		order: 0;
-	}
-}
-#repHeader {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	border-radius: 3px 3px 0 0;
-	background: $gold;
-	color: black;
-	font-size: 24px;
-	font-weight: bold;
-	padding: 18px;
-}
-img.userboxProfilePic {
-	width: 48px;
-	border-radius: 24px;
-}
-p.userbox {
-	font-size: 18px;
-	margin: 1em 0;
-	a {
-		color: black;
-	}
-}
-.hidden {
-	display: none;
-}
-
-.embed-container { 
-	position: relative; 
-	padding-bottom: 56.25%; 
-	height: 0; 
-	overflow: hidden; 
-	max-width: 100%;
-	& video {
-		max-width: 100%;
-		width: 100%;
-	}
-} 
-.embed-container iframe, .embed-container object, .embed-container embed { 
-	position: absolute; 
-	top: 0; 
-	left: 0; 
-	width: 100%; 
-	height: 100%; 
-}
-
-.wp-social-login-connect-with {
-    font-size: 18px;
-}
-a.wp-social-login-provider {
-	color: transparent;
-	width: 30px;
-	height: 30px;
-	overflow: hidden;
-	display: inline-block;
-	margin: 0 6px;
-}
-.wp-social-login-provider-list {
-	padding: 12px 0;
-}
-.wp-social-login-provider-facebook {
-	background: url('https://dailies.gg/wp-content/uploads/2016/09/FB.png') center/cover;
-}
-.wp-social-login-provider-google {
-	background: url('https://dailies.gg/wp-content/uploads/2016/12/G.png') center/cover;
-}
-.wp-social-login-provider-twitter {
-	background: url('https://dailies.gg/wp-content/uploads/2016/09/TWT.png') center/cover;
-}
-.wp-social-login-provider-steam {
-	background: url('https://dailies.gg/wp-content/uploads/2016/12/St.png') center/cover;
-}
-.wp-social-login-provider-twitchtv {
-	background: url('https://dailies.gg/wp-content/uploads/2016/09/TW.png') center/cover;
-}
 
 #AddProspectForm, #loggedOutProspectForm {
 	position: fixed;
@@ -428,121 +834,38 @@ img#lightboxCloseButton {
 	100% { background-color: $white; }
 }
 
-.AdminBox {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-    margin-top: 12px;
-    font-size: 24px;
-    & .AdminMiddle {
-    	flex-grow: 1;
-    }
-    & .AdminRight {
-    	display: flex;
-    	align-items: center;
-    }
-    & .AdminLeft {
-    	display: inline-flex;
-    	align-items: center;
-    }
-    & img {
-		width: 1.3em;
-		margin: 0 12px;
-		cursor: pointer;
-		opacity: .3;
-		&:hover {
-			opacity: .8;
-		}
-	}
-	& input {
-		background: none;
-		border-bottom: 1px solid $whiteTrans50;
-		color: $white;
-	}
-	& a.editPostButton {
-		line-height: 0;
-	}
-	& .checkbox {
-		width: 24px;
-		height: 24px;
-	}
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
 }
-
-.votingMachine {
-	display: grid;
-	grid-template-columns: 1fr auto auto auto 1fr;
-	align-items: center;
-	justify-content: center;
-	margin: 0 0 6px 0;
-	border-radius: 3px;
-	border: 1px solid $whiteTrans07;
-	background: $whiteTrans03;
-	overflow: hidden;
-	font-size: 36px;
-	&.loadingVotes {
-		font-size: 24px;
-		height: 45px;
-	}
-	& .nayVoters {
-		justify-self: end;
-		text-align: right;
-	}
-	& .voterBubblePod {
-		line-height: 0.8em;
-	}
-	& .voterBubble {
-		margin: 2px 4px;
-		width: 30px;
-		height: 30px;
-	}
-	& .voteButton {
-		width: 0.8em;
-		height: 0.8em;
-		opacity: 0.25;
-		cursor: pointer;
-		&:hover, &.currentlyChosenVoteButton {
-			opacity: 0.8;
-			transform: scale(1.1);
-		}
-		&.hasVoted {
-			opacity: 1;
-			&:hover {
-				opacity: 0.25;
-			}
-		}
-		&.spin {
-			-webkit-animation-name: spin;
-			-webkit-animation-duration: 1500ms;
-			-webkit-animation-iteration-count: infinite;
-			-webkit-animation-timing-function: linear;
-			-moz-animation-name: spin;
-			-moz-animation-duration: 1500ms;
-			-moz-animation-iteration-count: infinite;
-			-moz-animation-timing-function: linear;
-			-ms-animation-name: spin;
-			-ms-animation-duration: 1500ms;
-			-ms-animation-iteration-count: infinite;
-			-ms-animation-timing-function: linear;
-			-o-transition: rotate(3600deg);
-		}
-	}
-	& .score {
-		color: $blueTrans75;
-		font-size: 1em;
-		font-weight: bold;
-		margin: 0 0.25em;
-	}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 51px;
+  height: 51px;
+  margin: 6px;
+  border: 6px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
 }
-
-@-moz-keyframes spin {
-    from { -moz-transform: rotate(0deg); }
-    to { -moz-transform: rotate(360deg); }
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
 }
-@-webkit-keyframes spin {
-    from { -webkit-transform: rotate(0deg); }
-    to { -webkit-transform: rotate(360deg); }
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
 }
-@keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

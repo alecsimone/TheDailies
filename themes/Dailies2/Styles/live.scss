@@ -66,7 +66,7 @@
 	border-radius: 5px;
 	background: $blueGlass;
 	padding: 6px;
-	& .TopFive {
+	& .LittleThing {
 		background: none;
 		border: none;
 		border-radius: 0px;
@@ -143,176 +143,6 @@
     background: hsla(120, 70%, 12%, .8);
 }
 
-.littleThingsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 100px;
-    align-items: baseline;
-}
-
-.LittleThing {
-	position: relative;
-	background: $blueGlass;
-	border: 3px solid $whiteTrans07;
-	display: inline-block;
-	border-radius: 2px;
-	box-shadow: 0 1px 6px $blackTrans25;
-	width: 100%;
-	margin: 16px 8px;
-	padding: 12px;
-	box-sizing: border-box;
-	text-align: left;
-	font-size: 24px;
-	& img.sourcepic {
-		width: 48px;
-		height: 48px;
-		margin-right: 12px;
-	}
-	& img.starpic {
-		opacity: .75;
-	}
-	& h3 {
-		font-size: .5em;
-		line-height: 1em;
-		font-weight: 500;
-		@media #{$bp850} {
-			font-size: .75em;
-		}
-		@media #{$bp1280} {
-			font-size: 1.25em;
-		}
-	}
-	& .titleBox {
-		flex-grow: 1;
-		line-height: .75em;
-		@media #{$bp850} {
-			line-height: 1em;
-		}
-		@media #{$bp1280} {
-			line-height: 1.25em;
-		}
-	}
-	& a.titleLink {
-		color: $white;
-		text-decoration: none;
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-	& .votecount {
-		font-size: .5em;
-		font-weight: 500;
-		color: $gold;
-		display: inline-block;
-		margin-left: 8px;
-		@media #{$bp850} {
-			font-size: .75em;
-		}
-		@media #{$bp1280} {
-			font-size: 1.25em;
-		}
-	}
-	& .voteBox {
-		margin: 0 0 0 12px;
-		img {
-			width: 48px;
-			height: 48px;
-		}
-	}
-	& p.attribution {
-		margin: 0;
-		font-size: 18px;
-		font-weight: 300;
-		a, a:visited {
-			color: $whiteTrans75;
-		}
-	}
-	& div.stars {
-		display: inline-flex;
-	}
-	&.votedFor {
-		box-shadow: 0 0 8px $goldTrans75;
-		background: $darkerGlass;
-	}
-	@media #{$bp850} {
-		width: calc(50% - 16px);
-	}
-	@media #{$bp1900} {
-		width: calc(33% - 16px);
-	}
-}
-
-.votePrompter {
-	position: absolute;
-	top: -30px;
-	left: 0px;
-	width: 100%;
-	text-align: center;
-	color: $gold;
-}
-
-.littleThingTop, .littleThingBottom, .liveAdminControls {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-.littleThingTop {
-	margin-bottom: 9px;
-	height: 75px;
-}
-
-.littleThingBottom {
-	margin-top: 6px;
-	margin-left: 6px;
-	height: 40px;
-}
-.liveAdminControls {
-	flex-grow: 1;
-	font-size: .625em;
-	line-height: 0;
-	a {
-		color: $blue;
-	}
-}
-.VoterInfoBox {
-	display: flex;
-	flex-wrap: wrap;
-	position: relative;
-	margin-top: 6px;
-	border-top: 1px solid $whiteTrans07;
-	min-height: 36px;
-}
-.voterBubble {
-	width: 40px;
-	height: 40px;
-	border-radius: 100%;
-	margin: 6px 3px 0;
-
-}
-
-// img.littleThingTrasher, img.editThisImg, img.littleThingPromoter {
-// 	width: 24px;
-// 	margin-right: 12px;
-// 	height: auto;
-// 	cursor: pointer;
-// 	opacity: .8;
-// }
-img.littleThingPromoter {
-	margin-right: 18px;
-}
-img.littleThingAuthor {
-	width: 30px;
-	height: 30px;
-	border-radius: 15px;
-	margin-left: 18px;
-	margin-right: 9px;
-	opacity: .6;
-}
-input.nomCheckbox {
-	width: 16px;
-	margin-right: 16px;
-}
-
 .resetContainer {
 	grid-column: span 2;
 }
@@ -320,8 +150,4 @@ img.resetLive {
 	width: 50px;
 	height: 50px;
 	margin-top: 12px;
-}
-#submissionsToggle {
-	font-size: 24px;
-	margin-bottom: 48px;
 }

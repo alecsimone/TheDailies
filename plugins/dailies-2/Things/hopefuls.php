@@ -88,10 +88,26 @@ function getHopefuls() {
 
 	if (!$liveSlugIsHopeful) {update_option("liveSlug", "false");}
 
+	$pulledClipsCount = count($allClips);
+
+	$pulledClipsVotes = $wpdb->get_col(
+		"
+		SELECT votecount
+		FROM $table_name
+		"
+	); 
+
+	$pulledClipsVotecount = 0;
+	foreach ($pulledClipsVotes as $votecount) {
+		$pulledClipsVotecount = $pulledClipsVotecount + (int)$votecount;
+	}
+
 	$hopefulsData = array(
 		"clips" => $hopefuls,
 		"liveSlug" => $liveSlugIsHopeful ? $liveSlug : false,
 		"lastPromotedSlug" => get_option("lastPromotedSlug"),
+		"pulledClipsCount" => $pulledClipsCount,
+		"pulledClipsVotecount" => $pulledClipsVotecount,
 	);
 
 	// basicPrint($hopefuls);

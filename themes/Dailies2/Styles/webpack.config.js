@@ -1,9 +1,10 @@
 //webpack.config.js
+// For the Dailies 2 Theme
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-var version = '-v2.200';
+var version = '-v2.300';
 
 module.exports = {
 	devtool: 'cheap-module-source-map',

@@ -130,17 +130,15 @@ export default class AddProspectForm extends React.Component{
 				console.log(three);
 			},
 			success: function(data) {
-				console.log(data);
-				if (data === 'That clip has already been submitted') {
+				if (data.tone === "error") {
 					redFlash(titleBox);
 					redFlash(urlBox);
-					jQuery('#AddProspectInstructions').text("That clip has already been submitted!");
-					return;
 				} else {
 					greenFlash(titleBox);
 					greenFlash(urlBox);
 					resetAddProspectForm();
 				}
+				jQuery('#AddProspectInstructions').text(data.message);
 			}
 		});
 	}

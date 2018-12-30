@@ -193,6 +193,15 @@ function getSlugByPostID($postID) {
 	}
 	return $slug;
 }
+function getPostIDBySlug($slug) {
+	$args = array(
+		"meta_value" => $slug,
+		"post_status" => array("publish", "future"),
+	);
+	$query = new WP_Query($args);
+	return $query->posts[0]->ID;
+}
+
 function getClipTypeByPostID($postID) {
 	$twitch = get_post_meta($postID, 'TwitchCode', true);
 	if ($twitch) {return "twitch";}

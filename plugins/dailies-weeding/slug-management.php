@@ -1,26 +1,5 @@
 <?php 
 
-function deleteSlugFromPulledClipsDB($slug) {
-	global $wpdb;
-	$table_name = $wpdb->prefix . "pulled_clips_db";
-
-	$where = array(
-		'slug' => $slug,
-	);
-
-	$wpdb->delete($table_name, $where);
-}
-function deleteJudgmentFromSeenSlugsDB($id) {
-	global $wpdb;
-	$table_name = $wpdb->prefix . "seen_slugs_db";
-
-	$where = array(
-		'id' => $id,
-	);
-
-	$wpdb->delete($table_name, $where);
-}
-
 // $pulledClipsDB = getPulledClipsDB();
 // foreach ($pulledClipsDB as $key => $clipData) {
 // 	if ($clipData['score'] != '0' && $clipData['votecount'] == 0) {

@@ -20,7 +20,7 @@ function getCleanPulledClipsDB() {
 	$ourCutoff = clipCutoffTimestamp();
 	foreach ($pulledClipsDBRaw as $key => $clipData) {
 		$clipTimestamp = convertTwitchTimeToTimestamp($clipData['age']);
-		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -26 || $clipData['nuked'] == 1)) {
+		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -51 || $clipData['nuked'] == 1)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
 			// deleteAllVotesForSlug($clipData['slug']);
 			continue;
@@ -136,6 +136,27 @@ function convertPostDataObjectToClipdata($postDataObject) {
 		$clipdata['vodlink'] = $vodlink;
 	}
 	return $clipdata;
+}
+
+function deleteSlugFromPulledClipsDB($slug) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "pulled_clips_db";
+
+	$where = array(
+		'slug' => $slug,
+	);
+
+	$wpdb->delete($table_name, $where);
+}
+function deleteJudgmentFromSeenSlugsDB($id) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "seen_slugs_db";
+
+	$where = array(
+		'id' => $id,
+	);
+
+	$wpdb->delete($table_name, $where);
 }
 
 add_action( 'wp_ajax_blacklist_vod', 'blacklist_vod_handler' );
