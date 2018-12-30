@@ -4,7 +4,7 @@ add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
 	$version = '-v2.300';
 	$styleVersion = '-v2.300';
-	wp_register_script('globalScripts', plugins_url() . '/dailies-2/React/Bundles/global-bundle' . $version . '.js', ['jquery'], '', true );
+	wp_register_script('globalScripts', plugins_url() . '/dailies-2/JS/Bundles/global-bundle' . $version . '.js', ['jquery'], '', true );
 	$thisDomain = get_site_url();
 	$global_data = array(
 		'thisDomain' => $thisDomain,
@@ -17,7 +17,7 @@ function client_information() {
 	wp_enqueue_script( 'globalScripts' );
 	wp_enqueue_style( 'globalStyles', get_template_directory_uri() . '/style' . $styleVersion . '.css');
 	if ( !is_page() && !is_attachment() ) {
-		wp_register_script( 'mainScripts', plugins_url() . '/dailies-2/React/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'mainScripts', plugins_url() . '/dailies-2/JS/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
 		$main_script_data = array(
 			'nonce' => $nonce,
@@ -37,9 +37,9 @@ function client_information() {
 		wp_localize_script('mainScripts', 'dailiesMainData', $main_script_data);
 		wp_enqueue_script( 'mainScripts' );
 	} else if (is_page('Submit')) {
-		wp_enqueue_script( 'scheduleScripts', plugins_url() . '/dailies-2/React/Bundles/submit-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_enqueue_script( 'scheduleScripts', plugins_url() . '/dailies-2/JS/Bundles/submit-bundle' . $version . '.js', ['jquery'], '', true );
 	} else if (is_page('your-votes')) {
-		wp_register_script( 'mainScripts', plugins_url() . '/dailies-2/React/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'mainScripts', plugins_url() . '/dailies-2/JS/Bundles/main-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
 		$main_script_data = array(
 			'nonce' => $nonce,
@@ -49,17 +49,17 @@ function client_information() {
 		wp_localize_script('mainScripts', 'dailiesMainData', $main_script_data);
 		wp_enqueue_script( 'mainScripts' );
 	} else if (is_page('weed') || is_page('1r') || is_page('scout')) {
-		wp_register_script( 'weedScripts', plugins_url() . '/dailies-2/React/Bundles/weed-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'weedScripts', plugins_url() . '/dailies-2/JS/Bundles/weed-bundle' . $version . '.js', ['jquery'], '', true );
 		$weedData = generateWeedData();
 		wp_localize_script('weedScripts', 'weedData', $weedData);
 		wp_enqueue_script('weedScripts');
 	} else if (is_page('hopefuls')) {
-		wp_register_script( 'hopefulsScripts', plugins_url() . '/dailies-2/React/Bundles/hopefuls-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'hopefulsScripts', plugins_url() . '/dailies-2/JS/Bundles/hopefuls-bundle' . $version . '.js', ['jquery'], '', true );
 		// $hopefulsData = generateHopefulsData();
 		// wp_localize_script('hopefulsScripts', 'selected', $selected);
 		wp_enqueue_script('hopefulsScripts');
 	} else if (is_page('Live')) {
-		wp_register_script( 'liveScripts', plugins_url() . '/dailies-2/React/Bundles/live-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'liveScripts', plugins_url() . '/dailies-2/JS/Bundles/live-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
 		$livePageObject = get_page_by_path('live');
 		$liveID = $livePageObject->ID;
@@ -75,7 +75,7 @@ function client_information() {
 		wp_localize_script('liveScripts', 'liveData', $liveData);
 		wp_enqueue_script('liveScripts');
 	} else if (is_page('live-voting-machine')) {
-		wp_register_script( 'liveVotingMachineScripts', plugins_url() . '/dailies-2/React/Bundles/livevotingmachine-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'liveVotingMachineScripts', plugins_url() . '/dailies-2/JS/Bundles/livevotingmachine-bundle' . $version . '.js', ['jquery'], '', true );
 		$liveSlug = get_option("liveSlug");
 		if ($liveSlug == "false") {$liveSlug = "live";}
 		$liveVoters = getVoterDisplayInfoForSlug($liveSlug);
@@ -83,7 +83,7 @@ function client_information() {
 		wp_localize_script('liveVotingMachineScripts', 'liveSlug', $liveSlug);
 		wp_enqueue_script( 'liveVotingMachineScripts');
 	} else if (is_page('live-votebar')) {
-		wp_register_script( 'liveVoteBarScripts', plugins_url() . '/dailies-2/React/Bundles/livevotebar-bundle' . $version . '.js', ['jquery'], '', true );
+		wp_register_script( 'liveVoteBarScripts', plugins_url() . '/dailies-2/JS/Bundles/livevotebar-bundle' . $version . '.js', ['jquery'], '', true );
 		$liveData = getLive();
 		wp_localize_script('liveVoteBarScripts', 'liveData', $liveData);
 		wp_enqueue_script( 'liveVoteBarScripts');

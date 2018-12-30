@@ -28,9 +28,9 @@ plugins/dailies-menu-bar/
 plugins/dailies-rep-and-voting/
 
 plugins/dailies-2/privateData.php
-plugins/dailies-2/React/Bundles
-plugins/dailies-2/React/node_modules
-plugins/dailies-2/React/Scripts/privateData.jsx
+plugins/dailies-2/JS/Bundles
+plugins/dailies-2/JS/node_modules
+plugins/dailies-2/JS/Scripts/privateData.jsx
 
 plugins\decomments\
 plugins\drag0drop-featured-image\
