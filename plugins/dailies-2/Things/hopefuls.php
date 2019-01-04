@@ -79,7 +79,6 @@ function getHopefuls() {
 					deleteAllVotesForSlug("live");
 					update_option("liveSlug", "false");
 					update_option("lastPromotedSlug", $liveSlug);
-					send_nightbot_message("We did it! That clip's moving on to the next round.");
 				}
 			}
 		}

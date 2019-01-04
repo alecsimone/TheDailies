@@ -1,5 +1,6 @@
 <?php $schedule = array(
 	'Monday' => array(
+		'vapour' => ['Vapour Esports', 'vapour-esports', 882, 'OCE - 2v2', '3AM EST'],
 		'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '8AM EST'],
 		'jboi' => ['Mannfield Night', 'johnnyboi_i', 215, 'OSM vs Eekso', '1PM EST'],
 		'partTime' => ['Part Time Pros', 'parttimepros', 1417, 'EU - 3v3', '3PM EST'],
@@ -8,6 +9,7 @@
 		'vvv' => ['vVv', 'vvv-gaming', 239, "3v3 Captain's Draft", '8PM EST'],
 		'rbg' => ['RBG Esports', 'rbg-esports', 1576, "NA - 3v3 - $30", "8PM EST"],
 		'pwr' => ['Playing with Rockets', 'playing-with-rockets', 1607, "NA - 1v1v1v1v1v1v1v1 - $100", "8PM EST"],
+		'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 1v1 - $500', '930PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Tuesday' => array(
@@ -16,7 +18,6 @@
 		'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '3PM EST'],
 		// 'rlpc' => ['RLPC', 'rlpc', 1495, 'NA - League Play', '7PM EST'],
 		// RLPC playoffs starting sometime in January
-		'playerOne' => ['Player One Esports', 'player-one-esports', 1500, 'NA - 3v3 - $1,500', '7PM EST'],
 		'absLeverage' => ['Absolute Leverage', 'absolute-leverage', 1589, 'NA - 2v2 - $40', '8PM EST'],
 		// 'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - 3v3 - Winter Circuit', '8PM EST'],
 		// IGL winter circuit starts January 4th
@@ -24,7 +25,6 @@
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Wednesday' => array(
-		'vapour' => ['Vapour Esports', 'vapour-esports', 882, 'OCE - 2v2', '3AM EST'],
 		'euroRL' => ['EuroRL', 'euro-rl', 1491, 'Playoffs!', '1230PM EST'],
 		'rewind' => ['Neon Dream', 'rewindrl', 583, 'EU Renegade Cup', '1PM EST'],
 		'jboi' => ['Mannfield Night', 'johnnyboi_i', 215, 'Kuxir vs Flakes', '1PM EST'],
@@ -36,12 +36,9 @@
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Thursday' => array(
-		'rewind' => ['Neon Dream', 'rewindrl', 583, 'EU Renegade Cup', '1PM EST'],
-		'jboi' => ['Mannfield Night', 'johnnyboi_i', 215, 'Fairy Peak! vs Bluey', '1PM EST'],
-		'UERLA' => ['UERLA', 'uerla-league', 1123, 'NA - 3v3', '7PM EST'],
-		// 'flg' => ['Frontline Gaming', 'frontline-gaming', 1572, 'NA - 3v3 - $30', '730PM EST'],
-		'bl' => ['Whiteout', 'boost-legacy', 401, 'NA Renegade Cup', '8PM EST'],
-		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - Hoops', '8PM EST'],
+		'flames' => ['Ember Series', 'copenhagen-flames', 1628, 'EU Renegade Cup', '1PM EST'],
+		'jboi' => ['Mannfield Night', 'johnnyboi_i', 215, 'Kuxir vs Flakes', '1PM EST'],
+		'myth' => ['Valhalla', 'mythical-esports', 251, 'NA Renegade Cup', '7PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Friday' => array(
@@ -50,12 +47,15 @@
 		// 'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '12PM EST'],
 		'UERLA' => ['UERLA', 'uerla-league', 1123, 'EU - 3v3 - $12', '130PM EST'],
 		'jboi' => ['Mannfield Night', 'johnnyboi_i', 215, 'Kuxir vs Eekso', '1PM EST'],
-		'myth' => ['Mythical Esports', 'mythical-esports', 251, 'NA - 3v3', '7PM EST'],
+		'UERLA' => ['UERLA', 'uerla-league', 1123, 'NA Qualifiers', '6PM EST'],
+		'playerOne' => ['Player One Esports', 'player-one-esports', 1500, 'NA - 2v2 - $500', '7PM EST'],
+		// 'myth' => ['Mythical Esports', 'mythical-esports', 251, 'NA - 3v3', '7PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Weekend' => array(
 		'jboiSAT' => ['Mannfield Night', 'johnnyboi_i', 215, 'Scrub Killa vs Oscillon', 'SAT 1PM EST'],
 		// 'euccgg' => ['ECC', 'ecc', 1507, 'EU - League Play', 'SAT 2PM EST'],
+		'UERLA' => ['UERLA', 'uerla-league', 1123, 'EU Qualifiers', 'SAT 1PM EST'],
 		'jboiSUN' => ['Mannfield Night', 'johnnyboi_i', 215, 'Kuxir vs Bluey', 'SUN 1PM ESST'],
 		'hoopsNA' => ['Ranked Hoops', 'ranked-hoops', 837, 'NA - Hoops - $75', 'SUN 7PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', 'SUN 6PM EST'],
@@ -65,7 +65,6 @@
 		// '1ne' => ["1NE Esports", "1ne-esports", 1113, 'Asia Pro League 2 - $3,000', 'SAT 2AM EST'],		
 		//'ace' => ['ACE', 'ascending-champions', 928, 'NA - 2v2 Champ League', '8PM EST'],
 		//'arrow' => ['Arrow League', 'arrow-league', 1432, 'UK University League', '3PM EST'],
-		// 'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 3v3 - $2,000', '930PM EST'],
 		// 'baguette' => ['Rocket Baguette', 'rocket-baguette', 585, 'PGW Qualifiers', '2PM EST'],
 		//'ballistix' => ['Ballistix Gaming', 'ballistix', 1372, 'EU - $500 & Qualifiers', 'SAT 1PM EST'],
 		//'bl' => ['Boost Legacy', 'boost-legacy', 401, 'NA - 1v1 - $20', '8PM EST'],
@@ -125,7 +124,6 @@
 		//'UERLA' => ['UERLA', 'uerla-league', 1123, 'EU - 3v3 - League Play', 'SUN 2PM EST'],
 		//'universalOpen' => ['Universal Open', 'faceit', 883, 'EU Closed Quals', '12PM EST'],
 		// 'uRogue' => ['United Rogue', 'united-rogue', 1292, 'Conference Championships', '8PM EST'],
-		//'vapour' => ['Vapour Esports', 'vapour-esports', 882, 'OCE - 2v2', '5AM EST'],
 
 
 

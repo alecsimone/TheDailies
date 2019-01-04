@@ -100,7 +100,10 @@ function pull_twitch_clips() {
 			editPulledClip($thisClipArray);
 			continue;
 		} else {
-			$addSlugSuccess = addSlugToDB($thisClipArray);
+			$slugIsFresh = checkSlugFreshness($thisClipArray);
+			if ($slugIsFresh) {
+				$addSlugSuccess = addSlugToDB($thisClipArray);
+			}
 			continue;
 		}
 	}

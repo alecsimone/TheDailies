@@ -33,4 +33,16 @@ $thisDomain = get_site_url();
 	<?php } ?>
 </section>
 
+<script>
+	jQuery(document).ready(function() {
+		if (dailiesGlobalData.userData.userID == 1) {
+			jQuery("#schedule-container").on('click', ".schedule-entry", (e) => {
+				e.stopPropagation();
+				e.preventDefault();
+				jQuery(e.target).toggleClass("max");
+			});
+		}
+	});
+</script>
+
 <?php get_footer(); ?>

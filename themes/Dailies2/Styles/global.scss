@@ -236,7 +236,7 @@ a.wp-social-login-provider {
 
 .Thing, .LittleThing, .TinyThing {
 	background: $blueGlass;
-	border: 3px solid $whiteTrans07;
+	border: $thingBorder;
 	box-sizing: border-box;
 	width: 100%;
 	& textarea {

@@ -36,7 +36,7 @@ function judge_slug() {
 	} elseif ($judgment === 'up') {
 		$clipArray['score'] = $clipArray['score'] + getValidRep($userID);
 	}
-	if (!is_int($clipArray['votecount'])) {
+	if (!is_numeric($clipArray['votecount'])) {
 		$clipArray['votecount'] = 0;
 	}
 	$clipArray['votecount'] = (int)$clipArray['votecount'] + 1;
