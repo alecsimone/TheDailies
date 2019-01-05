@@ -52,7 +52,8 @@ export default class Weed extends React.Component{
 			lastVoteDirection: null,
 			totalClips: Object.keys(weedData.clips).length + youJudged,
 			youJudged,
-			voters: "loading",
+			// voters: "loading",
+			voters: [],
 		};
 
 
@@ -167,7 +168,6 @@ export default class Weed extends React.Component{
 				clipsArray.splice(index, 1);
 			}
 			if (clipsData[slug].vodlink !== "none" && clipsData[slug].vodlink.indexOf("twimg.com") == -1 && clipsData[slug].vodlink.indexOf("gfycat") == -1) {
-				console.log(clipsData[slug].vodlink);
 				let currentMoment = this.turnVodlinkIntoMomentObject(clipsData[slug].vodlink);
 				if (clipVods[currentMoment['vodID']]) {
 					clipVods[currentMoment['vodID']].push(slug);
@@ -180,9 +180,11 @@ export default class Weed extends React.Component{
 		});
 
 		let clipViewsObject = {};
+		let clipVotesObject = {};
 
 		Object.keys(looseClips).forEach( (slug) => {
 			clipViewsObject[slug] = Number(clipsData[slug].views);
+			clipVotesObject[slug] = Number(clipsData[slug].votecount);
 		});
 
 		Object.keys(clipVods).forEach( (vodID) => {
@@ -190,13 +192,17 @@ export default class Weed extends React.Component{
 				let thatSlugsData = clipsData[clipVods[vodID][0]];
 				looseClips[thatSlugsData.slug] = thatSlugsData;
 				clipViewsObject[thatSlugsData.slug] = Number(thatSlugsData.views);
+				clipVotesObject[thatSlugsData.slug] = Number(thatSlugsData.votecount);
 				delete clipVods[vodID];
 			} else {
 				let thisVodsViews = 0;
+				let thisVodsVotes = 0;
 				clipVods[vodID].forEach( (slug) => {
 					thisVodsViews += Number(clipsData[slug].views);
+					thisVodsVotes += Number(clipsData[slug].votecount);
 				});
 				clipViewsObject[vodID] = thisVodsViews;
+				clipVotesObject[vodID] = thisVodsVotes;
 			}
 		});
 
@@ -210,9 +216,23 @@ export default class Weed extends React.Component{
 			return clipViewsObject[b] - clipViewsObject[a];
 		});
 
+		let sortedClipVotesArray = Object.keys(clipVotesObject).sort( (a, b) => {
+			if (clipVotesObject[a] === clipVotesObject[b]) {
+				if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
+					return -1;
+				}
+				if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
+					return 1;
+				}
+				return clipViewsObject[b] - clipViewsObject[a];
+			}
+			return clipVotesObject[a] - clipVotesObject[b];
+		});
+
 		let sortedClipsArray = [];
 
-		sortedClipViewsArray.forEach( (identifier) => {
+		sortedClipVotesArray.forEach( (identifier) => {
+		// sortedClipViewsArray.forEach( (identifier) => {
 			if (Number(identifier) !== NaN && Number(identifier) < 1000000000000000000) {
 				clipVods[identifier].sort( (a, b) => {
 					let momentA = this.turnVodlinkIntoMomentObject(clipsData[a].vodlink);
@@ -336,7 +356,7 @@ export default class Weed extends React.Component{
 			newClip: false,
 			commentsLoading: true,
 			lastVoteDirection,
-			voters: "loading",
+			// voters: "loading",
 			youJudged: this.state.youJudged + 1,
 		});
 		jQuery.ajax({
@@ -674,13 +694,13 @@ export default class Weed extends React.Component{
 
 	componentDidMount() {
 		// this.getComments();
-		this.getVotes();
+		// this.getVotes();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		// if (this.state.voters === "loading") {
 		if (prevState.newClip === false) {
-			this.getVotes();
+			// this.getVotes();
 		}
 	}
 
@@ -718,7 +738,7 @@ export default class Weed extends React.Component{
 
 	render() {
 		console.groupCollapsed("render");
-		console.log(this.state.clipsArray);
+		// console.log(this.state.clipsArray);
 		console.log(`Rendering ${this.state.clipsArray[0]}`);
 		// let slugsArray = Object.keys(this.state.clips);
 		// let sortedClips = this.sortClips(slugsArray);

@@ -19,4 +19,6 @@ get_header(); ?>
 
 	<p class="rules"><span class="bold">7. Commenting is a privilege that must be earned and maintained.</span> Be civil and thoughtful. Don't spam.</p>
 
+</div>
+
 <?php get_footer(); ?>

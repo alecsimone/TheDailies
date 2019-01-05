@@ -407,6 +407,10 @@ a.wp-social-login-provider {
 }
 .thing-meta {
 	width: 100%;
+	& .thing-title {
+		word-break: break-word;
+		overflow-wrap: break-word;
+	}
 	& .weedComments {
 		width: 100%;
 		margin: .5em auto;
