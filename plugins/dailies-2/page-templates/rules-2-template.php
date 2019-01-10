@@ -25,7 +25,7 @@ get_header(); ?>
 
 	When enough plays have been eliminated to leave only the top tier, they will be played again and chat must reach a consensus on which to nominate.
 
-	Round 4 takes place at Dailies.gg. The nominees will be posted there until the very end of the last show, at which point they will be replayed and a brief interval will be allowed for any last minute voting, then the one with the most votes will be declared the winner, and everyone's life will improve significantly.
+	Round 4 takes place at Dailies.gg. The nominees will be posted there until the very end of the last show, at which point they will be replayed and a brief interval will be allowed for any last minute voting, then the one with the most votes will be declared the winner, and everyone's lives will improve significantly.
 
 </div>
 

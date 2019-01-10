@@ -47,6 +47,7 @@ export default class Thing extends React.Component{
 			url: queryURL,
 			dataType: 'json',
 			success: function(data) {
+				console.log(data);
 				currentState.comments = data;
 				currentState.commentsLoading = false;
 				boundThis.setState(currentState);
@@ -90,6 +91,7 @@ export default class Thing extends React.Component{
 				console.log(three);
 			},
 			success: function(data) {
+				console.log(data);
 				// jQuery.each(currentState.comments, function(index,commentData) {
 				// 	if (commentData.id == randomID) {
 				// 		currentState.comments[index].id = data;

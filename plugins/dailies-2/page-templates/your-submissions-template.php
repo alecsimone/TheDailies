@@ -48,11 +48,11 @@ if (is_user_logged_in()) { ?>
 		if ($submission['type'] === "twitch") {
 			$link = "https://clips.twitch.tv/" . $slug;
 		} elseif ($submission['type'] === "twitter") {
-			$link = "https://twitter.com/statuses" . $slug;
+			$link = "https://twitter.com/statuses/" . $slug;
 		} elseif ($submission['type'] === "gfycat") {
 			$link = "https://gfycat.com/" . $slug;
 		} elseif ($submission['type'] === "youtube" || $submission['type'] === "ytbe") {
-			$link = "https://youtube.com/" . $slug;
+			$link = "https://www.youtube.com/watch?v=" . $slug;
 		} elseif ($submission['type'] === "gifyourgame") {
 			$link = "https://gifyourgame.com/" . $slug;
 		}
