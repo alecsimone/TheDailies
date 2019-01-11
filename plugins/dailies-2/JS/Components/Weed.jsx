@@ -52,7 +52,7 @@ export default class Weed extends React.Component{
 			lastVoteDirection: null,
 			totalClips: Object.keys(weedData.clips).length + youJudged,
 			youJudged,
-			// voters: "loading",
+			voters: "loading",
 			voters: [],
 		};
 
@@ -196,13 +196,15 @@ export default class Weed extends React.Component{
 				delete clipVods[vodID];
 			} else {
 				let thisVodsViews = 0;
-				let thisVodsVotes = 0;
+				let thisVodsLowestVotes;
 				clipVods[vodID].forEach( (slug) => {
+					if (thisVodsLowestVotes === undefined || thisVodsLowestVotes > Number(clipsData[slug].votecount)) {
+						thisVodsLowestVotes = Number(clipsData[slug].votecount);
+					}
 					thisVodsViews += Number(clipsData[slug].views);
-					thisVodsVotes += Number(clipsData[slug].votecount);
 				});
 				clipViewsObject[vodID] = thisVodsViews;
-				clipVotesObject[vodID] = thisVodsVotes;
+				clipVotesObject[vodID] = thisVodsLowestVotes;
 			}
 		});
 
@@ -694,13 +696,13 @@ export default class Weed extends React.Component{
 
 	componentDidMount() {
 		// this.getComments();
-		// this.getVotes();
+		this.getVotes();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		// if (this.state.voters === "loading") {
 		if (prevState.newClip === false) {
-			// this.getVotes();
+			this.getVotes();
 		}
 	}
 
