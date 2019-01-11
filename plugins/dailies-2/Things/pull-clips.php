@@ -228,12 +228,17 @@ function tweetIsProbablySubmission($tweetData) {
 		return true;
 	}
 	if ($entities->urls) {
-		return true;
-		// foreach ($entities->urls as $urlArray) {
+		foreach ($entities->urls as $urlArray) {
+			$expandedURL = $urlArray->expanded_url;
+			if (strpos($expandedURL, "twitter.com")) {
+				return false;
+			}
 		// 	// if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
 		// 	// }
-		// }
+		}
+		return true;
 	}
+	return false;
 }
 
 function generateTwitterAuthorization($url, $method) {
