@@ -142,6 +142,18 @@ function turnURLIntoGfycode($url) {
 	return $gfyCode;
 }
 
+function turnURLIntoGifYourGameCode($url) {
+	$unCasedUrl = strtolower($url);
+	if (!strpos($unCasedUrl, 'gifyourgame.com/')) {
+		return false;
+	}
+
+	$gygCodePosition = strpos($unCasedUrl, 'gifyourgame.com/') + 16;
+	$gygCode = substr($url, $gygCodePosition);
+
+	return $gygCode;
+}
+
 function sourceFinder($channelURL) {
 	$channelURL = strtoupper($channelURL);
 	$sourceArgs = array(

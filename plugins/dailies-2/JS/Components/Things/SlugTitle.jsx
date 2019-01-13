@@ -15,6 +15,8 @@ export default class SlugTitle extends React.Component {
 			titleLink = `https://gfycat.com/${this.props.slug}`;
 		} else if (this.props.type === "youtube" || this.props.type === "ytbe") {
 			titleLink = `https://www.youtube.com/watch?v=${this.props.slug}`;
+		} else if (this.props.type === "gifyourgame") {
+			titleLink = `https://gifyourgame.com/${this.props.slug}`;
 		}
 
 		let rawTitle = this.props.title.stripSlashes();

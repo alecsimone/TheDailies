@@ -23,11 +23,7 @@ function submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter) {
 	} elseif ($clipType === 'gfycat') {
 		$slug = turnURLIntoGfycode($newSeedlingUrl);
 	} elseif ($clipType === 'gifyourgame') {
-		$returnArray = array(
-			'message' => "We're currently not taking gifyourgame.com clips because they aren't embeddable. Should be able to fix this soon, sorry!",
-			'tone' => "error",
-		);
-		return $returnArray;
+		$slug = turnURLIntoGifYourGameCode($newSeedlingUrl);
 	} else {
 		$returnArray = array(
 			'message' => "Invalid URL",
@@ -85,14 +81,16 @@ function submitClip($newSeedlingTitle, $newSeedlingUrl, $submitter) {
 		addKnownMoment($momentArray);
 	}
 
-	$ourCutoff = clipCutoffTimestamp();
-	$clipTimestamp = convertTwitchTimeToTimestamp($gussyResult['age']);
-	if ($clipTimestamp < $ourCutoff - 24 * 60 * 60) {
-		$returnArray = array(
-			'message' => "That clip is too old, sorry",
-			'tone' => "error",
-		);
-		return $returnArray;
+	if ($gussyResult['age']) {
+		$ourCutoff = clipCutoffTimestamp();
+		$clipTimestamp = convertTwitchTimeToTimestamp($gussyResult['age']);
+		if ($clipTimestamp < $ourCutoff - 24 * 60 * 60) {
+			$returnArray = array(
+				'message' => "That clip is too old, sorry",
+				'tone' => "error",
+			);
+			return $returnArray;
+		}
 	}
 
 	$clipArray = array(
@@ -137,6 +135,8 @@ function gussyClip($clipType, $slug) {
 		$gussyResult = gussyTweet($slug);
 	} elseif ($clipType === 'gfycat') {
 		$gussyResult = gussyGfy($slug);
+	} elseif ($clipType === 'gifyourgame') {
+		$gussyResult = gussyGifYourGame($slug);
 	} else {
 		return "Invalid Clip Type";
 	}
@@ -276,6 +276,16 @@ function gussyGfy($gfyCode) {
 	// } else {
 	// 	return false;
 	// }
+}
+
+function gussyGifYourGame($slug) {
+	$clipArray = array(
+		"slug" => $slug,
+		"thumb" => "https://thumbs.gifyourgame.com/" . $slug .  ".png",
+		"vodlink" => "https://media.gifyourgame.com/" . $slug . "_1080p.mp4",
+	);
+
+	return $clipArray;
 }
 
 function submitTweet($tweetData) {

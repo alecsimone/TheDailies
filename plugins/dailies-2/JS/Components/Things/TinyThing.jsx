@@ -40,10 +40,10 @@ export default class TinyThing extends React.Component{
 
 	render() {
 		let sourcePic = this.props.clipdata.sourcepic;
-		if (!sourcePic) {
-			if (this.props.clipdata.source[0].name !== "User Submits") {
+		if (!sourcePic || sourcePic === "unknown") {
+			if (this.props.clipdata.source[0].name && this.props.clipdata.source[0].name !== "User Submits") {
 				sourcePic = this.props.clipdata.source[0].logo;
-			} else if (this.props.clipdata.stars[0].logo) { 
+			} else if (this.props.clipdata.stars && this.props.clipdata.stars[0].logo) { 
 				sourcePic = this.props.clipdata.stars[0].logo;
 			} else if (this.props.clipdata.thumb) {
 				sourcePic = this.props.clipdata.thumb;
@@ -51,9 +51,9 @@ export default class TinyThing extends React.Component{
 				sourcePic = `${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/rl-logo-med.png`;
 			}
 		}
-		if (sourcePic === "unknown") {
-			sourcePic = `${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/rl-logo-med.png`;
-		}
+		// if (sourcePic === "unknown") {
+		// 	sourcePic = `${dailiesGlobalData.thisDomain}/wp-content/uploads/2017/07/rl-logo-med.png`;
+		// }
 
 		let voters;
 		voters = <VotingMachine key={`votingMachine-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} voterData={this.props.clipdata.voters} />

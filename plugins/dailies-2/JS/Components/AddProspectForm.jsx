@@ -98,12 +98,6 @@ export default class AddProspectForm extends React.Component{
 			return
 		}
 
-		if (isGifyourgame > -1) {
-			jQuery('#AddProspectInstructions').text("We're currently not taking gifyourgame.com clips because they aren't embeddable. Should be able to fix this soon, sorry!");
-			redFlash(urlBox);
-			return
-		}
-
 		if (title.length < 3) {
 			jQuery('#AddProspectInstructions').text("Try harder on that title, please");
 			redFlash(titleBox);

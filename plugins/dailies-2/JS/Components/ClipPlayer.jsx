@@ -81,7 +81,7 @@ export default class ClipPlayer extends React.Component{
 			iframeSrc = `https://gfycat.com/ifr/${this.props.slug}?autoplay=${autoplay ? 1 : 0}&hd=1`;
 		}
 		if (this.props.type === "youtube" || this.props.type === "ytbe") {
-			iframeSrc = `https://www.youtube.com/embed/${this.props.slug}?autoplay=${autoplay ? '1' : 0}`
+			iframeSrc = `https://www.youtube.com/embed/${this.props.slug}?autoplay=${autoplay ? '1' : 0}&loop=1&playlist=${this.props.slug}`
 		}
 		if (this.props.type === "twitter") {
 			if (this.props.vodlink !== "none") {
@@ -99,6 +99,15 @@ export default class ClipPlayer extends React.Component{
 					</div>
 				)
 			}
+		}
+		if (this.props.type === "gifyourgame") {
+			let isAutoPlay;
+			autoplay ? isAutoPlay = {autoPlay: true} : isAutoPlay = {};
+			return (
+				<div className="embed-container">
+					<video controls {...isAutoPlay} loop muted src={this.props.vodlink} type="video/mp4" onClick={ (e) => {e.target.paused ? e.target.play() : e.target.pause()} } />
+				</div>
+			)
 		}
 		return(
 			<div className="embed-container">
