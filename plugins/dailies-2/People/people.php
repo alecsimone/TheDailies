@@ -274,11 +274,15 @@ function checkForRepIncrease($person) {
     $lastRepTime = ensureTimestampInSeconds($person['lastRepTime']);
     $deservesNewRep = false;
     if ($lastRepTime <= $lastNomTime) {
-        $newRep = increase_giveable_rep($person['hash'], 1);
+        $oldRep = (int)getValidRep($person);
+        if ($oldRep < 20) {
+            increase_giveable_rep($person['hash'], 1);
+            $newRep = increase_rep($person['hash'], 1);
+        } else {
+            $newRep = increase_giveable_rep($person['hash'], 2);
+        }
         updateRepTime($person['hash']);
         $deservesNewRep = true;
-    }
-    if ($deservesNewRep) {
         return $newRep;
     } else {
         return false;

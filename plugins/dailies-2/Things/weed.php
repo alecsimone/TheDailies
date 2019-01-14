@@ -51,8 +51,14 @@ function checkForScoutRepIncrease($person) {
 	$person = getPersonInDB($person);
     $lastScoutRepTime = ensureTimestampInSeconds($person['lastScoutRepTime']);
     $deservesNewRep = false;
-    if ($lastScoutRepTime <= time() - 12 * 60 * 60) {
-        $newRep = increase_giveable_rep($person['hash'], 1);
+    if ($lastScoutRepTime <= time() - 24 * 60 * 60) {
+    	$oldRep = (int)getValidRep($person);
+        if ($oldRep < 20) {
+            increase_giveable_rep($person['hash'], 1);
+            $newRep = increase_rep($person['hash'], 1);
+        } else {
+            $newRep = increase_giveable_rep($person['hash'], 2);
+        }
         updateScoutRepTime($person['hash']);
         $deservesNewRep = true;
     }
