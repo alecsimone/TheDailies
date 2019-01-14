@@ -138,7 +138,6 @@ export default class Weed extends React.Component{
 	}
 
 	sortClips(clipsArray) {
-		// if return is < 0, a comes first, greater than 0 b comes first
 		let clipsData = this.state.clips;
 		clipsArray.forEach( (slug, index) => {
 			if (clipsData[slug].nuked == 1) {
@@ -147,14 +146,6 @@ export default class Weed extends React.Component{
 			}
 		});
 		clipsArray.sort(this.sortByVOD);
-
-		// clipsArray.sort(function(a, b) {
-		// 	component.sortByVOD(a);
-		// 	let sortScoreA = component.getSortScore(a);
-		// 	let sortScoreB = component.getSortScore(b);
-		// 	return sortScoreB - sortScoreA;
-		// });
-
 		return clipsArray;
 	}
 

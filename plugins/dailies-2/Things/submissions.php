@@ -209,7 +209,7 @@ function gussyTwitch($twitchCode) {
 		'thumb' => $responseBody->thumbnails->medium,
 		'views' => $responseBody->views,
 		'sourcepic' => $responseBody->broadcaster->logo,
-		'vodlink' => $responseBody->vod ? $responseBody->vod->url : 'null',
+		'vodlink' => $responseBody->vod ? $responseBody->vod->url : 'none',
 	);
 
 	// $editSuccess = editPulledClip($clipArray);
@@ -309,7 +309,7 @@ function submitTweet($tweetData) {
 	$submissionURL = "";
 	if ($tweetData->entities->urls) {
 		foreach ($tweetData->entities->urls as $urlArray) {
-			if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") ||strpos($urlArray->expanded_url, "youtu.be")) {
+			if (strpos($urlArray->expanded_url, "clips.twitch.tv") || strpos($urlArray->expanded_url, "gfycat.com") || strpos($urlArray->expanded_url, "youtube.com") || strpos($urlArray->expanded_url, "youtu.be") || strpos($urlArray->expanded_url, "gifyourgame.com")) {
 				$submissionURL = $urlArray->expanded_url;
 			} else {
 				if ($submissionURL === "") {

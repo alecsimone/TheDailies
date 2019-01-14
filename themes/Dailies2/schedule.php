@@ -8,10 +8,11 @@
 		'vvv' => ['vVv', 'vvv-gaming', 239, "3v3 Captain's Draft", '8PM EST'],
 		'rbg' => ['RBG Esports', 'rbg-esports', 1576, "NA - 3v3 - $30", "8PM EST"],
 		'pwr' => ['Playing with Rockets', 'playing-with-rockets', 1607, "NA - 3v3 - $50", "8PM EST"],
-		'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 1v1 - $500', '930PM EST'],
+		'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 2v2 - $500', '930PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Tuesday' => array(
+		'rlo' => ['Rocket League Oceania', 'rocket-league-oceania', 646, 'OCE - 3v3', '230AM EST'],
 		// 'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '3PM EST'],
 		'euroRL' => ['EuroRL', 'euro-rl', 1491, 'Playoffs!', '1230PM EST'],
 		'rlpc' => ['RLPC', 'rlpc', 1495, 'NA - Playoffs', '7PM EST'],

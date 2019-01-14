@@ -141,7 +141,7 @@ export default class AddProspectForm extends React.Component{
 		return(
 			<section id="prospectForm">
 				<img id="lightboxCloseButton" src={dailiesGlobalData.thisDomain + '/wp-content/uploads/2017/04/red-x.png'} />
-				<header id="AddProspectInstructions">Currently only Twitch clips, tweets, Youtube videos, and Gfycats are supported.</header>
+				<header id="AddProspectInstructions">Currently only Twitch clips, tweets, Youtube videos, Gfycats, and Gifyourgame.com links are supported.</header>
 				<input id="AddProspectTitleBox" className="AddProspectFormBoxes" type="text" name="AddProspectTitleInput" placeholder="Title" maxLength="80" onKeyDown={this.inputListener} />
 				<input id="AddProspectURLBox" className="AddProspectFormBoxes" type="text" name="AddProspectURLInput" placeholder="URL" maxLength="140" onKeyDown={this.inputListener} />
 				<div id="AddProspectActionButtons">
