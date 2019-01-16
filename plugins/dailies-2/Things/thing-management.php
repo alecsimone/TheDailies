@@ -20,12 +20,12 @@ function getCleanPulledClipsDB() {
 	$ourCutoff = clipCutoffTimestamp();
 	foreach ($pulledClipsDBRaw as $key => $clipData) {
 		$clipTimestamp = convertTwitchTimeToTimestamp($clipData['age']);
-		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -51 || $clipData['nuked'] == 1)) {
+		if ($clipTimestamp < $ourCutoff && (intval($clipData['score']) < -51 || $clipData['nuked'] == 2)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
 			// deleteAllVotesForSlug($clipData['slug']);
 			continue;
 		}
-		if ($clipTimestamp < $ourCutoff - 24 * 60 * 60 && (intval($clipData['score']) < -1 || $clipData['nuked'] == 1)) {
+		if ($clipTimestamp < $ourCutoff - 24 * 60 * 60 && (intval($clipData['score']) < -1 || $clipData['nuked'] == 2)) {
 			deleteSlugFromPulledClipsDB($clipData['slug']);
 			// deleteAllVotesForSlug($clipData['slug']);
 			continue;
@@ -63,6 +63,7 @@ function clipCutoffTimestamp() {
 }
 
 function nukeSlug($slug) {
+	$person = getPersonInDB(get_current_user_id());
 	$slugToNuke = getSlugInPulledClipsDB($slug);
 	if ($slugToNuke === null) {
 		$slugData = array(
@@ -71,7 +72,15 @@ function nukeSlug($slug) {
 		);
 		addSlugToDB($slugData);
 	} else {
-		$slugToNuke['nuked'] = 1;
+		if (currentUserIsAdmin()) {
+			$newNukedValue = 2;
+		} else if (currentUserIsEditorOrAdmin()) {
+			$newNukedValue = (int)$slugToNuke['nuked'] + 1;
+			if ($newNukedValue > 2) {$newNukedValue = 2;}
+		} else if ((int)$person['rep'] >= 5 && (int)$slugToNuke['nuked'] < 2) {
+			$newNukedValue = 1;
+		}
+		$slugToNuke['nuked'] = $newNukedValue;
 		editPulledClip($slugToNuke);
 	}
 	deleteAllVotesForSlug($slug);
@@ -80,12 +89,44 @@ function nukeSlug($slug) {
 
 add_action( 'wp_ajax_nuke_slug', 'nuke_slug_handler' );
 function nuke_slug_handler() {
-	if (!currentUserIsAdmin()) {
-		wp_die("You are not an admin, sorry");
+	$person = getPersonInDB(get_current_user_id());
+	if (!currentUserIsEditorOrAdmin()) {
+		if ((int)$person["rep"] < 5) {
+			killAjaxFunction("You can't nuke things!");
+		}
 	}
 	$slugToNuke = $_POST['slug'];
 	nukeSlug($slugToNuke);
+	$nukeArray = array(
+		"slug" => $slugToNuke,
+		"nuker" => $person['hash'],
+		"time" => time(),
+	);
+	storeNukeRecord($nukeArray);
 	killAjaxFunction($slugToNuke);
+}
+
+function storeNukeRecord($nukeArray) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "nuke_records_db";
+
+	$existingNukeRecord = $wpdb->get_row(
+		"SELECT * 
+		FROM $table_name
+		WHERE nuker = '{$nukeArray['nuker']}' AND slug = '{$nukeArray['slug']}'
+		",
+		'ARRAY_A'
+	);
+	if ($existingNukeRecord) {
+		return "That person already nuked that clip";
+	}
+
+	$insertionSuccess = $wpdb->insert(
+		$table_name,
+		$nukeArray
+	);
+
+	return $insertionSuccess;
 }
 
 // add_action('init', 'populateKnownMoments');

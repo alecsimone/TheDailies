@@ -41,7 +41,7 @@ export default class WeedComment extends React.Component{
 			var yeaButton = <img className="yeaButton" src={dailiesGlobalData.thisDomain + '/wp-content/uploads/2018/07/voteyea.png'} onClick={this.yeaHandler} />;
 		}
 
-		if (this.props.commenter === dailiesGlobalData.userData.userName || dailiesGlobalData.userData.userRole === "author" || dailiesGlobalData.userData.userRole === "editor" || dailiesGlobalData.userData.userRole === "admi`nistrator") {
+		if (this.props.commenter === dailiesGlobalData.userData.userName || dailiesGlobalData.userData.userRole === "editor" || dailiesGlobalData.userData.userRole === "administrator") {
 			var delButton = <img className="delButton" src={dailiesGlobalData.thisDomain + '/wp-content/uploads/2017/04/red-x.png'} onClick={this.delHandler} />;
 		} else {
 			var delButton = '';

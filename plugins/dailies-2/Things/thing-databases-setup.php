@@ -4,11 +4,13 @@ global $pulled_clips_db_version;
 global $cip_comments_db_version;
 global $known_moments_db_version;
 global $submissions_db_version;
+global $nuke_records_db_version;
 $seen_slugs_db_version = '0.2';
 $pulled_clips_db_version = '0.7';
 $clip_comments_db_version = '0.1';
 $known_moments_db_version = '0.1';
 $submissions_db_version = '0.2';
+$nuke_records_db_version = '0.2';
 
 function createSeenSlugsDB() {
 	global $wpdb;
@@ -193,6 +195,40 @@ function update_submissions_db_check() {
 	global $submissions_db_version;
 	if (get_site_option("submissions_db_version") != $submissions_db_version) {
 		createSubmissionsDB();
+	}
+}
+
+function createNukeRecordsDB() {
+	global $wpdb;
+	global $nuke_records_db_version;
+	$installed_version = get_option("nuke_records_db_version");
+
+	if ($installed_version != $nuke_records_db_version) {
+		$table_name = $wpdb->prefix . "nuke_records_db";
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = 
+			"CREATE TABLE " . $table_name . " (
+			id INT NOT NULL AUTO_INCREMENT,
+			slug NVARCHAR(255) NOT NULL,
+			nuker NVARCHAR(255) NOT NULL,
+			time INT NOT NULL,
+			PRIMARY KEY  (id)
+		) " . $charset_collate . ";";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+		basicPrint($wpdb->last_error);
+
+		update_option('nuke_records_db_version', $nuke_records_db_version);
+	}
+}
+
+add_action('plugins_loaded', 'update_nuke_records_db_check');
+function update_nuke_records_db_check() {
+	global $nuke_records_db_version;
+	if (get_site_option("nuke_records_db_version") != $nuke_records_db_version) {
+		createNukeRecordsDB();
 	}
 }
 

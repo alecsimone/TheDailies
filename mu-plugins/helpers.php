@@ -101,10 +101,17 @@ function killAjaxFunction($response) {
 }
 
 function currentUserIsAdmin() {
-	$userID = get_current_user_id();
-	$userDataObject = get_userdata($userID);
-	$userRole = $userDataObject->roles[0];
-	if ($userRole === 'administrator') {
+	$person = getPersonInDB(get_current_user_id());
+	if ($person['role'] === "administrator") {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function currentUserIsEditorOrAdmin() {
+	$person = getPersonInDB(get_current_user_id());
+	if ($person['role'] === "administrator" || $person['role'] === "editor") {
 		return true;
 	} else {
 		return false;

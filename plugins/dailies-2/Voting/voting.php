@@ -237,6 +237,21 @@ function getVotersForSlug($slug) {
 	return $voterData;
 }
 
+function getNukersForSlug($slug) {
+	global $wpdb;
+	// $table_name = $wpdb->prefix . "seen_slugs_db";
+	$table_name = $wpdb->prefix . "nuke_records_db";
+
+	$nukerData = $wpdb->get_results(
+		"SELECT *
+		FROM $table_name
+		WHERE slug = '$slug'
+		", ARRAY_A
+	);
+	
+	return $nukerData;
+}
+
 function getScoreForSlug($slug) {
 	$votes = getVotersForSlug($slug);
 	$score = 0;

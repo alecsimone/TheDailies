@@ -109,6 +109,23 @@ body.page-template-weed-template {
     & .AdminBox {
     	flex-direction: row-reverse;
     }
+    & .nukers {
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	}
+    & h5.nukersHeader {
+    	display: inline-block;
+    	margin-right: 12px;
+    	font-weight: 500;
+    	font-size: 18px;
+    }
+    & .nukerBubble {
+    	margin: 2px 4px;
+		width: 48px;
+		height: 48px;
+		border-radius: 100%;
+    }
 }
 
 .weederVictory {

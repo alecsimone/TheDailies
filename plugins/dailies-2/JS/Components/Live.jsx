@@ -269,6 +269,9 @@ export default class Live extends React.Component{
 			admin.toggle = this.highlightPost;
 			admin.edit = this.makeTitleEditable;
 		}
+		if (dailiesGlobalData.userData.userRole === "editor") {
+			admin.edit = this.makeTitleEditable;
+		}
 
 		let contenderCounter = 0;
 		let component = this;

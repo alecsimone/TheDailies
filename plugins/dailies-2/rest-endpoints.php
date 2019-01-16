@@ -163,6 +163,26 @@ function get_clip_voters_for_rest($data) {
 	return $voters;
 }
 
+add_action( 'rest_api_init', 'dailies_add_clip_nukers_to_rest' );
+function dailies_add_clip_nukers_to_rest() {
+	register_rest_route('dailies-rest/v1', 'clipnukers/slug=(?P<slug>[\w\-]+)', array(
+		'methods' => 'GET',
+		'callback' => 'get_clip_nukers_for_rest',
+	));
+}
+
+function get_clip_nukers_for_rest($data) {
+	$rawNukerData = getNukersForSlug($data['slug']);
+	$nukers = [];
+	foreach ($rawNukerData as $key => $data) {
+		$nukers[$key]['hash'] = $data['nuker'];
+		$nuker = getPersonInDB($data['nuker']);
+		$nukers[$key]['picture'] = $nuker['picture'];
+		$nukers[$key]['name'] = $nuker['dailiesDisplayName'];
+	}
+	return $nukers;
+}
+
 add_action( 'rest_api_init', 'dailies_add_sluglist_voters_to_rest' );
 function dailies_add_sluglist_voters_to_rest() {
 	register_rest_route('dailies-rest/v1', 'sluglistVoters/slugs=(?P<slugs>[\w\-\,]+)', array(

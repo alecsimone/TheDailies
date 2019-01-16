@@ -17,7 +17,7 @@ export default class Weed extends React.Component{
 			if (slugObj.nuked === undefined) {
 				slugObj.nuked = 0;
 			}
-			if (slugObj.nuked == 1) {
+			if (slugObj.nuked == 2) {
 				delete weedData.clips[slug];
 			}
 			if (Number(slugObj.score) < -40) {
@@ -53,7 +53,7 @@ export default class Weed extends React.Component{
 			totalClips: Object.keys(weedData.clips).length + youJudged,
 			youJudged,
 			voters: "loading",
-			voters: [],
+			nukers: [],
 		};
 
 
@@ -140,7 +140,7 @@ export default class Weed extends React.Component{
 	sortClips(clipsArray) {
 		let clipsData = this.state.clips;
 		clipsArray.forEach( (slug, index) => {
-			if (clipsData[slug].nuked == 1) {
+			if (clipsData[slug].nuked == 2) {
 				console.log(`${slug} has been nuked, but is still showing up`);
 				clipsArray.splice(index, 1);
 			}
@@ -154,7 +154,7 @@ export default class Weed extends React.Component{
 		let clipVods = {}; //clipVods will have vodIDs as keys, and an array of slugs with that vodID as their properties
 		let looseClips = {}; //Will be just like weedData.clips, an object of slugs attached to their data
 		clipsArray.forEach( (slug, index) => {
-			if (clipsData[slug].nuked == 1) {
+			if (clipsData[slug].nuked == 2) {
 				console.log(`${slug} has been nuked, but is still showing up`);
 				clipsArray.splice(index, 1);
 			}
@@ -169,8 +169,6 @@ export default class Weed extends React.Component{
 				looseClips[slug] = clipsData[slug];
 			}
 		});
-
-		console.log(clipVods);
 
 		let clipViewsObject = {};
 		let clipVotesObject = {};
@@ -239,6 +237,14 @@ export default class Weed extends React.Component{
 				});
 			} else {
 				sortedClipsArray.push(identifier);
+			}
+		});
+
+		sortedClipsArray.sort( (a, b) => {
+			if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
+				return Number(clipsData[b].nuked) - Number(clipsData[a].nuked);
+			} else {
+				return Number(clipsData[a].nuked) - Number(clipsData[b].nuked);
 			}
 		});
 
@@ -523,7 +529,13 @@ export default class Weed extends React.Component{
 			success: (data) => {
 				console.log(`you've nuked ${data}! And we'll be increasing youjudged because of it`);
 				let clips = this.state.clips;
-				clips[data].nuked = 1;
+				if (dailiesGlobalData.userData.userRole === "administrator") {
+					clips[data].nuked = 2;
+				} else if (dailiesGlobalData.userData.userRole === "editor") {
+					clips[data].nuked = Number(clips[data].nuked) + 1;
+				} else if (Number(dailiesGlobalData.userData.rep) >= 5) {
+					clips[data].nuked = 1;
+				}
 				let clipsArray = this.state.clipsArray;
 				clipsArray.splice(0,1);
 				this.setState({
@@ -690,12 +702,14 @@ export default class Weed extends React.Component{
 	componentDidMount() {
 		// this.getComments();
 		this.getVotes();
+		this.getNukes();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		// if (this.state.voters === "loading") {
 		if (prevState.newClip === false) {
 			this.getVotes();
+			this.getNukes();
 		}
 	}
 
@@ -731,6 +745,20 @@ export default class Weed extends React.Component{
 		});
 	}
 
+	getNukes() {
+		let queryURL = `${dailiesGlobalData.thisDomain}/wp-json/dailies-rest/v1/clipnukers/slug=${this.firstSlug}`
+		jQuery.get({
+			url: queryURL,
+			dataType: 'json',
+			success: (data) => {
+				this.setState({
+					nukers: data,
+					// newClip: true,
+				});
+			}
+		});
+	}
+
 	render() {
 		console.groupCollapsed("render");
 		// console.log(this.state.clipsArray);
@@ -749,40 +777,21 @@ export default class Weed extends React.Component{
 		let firstSlugData = this.state.clips[this.firstSlug];
 		firstSlugData.voters = this.state.voters;
 		console.log(firstSlugData);
-		// let firstSlugMoment = this.turnVodlinkIntoMomentObject(firstSlugData.vodlink);
-		// let momentIsFresh = this.checkMomentFreshness(firstSlugMoment);
-		// let i = 0;
-		// while (!momentIsFresh && i < this.state.clipsArray.length) {
-		// 	// this.nukeSlug(this.firstSlug);
-		// 	console.log(`Skipping ${this.firstSlug} because you've seen that moment already`);
-		// 	i++;
-		// 	this.firstSlug = this.state.clipsArray[i];
-		// 	firstSlugData = this.state.clips[this.firstSlug];
-		// 	if (firstSlugData !== undefined) {
-		// 		firstSlugMoment = this.turnVodlinkIntoMomentObject(firstSlugData.vodlink);
-		// 		momentIsFresh = this.checkMomentFreshness(firstSlugMoment);
-		// 	} else {
-		// 		momentIsFresh = true;
-		// 	}
-		// }
-		// if (!momentIsFresh) {
-		// 	let clipsArray = this.state.clipsArray;
-		// 	clipsArray.splice(0, 1);
-		// 	this.setState({clipsArray});
-		// }
-		// if (this.state.clipsArray.length === i) {
-		// 	return(
-		// 		<section id="weeder" className="weederVictory">
-		// 			<div id="Victory">You won!</div>
-		// 		</section>
-		// 	)
-		// }
 
 		let unjudgedClipCounter = 0;
 		let yourUndjudgedClips = 0;
 		jQuery.each(this.state.clips, function(index, clipData) {
 			if (clipData.votecount == 0 && clipData.nuked == 0) {unjudgedClipCounter++;}
 		});
+
+		let nukersDisplay;
+		if (this.state.nukers.length > 0) {
+			let nukers = this.state.nukers.map( (nukerData) => {
+				return <img key={nukerData.hash} className="nukerBubble" src={nukerData.picture} title={nukerData.name} onError={(e) => window.imageError(e, 'twitchVoter')} />
+			});
+			nukers.unshift(<h5 className="nukersHeader">Nuked by: </h5>);
+			nukersDisplay = <div className="nukers">{nukers}</div>
+		}
 
 		let width = jQuery(window).width() - 10;
 		let windowHeight = jQuery(window).height();
@@ -813,10 +822,15 @@ export default class Weed extends React.Component{
 		}
 
 		let admin = {};
-		if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
+		if (dailiesGlobalData.userData.userRole === "administrator") {
 			admin.cut = this.nukeButtonHandler;
 			admin.toggle = this.blacklistVod;
+		} else if (dailiesGlobalData.userData.userRole === "editor") {
+			admin.cut = this.nukeButtonHandler;
+		} else if (dailiesGlobalData.userData.rep >= 5) {
+			admin.cut = this.nukeButtonHandler;
 		}
+
 
 		console.groupEnd("render");
 		return(
@@ -876,7 +890,9 @@ export default class Weed extends React.Component{
 					}}
 				>
 					<section id="scoutThing">
+						{nukersDisplay}
 						<Thing clipdata={firstSlugData} voteCallback={this.judgeClip} autoplay={true} adminFunctions={admin} />
+						}
 					</section>
 				</CSSTransition>
 			</section>
