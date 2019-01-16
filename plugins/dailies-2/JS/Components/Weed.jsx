@@ -158,7 +158,7 @@ export default class Weed extends React.Component{
 				console.log(`${slug} has been nuked, but is still showing up`);
 				clipsArray.splice(index, 1);
 			}
-			if (clipsData[slug].vodlink !== "none" && clipsData[slug].vodlink.indexOf("twimg.com") == -1 && clipsData[slug].vodlink.indexOf("gfycat") == -1) {
+			if (clipsData[slug].vodlink !== "none" && clipsData[slug].vodlink.indexOf("twimg.com") == -1 && clipsData[slug].vodlink.indexOf("gfycat") == -1 && clipsData[slug].vodlink.indexOf("gifyourgame") == -1) {
 				let currentMoment = this.turnVodlinkIntoMomentObject(clipsData[slug].vodlink);
 				if (clipVods[currentMoment['vodID']]) {
 					clipVods[currentMoment['vodID']].push(slug);
@@ -169,6 +169,8 @@ export default class Weed extends React.Component{
 				looseClips[slug] = clipsData[slug];
 			}
 		});
+
+		console.log(clipVods);
 
 		let clipViewsObject = {};
 		let clipVotesObject = {};

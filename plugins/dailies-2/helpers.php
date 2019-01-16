@@ -199,6 +199,7 @@ function getSlugByPostID($postID) {
 		'twitter' => get_post_meta($postID, 'TwitterCode', true),
 		'gfy' => get_post_meta($postID, 'GFYtitle', true),
 		'youtube' => get_post_meta($postID, 'YouTubeCode', true),
+		'gifyourgame' => get_post_meta($postID, 'GygCode', true),
 	);
 	foreach ($slugsArray as $slugCheck) {
 		$slugCheck != "" ? $slug = $slugCheck : $slug = $slug;
@@ -223,6 +224,8 @@ function getClipTypeByPostID($postID) {
 	if ($gfycat) {return "gfycat";}
 	$youtube = get_post_meta($postID, 'YouTubeCode', true);
 	if ($youtube) {return "youtube";}
+	$gyg = get_post_meta($postID, 'GygCode', true);
+	if ($gyg) {return "gifyourgame";}
 }
 
 function convertTwitchTimeToTimestamp($twitchTime) {

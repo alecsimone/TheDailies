@@ -210,6 +210,15 @@ function addPostForSlug($slug, $title = false) {
 				"compare" => "=",
 			),
 		);
+	}  elseif ($slugData['type'] === "gifyourgame") {
+		$thingArray['meta_input']['GygCode'] = $slugData['slug'];
+		$args['meta_query'] = array(
+			array(
+				"key" => "Gygcode",
+				"value" => $slugData['slug'],
+				"compare" => "=",
+			),
+		);
 	}
 
 	$query = new WP_Query($args);
@@ -220,7 +229,6 @@ function addPostForSlug($slug, $title = false) {
 	} else {
 		return false;
 	}
-
 }
 
 add_action( 'wp_ajax_hopefuls_cutter', 'hopefuls_cutter' );

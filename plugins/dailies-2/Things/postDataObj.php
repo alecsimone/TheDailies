@@ -31,6 +31,7 @@ function buildPostDataObject($id) {
 		'GFYtitle' => get_post_meta($id, 'GFYtitle', true),
 		'YouTubeCode' => get_post_meta($id, 'YouTubeCode', true),
 		'TwitterCode' => get_post_meta($id, 'TwitterCode', true),
+		'GygCode' => get_post_meta($id, 'GygCode', true),
 		'EmbedCode' => get_post_meta($id, 'EmbedCode', true),
 	);
 	$allCatData = get_the_category($id);

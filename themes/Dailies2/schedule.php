@@ -14,7 +14,7 @@
 	'Tuesday' => array(
 		'rlo' => ['Rocket League Oceania', 'rocket-league-oceania', 646, 'OCE - 3v3', '230AM EST'],
 		// 'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '3PM EST'],
-		'euroRL' => ['EuroRL', 'euro-rl', 1491, 'Playoffs!', '1230PM EST'],
+		// 'euroRL' => ['EuroRL', 'euro-rl', 1491, 'Playoffs!', '1230PM EST'],
 		'rlpc' => ['RLPC', 'rlpc', 1495, 'NA - Playoffs', '7PM EST'],
 		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - 3v3 - Winter Circuit', '7PM EST'],
 		'absLeverage' => ['Absolute Leverage', 'absolute-leverage', 1589, 'NA - 2v2 - $40', '8PM EST'],
@@ -22,17 +22,17 @@
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Wednesday' => array(
-		'nordic' => ['Nordic Gaming', 'nordic-gaming', 1613, 'OCE - 1v1 - $100', '230AM EST'],
 		'flames' => ['Ember Series', 'copenhagen-flames', 1628, 'EU Renegade Cup', '1PM EST'],
 		// 'veritas' => ['Veritas', 'veritas-esports', 1064, 'EU - College Cup', '2PM EST'],
 		'worldOfRockets' => ['World of Rockets', 'world-of-rockets', 1360, 'NA - 3v3', '7PM EST'],
 		'myth' => ['Valhalla', 'mythical-esports', 251, 'NA Renegade Cup', '7PM EST'],
-		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - Winter Circuit', '8PM EST'],
+		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - Winter Circuit', '7PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Thursday' => array(
 		'flames' => ['Ember Series', 'copenhagen-flames', 1628, 'EU Renegade Cup', '1PM EST'],
 		'myth' => ['Valhalla', 'mythical-esports', 251, 'NA Renegade Cup', '7PM EST'],
+		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - Winter Circuit', '7PM EST'],
 		'flg' => ['Frontline Gaming', 'frontline-gaming', 1572, 'NA - 3v3 - $30', '8PM EST'],
 		'rlpc' => ['RLPC', 'rlpc', 1495, 'NA - Playoffs', '9PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
