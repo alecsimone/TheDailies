@@ -142,6 +142,7 @@ function share_twitch_user_db() {
     killAjaxFunction($twitchDB);
 }
 
+add_action( 'wp_ajax_update_twitch_db', 'update_twitch_db' );
 function update_twitch_db() {
     if (!currentUserIsAdmin()) {
         wp_die("You are not an admin, sorry");

@@ -494,6 +494,11 @@ export default class Weed extends React.Component{
 		return isFresh;
 	}
 	nukeButtonHandler() {
+		if (dailiesGlobalData.userData.userRole !== "administrator") {
+			if (!window.confirm("This is the nuke button. Only hit this button on clips that aren't remotely interesting or relevant in any way. They'll get moved to the back of the queue for everyone else until a mod deletes them. Do NOT nuke anything that there's any chance someone, anyone, might like. Do you want to nuke this clip?")) {
+				return;
+			}
+		}
 		this.setState({
 			newClip: false,
 			lastVoteDirection: "down",
@@ -789,7 +794,7 @@ export default class Weed extends React.Component{
 			let nukers = this.state.nukers.map( (nukerData) => {
 				return <img key={nukerData.hash} className="nukerBubble" src={nukerData.picture} title={nukerData.name} onError={(e) => window.imageError(e, 'twitchVoter')} />
 			});
-			nukers.unshift(<h5 className="nukersHeader">Nuked by: </h5>);
+			nukers.unshift(<h5 className="nukersHeader">Nuked by</h5>);
 			nukersDisplay = <div className="nukers">{nukers}</div>
 		}
 
@@ -825,11 +830,10 @@ export default class Weed extends React.Component{
 		if (dailiesGlobalData.userData.userRole === "administrator") {
 			admin.cut = this.nukeButtonHandler;
 			admin.toggle = this.blacklistVod;
-		} else if (dailiesGlobalData.userData.userRole === "editor") {
-			admin.cut = this.nukeButtonHandler;
-		} else if (dailiesGlobalData.userData.rep >= 5) {
+		} else if (dailiesGlobalData.userData.userRole === "editor" || Number(dailiesGlobalData.userData.userRep) >= 5) {
 			admin.cut = this.nukeButtonHandler;
 		}
+		console.log(Number(dailiesGlobalData.userData.userRep));
 
 
 		console.groupEnd("render");

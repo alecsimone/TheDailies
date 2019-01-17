@@ -3,7 +3,7 @@ import KeepBar from "../KeepBar.jsx";
 
 const AdminBox = ({adminFunctions, identifier}) => {
 	// console.log(identifier);
-	if (!adminFunctions || (dailiesGlobalData.userData.userRole !== "administrator" && dailiesGlobalData.userData.userRole !== "editor")) {
+	if (!adminFunctions || (dailiesGlobalData.userData.userRole !== "administrator" && dailiesGlobalData.userData.userRole !== "editor") && Number(dailiesGlobalData.userData.userRep) < 5) {
 		return <div />
 	}
 	let cut;

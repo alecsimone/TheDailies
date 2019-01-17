@@ -122,9 +122,9 @@ export default class VotingMachine extends React.Component{
 		let ourVote;
 
 		let yeaVoters = Object.keys(yeaVotersList).map((key) => {
-			var voterName = yeaVotersList[key]['name'];
+			let voterName = yeaVotersList[key]['name'];
 			if (voterName === dailiesGlobalData.userData.userName) {ourVote = "yea";}
-			var voterPic = yeaVotersList[key]['picture'];
+			let voterPic = yeaVotersList[key]['picture'];
 			let voterRep = yeaVotersList[key]['weight'];
 			return (
 				<img key={key} className="voterBubble" src={voterPic} title={`${voterName}: ${voterRep}`} onError={(e) => window.imageError(e, 'twitchVoter')} />
@@ -132,9 +132,9 @@ export default class VotingMachine extends React.Component{
 		});
 
 		let nayVoters = Object.keys(nayVotersList).map((key) => {
-			var voterName = nayVotersList[key]['name'];
+			let voterName = nayVotersList[key]['name'];
 			if (voterName === dailiesGlobalData.userData.userName) {ourVote = "nay";}
-			var voterPic = nayVotersList[key]['picture'];
+			let voterPic = nayVotersList[key]['picture'];
 			let voterRep = nayVotersList[key]['weight'];
 			return (
 				<img key={key} className="voterBubble" src={voterPic} title={`${voterName}: ${voterRep}`} onError={(e) => window.imageError(e, 'twitchVoter')} />

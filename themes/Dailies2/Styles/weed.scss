@@ -113,10 +113,14 @@ body.page-template-weed-template {
 	    display: flex;
 	    align-items: center;
 	    justify-content: center;
+	    background: hsla(350, 60%, 10%, 1);
+	    border: 1px solid $whiteTrans07;
+    	margin: 1em 0;
+	    padding: 1em;
 	}
     & h5.nukersHeader {
     	display: inline-block;
-    	margin-right: 12px;
+    	margin: 0 12px 0 0;
     	font-weight: 500;
     	font-size: 18px;
     }

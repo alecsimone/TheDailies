@@ -35,6 +35,7 @@ function judge_slug() {
 		$clipArray['score'] = $clipArray['score'] - getValidRep($userID) * floatval(get_option("nayCoefficient"));
 	} elseif ($judgment === 'up') {
 		$clipArray['score'] = $clipArray['score'] + getValidRep($userID);
+		$clipArray['nuked'] = 0;
 	}
 	if (!is_numeric($clipArray['votecount'])) {
 		$clipArray['votecount'] = 0;
