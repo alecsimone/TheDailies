@@ -241,7 +241,7 @@ export default class Weed extends React.Component{
 		});
 
 		sortedClipsArray.sort( (a, b) => {
-			if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
+			if (dailiesGlobalData.userData.userRole === "administrator") {
 				return Number(clipsData[b].nuked) - Number(clipsData[a].nuked);
 			} else {
 				return Number(clipsData[a].nuked) - Number(clipsData[b].nuked);
