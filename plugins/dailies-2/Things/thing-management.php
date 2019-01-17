@@ -83,7 +83,7 @@ function nukeSlug($slug) {
 		$slugToNuke['nuked'] = $newNukedValue;
 		editPulledClip($slugToNuke);
 	}
-	deleteAllVotesForSlug($slug);
+	// deleteAllVotesForSlug($slug);
 	return $slug;
 }
 
@@ -97,6 +97,12 @@ function nuke_slug_handler() {
 	}
 	$slugToNuke = $_POST['slug'];
 	nukeSlug($slugToNuke);
+	$voterArray = array(
+		"hash" => $person['hash'],
+		"weight" => floatval(get_option("nayCoefficient")) * (int)$person['rep'] * -1,
+		"slug" => $slugToNuke,
+	);
+	$addVoteResult = addVoteToDB($voterArray);
 	$nukeArray = array(
 		"slug" => $slugToNuke,
 		"nuker" => $person['hash'],
