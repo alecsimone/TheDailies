@@ -51,40 +51,6 @@ function getHopefuls() {
 		}
 	}
 
-	if ($liveSlug !== "false") {	
-		$lastViewerCountUpdateTime = get_option("lastViewerCountUpdateTime");
-		if ($lastViewerCountUpdateTime > time() - 30) {
-			$viewerCount = get_option("viewerCount");
-			$magicNumberConstant = get_option("magicNumberConstant");
-			$liveSlugYeaCount = 0;
-			$liveSlugNayCount = 0;
-			$liveVoters = getVotersForSlug("live");
-			foreach ($liveVoters as $voter) {
-				if ((int)$voter['weight'] > 0) {
-					$liveSlugYeaCount++;
-				} elseif ((int)$voter['weight'] < 0) {
-					$liveSlugNayCount++;
-				}
-			}
-			if ( $liveSlugYeaCount >= round($viewerCount * $magicNumberConstant, 0, PHP_ROUND_HALF_DOWN) && $liveSlugYeaCount >= 2 ) {
-				$postWasAdded = addPostForSlug($liveSlug);
-				// if ($postWasAdded) {
-				// 	basicPrint("Success!");
-				// } else {
-				// 	basicPrint("Failure!");
-				// }
-				if ($postWasAdded) {
-					nukeSlug($liveSlug);
-					deleteAllVotesForSlug($liveSlug);
-					deleteAllVotesForSlug("live");
-					update_option("liveSlug", "false");
-					update_option("lastPromotedSlug", $liveSlug);
-				}
-			}
-		}
-	}
-
-
 	if (!$liveSlugIsHopeful) {update_option("liveSlug", "false");}
 
 	$pulledClipsCount = count($allClips);

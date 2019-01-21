@@ -78,7 +78,8 @@ function nukeSlug($slug) {
 			$newNukedValue = (int)$slugToNuke['nuked'] + 1;
 			if ($newNukedValue > 2) {$newNukedValue = 2;}
 		} else if ((int)$person['rep'] >= 5 && (int)$slugToNuke['nuked'] < 2) {
-			$newNukedValue = 1;
+			$currentNukedValue = (int)$slugToNuke['nuked'];
+			$newNukedValue = (int)$slugToNuke['nuked'] === 2 ? 2 : 1;
 		}
 		$slugToNuke['nuked'] = $newNukedValue;
 		editPulledClip($slugToNuke);
