@@ -7,6 +7,7 @@ var killSounds = {
 		MachineGun: .4,
 		FiveShots: .4,
 		PacmanDeath: .4,	
+		FiveAngryShots: .4,
 	},
 	sounds: [],
 }
@@ -14,12 +15,11 @@ processSoundsObject(killSounds);
 
 var specialKillSounds = {
 	files: {
-		FiveAngryShots: .4,
-		Explosion: .4,
+		Explosion: .2,
 		StabbingSpree: .4,
 		Shotgunned: .4,
 		Drowning: .4,
-		Nani: .8,
+		Nani: .4,
 	},
 	sounds: [],
 }
@@ -36,6 +36,12 @@ var promoSounds = {
 		SonicRing: .4,
 		MarioCoin: .4,
 		ZeldaPuzzle: .4,
+		Yay: .4,
+		SkyrimLevelUp: .4,
+		ZeldaHeartContainer: .4,
+		MarioFanfare: .4,
+		FinalFantasyVictory: .4,
+		SmashVictory: .4,
 	},
 	sounds: [],
 }
