@@ -67,11 +67,13 @@ export default class TinyThing extends React.Component{
 			link = `https://gfycat.com/${this.props.clipdata.slug}`;
 		} else if (this.props.clipdata.type === "twitter") {
 			link = `https://twitter.com/statuses/${this.props.clipdata.slug}`;
+		} else if (this.props.clipdata.type === "gifyourgame") {
+			link = `https://gifyourgame.com/${this.props.clipdata.slug}`;
 		}
 
 		return(
 			<div className="TinyThing">
-				<img className="plebPic" src={sourcePic} />
+				<a href={link} target="_blank"><img className="plebPic" src={sourcePic} /></a>
 				<div className="thing-meta">
 					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}

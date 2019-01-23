@@ -21,15 +21,6 @@ export default class Weed extends React.Component{
 				delete weedData.clips[slug];
 			}
 		});
-		console.log(weedData.clips);
-
-		// var seenMoments = [];
-		// jQuery.each(weedData.seenSlugs, (index, seenSlugObject) => {
-		// 	let vodlink = weedData.clips[seenSlugObject.slug].vodlink;
-		// 	if (vodlink !== "none") {
-		// 		seenMoments.push(this.turnVodlinkIntoMomentObject(vodlink));
-		// 	}
-		// });
 
 		let youJudged = 0;
 		jQuery.each(weedData.seenSlugs, function(index, seenSlugObject) {
@@ -43,7 +34,6 @@ export default class Weed extends React.Component{
 		this.state = {
 			clips: weedData.clips,
 			seenSlugs: weedData.seenSlugs,
-			// seenMoments,
 			comments: [],
 			commentsLoading: true,
 			newClip: true,
@@ -53,17 +43,6 @@ export default class Weed extends React.Component{
 			voters: "loading",
 			nukers: [],
 		};
-
-
-		// jQuery.each(this.state.clips, (index, clipData) => {
-		// 	if (clipData.vodlink !== undefined) {
-		// 		let thisMoment = this.turnVodlinkIntoMomentObject(clipData.vodlink);
-		// 		if (!this.checkMomentFreshness(thisMoment)) {
-		// 			delete this.state.clips[index];
-		// 			this.state.totalClips--;
-		// 		}
-		// 	}
-		// });
 
 		if (this.state.seenSlugs.length === undefined) {
 			console.log(this.state.seenSlugs.length);
@@ -87,7 +66,6 @@ export default class Weed extends React.Component{
 		this.sortByVOD = this.sortByVOD.bind(this);
 		this.blacklistVod = this.blacklistVod.bind(this);
 		
-		// this.state.clipsArray = this.sortClips(Object.keys(weedData.clips));
 		this.state.clipsArray = this.sortByGravitas(Object.keys(weedData.clips));
 
 		console.groupEnd("constructor");
@@ -169,10 +147,12 @@ export default class Weed extends React.Component{
 		});
 
 		let clipViewsObject = {};
+		let clipScoreObject = {};
 		let clipVotesObject = {};
 
 		Object.keys(looseClips).forEach( (slug) => {
 			clipViewsObject[slug] = Number(clipsData[slug].views);
+			clipScoreObject[slug] = Number(clipsData[slug].score);
 			clipVotesObject[slug] = Number(clipsData[slug].votecount);
 		});
 
@@ -181,41 +161,57 @@ export default class Weed extends React.Component{
 				let thatSlugsData = clipsData[clipVods[vodID][0]];
 				looseClips[thatSlugsData.slug] = thatSlugsData;
 				clipViewsObject[thatSlugsData.slug] = Number(thatSlugsData.views);
+				clipScoreObject[thatSlugsData.slug] = Number(thatSlugsData.score);
 				clipVotesObject[thatSlugsData.slug] = Number(thatSlugsData.votecount);
 				delete clipVods[vodID];
 			} else {
 				let thisVodsViews = 0;
+				let thisVodsScore = 0;
 				let thisVodsLowestVotes;
 				clipVods[vodID].forEach( (slug) => {
 					if (thisVodsLowestVotes === undefined || thisVodsLowestVotes > Number(clipsData[slug].votecount)) {
 						thisVodsLowestVotes = Number(clipsData[slug].votecount);
 					}
 					thisVodsViews += Number(clipsData[slug].views);
+					console.log(clipsData[slug]);
+					if (Number(clipsData[slug].score) > 0) {
+						thisVodsScore += Number(clipsData[slug].score);
+					}
 				});
 				clipViewsObject[vodID] = thisVodsViews;
+				clipScoreObject[vodID] = thisVodsScore;
 				clipVotesObject[vodID] = thisVodsLowestVotes;
 			}
 		});
 
-		let sortedClipViewsArray = Object.keys(clipViewsObject).sort( (a, b) => {
-			if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
-				return -1;
-			}
-			if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
-				return 1;
-			}
-			return clipViewsObject[b] - clipViewsObject[a];
-		});
+		// let sortedClipViewsArray = Object.keys(clipViewsObject).sort( (a, b) => {
+		// 	if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
+		// 		return -1;
+		// 	}
+		// 	if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
+		// 		return 1;
+		// 	}
+		// 	return clipViewsObject[b] - clipViewsObject[a];
+		// });
 
 		let sortedClipVotesArray = Object.keys(clipVotesObject).sort( (a, b) => {
 			if (clipVotesObject[a] === clipVotesObject[b]) {
-				if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
-					return -1;
+				// if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
+				// 	return -1;
+				// }
+				// if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
+				// 	return 1;
+				// }
+				if (clipScoreObject[a] === clipScoreObject[b]) {
+					if (clipViewsObject[a] == 0 && clipViewsObject[b] != 0) {
+						return -1;
+					}
+					if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
+						return 1;
+					}
+					return clipViewsObject[b] - clipViewsObject[a];
 				}
-				if (clipViewsObject[b] == 0 && clipViewsObject[a] != 0) {
-					return 1;
-				}
-				return clipViewsObject[b] - clipViewsObject[a];
+				return clipScoreObject[b] - clipScoreObject[a];
 			}
 			return clipVotesObject[a] - clipVotesObject[b];
 		});
