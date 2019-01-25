@@ -208,7 +208,7 @@ p.userbox {
     font-size: 18px;
 }
 a.wp-social-login-provider {
-	color: transparent;
+	color: transparent !important;
 	width: 30px;
 	height: 30px;
 	overflow: hidden;
@@ -239,17 +239,6 @@ a.wp-social-login-provider {
 	border: $thingBorder;
 	box-sizing: border-box;
 	width: 100%;
-	& textarea {
-		background: none;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-color: $whiteTrans25;
-		color: white;
-		&:focus {
-			outline: 1px solid $whiteTrans25;
-		}
-	}
 	& .playerContainer {
 		width: 100%;
 		@media #{$bp1280} {
@@ -303,6 +292,18 @@ a.wp-social-login-provider {
 	}
 }
 
+textarea {
+	background: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-color: $whiteTrans25;
+	color: white;
+	&:focus {
+		outline: 1px solid $whiteTrans25;
+	}
+}
+
 .Thing {
 	display: flex;
 	flex-wrap: wrap;
@@ -342,7 +343,7 @@ a.wp-social-login-provider {
 	}
 	@media #{$bp1280} {
 		margin-bottom: 24px;
-		& .weedComments {
+		& .comments {
 			max-height: 300px;
 			@media #{$bp1900} {
 				max-height: 500px;
@@ -411,37 +412,6 @@ a.wp-social-login-provider {
 		word-break: break-word;
 		overflow-wrap: break-word;
 	}
-	& .weedComments {
-		width: 100%;
-		margin: .5em auto;
-		max-height: 250px;
-		overflow-y: auto;
-		color: $whiteTrans75;
-		 &::-webkit-scrollbar {
-		 	width: 9px;
-		 	background: #000;
-		 }
-		 &::-webkit-scrollbar-track {
-		 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3); 
-		 }
-		 &::-webkit-scrollbar-thumb {
-		 	border-radius: 3px;
-		 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.5);
-		 	background: rgba(255,255,255,.25); 
-		 }
-		@media #{$bp1280} {
-			margin: .5em 0;
-		}
-	}
-	& .weedCommentBox {
-		box-sizing: border-box;
-		width: 100%;
-		max-width: 800px;
-	    font-family: proxima-nova,sans-serif;
-		font-size: 18px;
-		padding: .6em .3em;
-		border-radius: 3px;
-	}
 	@media #{$bp1280} {
 		flex-basis: 400px;
 		flex-grow: 1;
@@ -449,7 +419,7 @@ a.wp-social-login-provider {
 	}
 }
 
-.weedComment {
+.commentContainer {
 	display: flex;
 	justify-content: space-between;
 	max-width: 800px;
@@ -457,6 +427,37 @@ a.wp-social-login-provider {
 	font-size: 18px;
 	line-height: 1.3em;
 	margin-bottom: .8em;
+}
+.comments {
+	width: 100%;
+	margin: .5em auto;
+	max-height: 250px;
+	overflow-y: auto;
+	color: $whiteTrans75;
+	 &::-webkit-scrollbar {
+	 	width: 9px;
+	 	background: #000;
+	 }
+	 &::-webkit-scrollbar-track {
+	 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3); 
+	 }
+	 &::-webkit-scrollbar-thumb {
+	 	border-radius: 3px;
+	 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.5);
+	 	background: rgba(255,255,255,.25); 
+	 }
+	@media #{$bp1280} {
+		margin: .5em 0;
+	}
+}
+.commentBox {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 800px;
+    font-family: proxima-nova,sans-serif;
+	font-size: 18px;
+	padding: .6em .3em;
+	border-radius: 3px;
 }
 .commentLeft {
 	display: flex;
@@ -467,6 +468,15 @@ a.wp-social-login-provider {
 		width: 36px;
 		border-radius: 50%;
 	}
+}
+.anonymousCommentForm {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+    & .commentAnonymouslyCheckbox {
+		width: 24px;
+		margin-right: 12px;
+    }
 }
 
 .comment {
