@@ -2,8 +2,8 @@
 
 add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
-	$version = '-v2.342';
-	$styleVersion = '-v2.340';
+	$version = '-v2.346';
+	$styleVersion = '-v2.343';
 	wp_register_script('globalScripts', plugins_url() . '/dailies-2/JS/Bundles/global-bundle' . $version . '.js', ['jquery'], '', true );
 	$thisDomain = get_site_url();
 	$global_data = array(
@@ -87,6 +87,14 @@ function client_information() {
 		$liveData = getLive();
 		wp_localize_script('liveVoteBarScripts', 'liveData', $liveData);
 		wp_enqueue_script( 'liveVoteBarScripts');
+	} else if (is_page('multiple-winners')) {
+		wp_register_script( 'multipleWinnersDiscussionScripts', plugins_url() . '/dailies-2/JS/Bundles/multiplewinnersdiscussion-bundle' . $version . '.js', ['jquery'], '', true );
+		$discussionCommentsData = array(
+			"slug" => "multipleWinnersDiscussion",
+		);
+		$multipleWinnersComments = get_clip_comments_for_rest($discussionCommentsData);
+		wp_localize_script('multipleWinnersDiscussionScripts', 'multipleWinnersComments', $multipleWinnersComments);
+		wp_enqueue_script( 'multipleWinnersDiscussionScripts');
 	}
 }
 

@@ -75,12 +75,12 @@ function checkSlugFreshness($slugData) {
 			}
 		}
 	} elseif ($slugData['type'] == "twitch") {
-		$known_moments_table_name = $wpdb->prefix . "known_moments_db";
-		$query = "SELECT * FROM $known_moments_table_name WHERE moment = '$slug' AND type = '$type'";
-		$existingMoment = $wpdb->get_row($query, ARRAY_A);
-		if ($existingMoment !== null) {
-			return false;
-		}
+		// $known_moments_table_name = $wpdb->prefix . "known_moments_db";
+		// $query = "SELECT * FROM $known_moments_table_name WHERE moment = '$slug' AND type = '$type'";
+		// $existingMoment = $wpdb->get_row($query, ARRAY_A);
+		// if ($existingMoment !== null) {
+		// 	return false;
+		// }
 	}
 	return true;
 }

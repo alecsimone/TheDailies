@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import ClipPlayer from './ClipPlayer.jsx';
-import WeedComments from './WeedComments.jsx';
+import Comments from './Comments.jsx';
 import Thing from './Things/Thing.jsx';
 import {privateData} from '../Scripts/privateData.jsx';
 

@@ -187,6 +187,21 @@ function chat_contender_vote() {
 
 	if ($_POST['direction'] === "yea") {
 		$weight = (int)$person['rep'];
+
+		$contendersArray = getLiveContenders();
+		global $wpdb;
+		$table_name = $wpdb->prefix . "vote_db";
+		foreach ($contendersArray as $contender) {
+			$thisSlug = getSlugByPostID($contender->ID);
+			if ($thisSlug === $slug) {continue;}
+
+			$where = array(
+				"hash" => $person['hash'],
+				"slug" => $thisSlug,
+			);
+			$wpdb->delete($table_name, $where);
+		}
+
 	} elseif ($_POST['direction'] === "nay") {
 		$weight = floatval(get_option("nayCoefficient")) * (int)$person['rep'] * -1;
 	}

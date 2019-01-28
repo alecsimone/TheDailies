@@ -33,6 +33,7 @@ function getLiveContenders() {
 		'category_name' => 'contenders',
 		'posts_per_page' => 50,
 		'order' => 'asc',
+		'orderby' => 'ID',
 		'date_query' => array(
 			array(
 			//	'after' => '240 hours ago',

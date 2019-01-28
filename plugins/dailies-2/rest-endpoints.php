@@ -131,14 +131,23 @@ function dailies_add_clip_comments_to_rest() {
 function get_clip_comments_for_rest($data) {
 	$comments = getCommentsForSlug($data['slug']);
 	foreach ($comments as $key => $value) {
-		$commenter = getPersonInDB($comments[$key]['commenter']);
-		if ($commenter['dailiesDisplayName'] == '--') {
-			$comments[$key]['commenter'] = $commenter['twitchName'];
+		if ($comments[$key]['commenter'] === "Anon") {
+			$comments[$key]['pic'] = get_site_url() . '/wp-content/uploads/2017/03/default_pic.jpg';
 		} else {
-			$comments[$key]['commenter'] = $commenter['dailiesDisplayName'];
+			$commenter = getPersonInDB($comments[$key]['commenter']);
+			if ($commenter['dailiesDisplayName'] == '--') {
+				$comments[$key]['commenter'] = $commenter['twitchName'];
+			} else {
+				$comments[$key]['commenter'] = $commenter['dailiesDisplayName'];
+			}
+			$comments[$key]['pic'] = getPicForPerson($commenter);
 		}
-		$comments[$key]['pic'] = getPicForPerson($commenter);
 	}
+	$sortedComments = array();
+	foreach ($comments as $key => $data) {
+		$sortedComments[$key] = $data['time'];
+	}
+	array_multisort($sortedComments, SORT_ASC, $comments);
 	return $comments;
 }
 

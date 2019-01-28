@@ -33,6 +33,7 @@ class PageTemplater {
 			'weed-template.php' => 'Weed',
 			'your-votes-template.php' => 'Your Votes',
 			'your-submissions-template.php' => 'Your Submissions',
+			'multiple-winners-discussion-template.php' => 'Multiple Winners Discussion',
 		);
 	}
 

@@ -16,10 +16,17 @@ function getCommentsForSlug($slug) {
 function addCommentToDB($commentData) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "clip_comments_db";
+
+	$userID = get_current_user_id();
+	if ($userID === 0 || $commentData['anonymous'] === "true") {
+		$commenter = "Anon";
+	} else {
+		$commenter = getPersonsHash(get_current_user_id());
+	}
 	
 	$commentArray = array(
 		'slug' => $commentData['slug'],
-		'commenter' => getPersonsHash(get_current_user_id()),
+		'commenter' => $commenter,
 		'comment' => $commentData['comment'],
 		'score' => 0,
 		'time' => time(),
@@ -38,17 +45,19 @@ function addCommentToDB($commentData) {
 }
 
 add_action( 'wp_ajax_post_comment', 'postCommentHandler' );
+add_action( 'wp_ajax_nopriv_post_comment', 'postCommentHandler' );
 function postCommentHandler() {
 	$commentData = array(
 		'slug' => $_POST['slug'], 
 		'comment' => $_POST['commentObject']['comment'],
+		'anonymous' => $_POST['commentObject']['anonymous'],
 	);
 	if ($_POST['commentObject']['replytoid'] !== undefined) {
 		$commentData['replytoid'] = $_POST['commentObject']['replytoid'];
 	}
 
 	$status = addCommentToDB($commentData);
-	killAjaxFunction($status);
+	killAjaxFunction($commentData);
 }
 
 function getCommentByID($id) {

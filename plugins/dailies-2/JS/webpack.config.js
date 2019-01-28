@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-var version = '-v2.342';
+var version = '-v2.346';
 
 module.exports = {
 	devtool: 'cheap-module-source-map',
@@ -16,6 +16,7 @@ module.exports = {
     	livevotebar: "./Entries/live-votebar-entry.js",
     	weed: "./Entries/weed-entry.js",
     	hopefuls: "./Entries/hopefuls-entry.js",
+    	multiplewinnersdiscussion: "./Entries/multipleWinnersDiscussion-entry.js",
     	global: "./Entries/global-entry.js", //Global must be kept last because it contains all the CSS files to be combined
     },
 	output: {

@@ -190,7 +190,10 @@ function turnContenderDataIntoVoteData(contenderData) {
 	let voteData = contenderData.map( (clipdata) => {
 		if (clipdata.eliminated === "true") {return 0;}
 		let score = 0;
-		clipdata.voters.forEach((voterData) => score += parseFloat(voterData.weight));
+		clipdata.voters.forEach( (voterData) => {
+			if (Number(voterData.weight) < 0) {voterData.weight = 0;}
+			score += parseFloat(voterData.weight);
+		});
 		if (score < 0) {score = 0;}
 		return score;
 	});

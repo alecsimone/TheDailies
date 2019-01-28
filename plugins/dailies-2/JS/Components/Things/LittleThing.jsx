@@ -1,5 +1,5 @@
 import React from "react";
-import WeedComments from '../WeedComments.jsx';
+import Comments from '../Comments.jsx';
 import VotingMachine from './VotingMachine.jsx';
 import SlugTitle from './SlugTitle.jsx';
 import MetaBox from './MetaBox.jsx';
@@ -95,8 +95,8 @@ export default class LittleThing extends React.Component{
 				// this.setState(currentState);
 				let commentData = {
 					comment: commentObject.comment,
-					commenter: dailiesGlobalData.userData.userName,
-					pic: dailiesGlobalData.userData.userPic,
+					commenter: commentObject.anonymous ? "Anon" : dailiesGlobalData.userData.userName,
+					pic: commentObject.anonymous ? "https://dailies.gg/wp-content/uploads/2017/03/default_pic.jpg" : dailiesGlobalData.userData.userPic,
 					id: data,
 					replytoid: commentObject.replytoid,
 					slug: boundThis.props.clipdata.slug,
@@ -200,7 +200,7 @@ export default class LittleThing extends React.Component{
 					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} editable={this.props.editableTitle ? this.props.editableTitle : false} submitNewTitle={this.props.submitNewTitle ? this.props.submitNewTitle : false} editTitle={this.props.editTitle} /></div>
 					{voters}
 					<MetaBox metaData={this.props.clipdata} />
-					<WeedComments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
+					<Comments key={this.props.clipdata.slug} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
 				<AdminBox identifier={identifier} adminFunctions={this.props.adminFunctions} />
 			</div>

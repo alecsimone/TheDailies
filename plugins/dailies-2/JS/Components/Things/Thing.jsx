@@ -1,6 +1,6 @@
 import React from "react";
 import ClipPlayer from '../ClipPlayer.jsx';
-import WeedComments from '../WeedComments.jsx';
+import Comments from '../Comments.jsx';
 import KeepBar from '../KeepBar.jsx';
 import VotingMachine from './VotingMachine.jsx';
 import SlugTitle from './SlugTitle.jsx';
@@ -75,6 +75,7 @@ export default class Thing extends React.Component{
 		this.setState(currentState);
 		// let randomID = Math.round(Math.random() * 100);
 		let boundThis = this;
+		console.log(commentObject);
 		jQuery.ajax({
 			type: "POST",
 			url: dailiesGlobalData.ajaxurl,
@@ -96,16 +97,19 @@ export default class Thing extends React.Component{
 				// 	}
 				// });
 				// this.setState(currentState);
+				console.log(commentObject.anonymous);
+				console.log(data);
 				let commentData = {
 					comment: commentObject.comment,
-					commenter: dailiesGlobalData.userData.userName,
-					pic: dailiesGlobalData.userData.userPic,
+					commenter: commentObject.anonymous ? "Anon" : dailiesGlobalData.userData.userName,
+					pic: commentObject.anonymous ? "https://dailies.gg/wp-content/uploads/2017/03/default_pic.jpg" : dailiesGlobalData.userData.userPic,
 					id: data,
 					replytoid: commentObject.replytoid,
 					slug: boundThis.props.clipdata.slug,
 					score: 0,
 					time: Date.now(),
 				}
+				console.log(commentData);
 				currentState.comments.push(commentData);
 				currentState.commentsLoading = false;
 				boundThis.setState(currentState);
@@ -252,7 +256,7 @@ export default class Thing extends React.Component{
 					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} /></div>
 					{voters}
 					<MetaBox metaData={this.props.clipdata} />
-					<WeedComments key={`weedComments-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
+					<Comments key={`comments-${this.props.clipdata.slug}`} slug={this.props.clipdata.slug} postComment={this.postComment} commentsLoading={this.state.commentsLoading} comments={this.state.comments} yeaComment={this.yeaComment} delComment={this.delComment} />
 				</div>
 				<AdminBox identifier={identifier} adminFunctions={this.props.adminFunctions} />
 			</div>

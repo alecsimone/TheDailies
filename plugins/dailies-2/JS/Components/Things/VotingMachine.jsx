@@ -68,7 +68,7 @@ export default class VotingMachine extends React.Component{
 			voters.forEach( (key) => {
 				if (this.props.voterData[key].name === dailiesGlobalData.userData.userName) {
 					userHasVoted = true;
-					if ( (this.state.localOnlyVote === "yea" && this.props.voterData[key].weight > 0) || (this.state.localOnlyVote === "nay" && this.props.voterData[key].weight < 0) )
+					if ( (this.state.localOnlyVote === "yea" && this.props.voterData[key].weight > 0) || (this.state.localOnlyVote === "nay" && this.props.voterData[key].weight <= 0) )
 					this.setState({localOnlyVote: false});
 				}
 			});
