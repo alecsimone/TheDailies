@@ -4,7 +4,7 @@
 		// 'fancy' => ['Team Fancy', 'team-fancy', 1502, 'NA - 3v3 - $300', '8PM EST'],
 		'vvv' => ['vVv', 'vvv-gaming', 239, "3v3 Captain's Draft", '8PM EST'],
 		'rbg' => ['RBG Esports', 'rbg-esports', 1576, "NA - 3v3 - $30", "8PM EST"],
-		'pwr' => ['Playing with Rockets', 'playing-with-rockets', 1607, "NA - 3v3 - $50", "8PM EST"],
+		'pwr' => ['Playing with Rockets', 'playing-with-rockets', 1607, "NA - 1v1v1v1v1v1v1v1 - $50", "8PM EST"],
 		'csl' => ['CStarLeague', 'cstarleague', 1632, 'NA - League Play', '9PM EST'],
 		'astro' => ['ASTRONAUTS', 'teambeyondnet', 540, 'NA - 3v3 - $2,000', '930PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
