@@ -12,7 +12,7 @@
 	),
 	'Tuesday' => array(
 		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - 3v3 - Winter Circuit', '7PM EST'],
-		'absLeverage' => ['Absolute Leverage', 'absolute-leverage', 1589, 'NA - 2v2 - $40', '8PM EST'],
+		'absLeverage' => ['Absolute Leverage', 'absolute-leverage', 1589, 'NA - 2v2 - $130', '8PM EST'],
 		'ppl' => ['Pulsar Premier League', 'ppl', 134, 'NA - 3v3 - $30', '8PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
@@ -58,6 +58,7 @@
 		// 'gsm' => ['GSM Esports', 'gsm-esports', 1634, 'OCE - 3v3 - $40', 'SUN 430AM EST'],
 		'ireland' => ['RL Ireland', 'rocket-league-ireland', 1115, '2v2 Hoops', 'SUN 9AM EST'],
 		'wsoeSUN' => ['WSOE', 'wsoe', 1644, '$100,000 Rocket League Showdown', 'SUN 1230PM EST'],
+		'uRogue' => ['United Rogue EU', 'united-rogue', 1292, 'League Play', 'SUN 1PM EST'],
 		'flg' => ['Frontline Gaming', 'frontline-gaming', 1572, 'Draft Series Combine #2', 'SUN 3PM EST'],
 		'cca' => ['CCA', 'cca', 736, 'Spring Series 2019', 'SUN 3PM EST'],
 		'rocketeermastercolSun' => ['Torneo Rocketeer', "torneo-rocketeer", 1672, "Colombia - 3v3 - Qualifiers", "SUN 530PM EST"],

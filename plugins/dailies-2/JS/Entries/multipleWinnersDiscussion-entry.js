@@ -1,0 +1,1 @@
+require('../Scripts/multiple-winners-discussion.js');

@@ -65,6 +65,7 @@ function editPersonInDB($personArray) {
     $personData = getPersonInDB($personArray);
     if (!$personData) {
         addPersonToDB($personArray);
+        return;
     }
 
     // $personArrayKeys = array_keys($personArray);
@@ -405,9 +406,50 @@ function give_rep() {
     killAjaxFunction($response);
 }
 
-function validateUserInfo() {
+function validateUserInfo($user_login, $user) {
     //When I figure out what needs to be fixed when people login, do it here
+    $dailiesID = $user->ID;
+
+    $userMeta = get_user_meta($dailiesID);
+    $userData = get_userdata($dailiesID);
+    $userURL = $userData->data->user_url;
+    if (strpos($userURL, "twitch.tv/")) {
+        $twitchName = substr($userURL, strpos($userURL, "twitch.tv/") + 10);
+        $existingPersonByTwitchName = getPersonInDB($twitchName);
+    } else {
+        $twitchName = "unknown";
+        $existingPersonByTwitchName = false;
+    }
+
+    $personArray = array(
+        'dailiesID' => $dailiesID,
+        'dailiesDisplayName' => $user->display_name,
+        'twitchName' => $twitchName === "unknown" ? "--" : $twitchName,
+        'email' => $user->user_email,
+        'provider' => $userMeta['wsl_current_provider'][0],
+        'role' => $user->roles[0],
+    );
+
+    $existingPersonByDailiesID = getPersonInDB($dailiesID);
+    if (!$existingPersonByDailiesID && !$existingPersonByTwitchName) {
+        addPersonToDB($personArray);
+    } else if ($existingPersonByTwitchName !== false && $existingPersonByDailiesID !== false) {
+        if ($existingPersonByTwitchName['hash'] !== $existingPersonByDailiesID['hash']) {
+            $existingPersonByDailiesID['rep'] = (int)$existingPersonByTwitchName['rep'] + (int)$existingPersonByDailiesID['rep'] - 1;
+            $existingPersonByDailiesID['twitchName'] = $existingPersonByTwitchName['twitchName'];
+
+            deletePersonFromDB($existingPersonByTwitchName['hash']);
+            editPersonInDB($existingPersonByDailiesID);
+        }
+    } else if ($existingPersonByTwitchName !== false) {
+        $personArray['hash'] = $existingPersonByTwitchName['hash'];
+        editPersonInDB($personArray);
+    } else if ($existingPersonByDailiesID !== false) {
+        $personArray['hash'] = $existingPersonByDailiesID['hash'];
+        editPersonInDB($personArray);
+    }
+
 }
-add_action('wp_login', 'validateUserInfo');
+add_action('wp_login', 'validateUserInfo', 10, 2);
 
 ?>
