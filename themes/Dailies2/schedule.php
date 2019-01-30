@@ -15,27 +15,23 @@
 		'absLeverage' => ['Absolute Leverage', 'absolute-leverage', 1589, 'NA - 2v2 - $130', '8PM EST'],
 		'ppl' => ['Pulsar Premier League', 'ppl', 134, 'NA - 3v3 - $30', '8PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
+		'nordic' => ['Asgard Cup', 'nordic-gaming', 1613, 'OCE - League Play', '230AM EST'],
 	),
 	'Wednesday' => array(
-		'flames' => ['Ember Series', 'copenhagen-flames', 1628, 'EU Renegade Cup', '1PM EST'],
 		'euroRL' => ['EuroRL', 'euro-rl', 1491, 'EU - Combines', '2PM EST'],
 		'nitro' => ['Nitro League', 'nitro-league', 1645, 'EU - League Play', '2PM EST'],
-		// 'veritas' => ['Veritas', 'veritas-esports', 1064, 'EU - College Cup', '2PM EST'],
+		'veritas' => ['Veritas', 'veritas-esports', 1064, 'EU - College Cup', '2PM EST'],
 		'worldOfRockets' => ['World of Rockets', 'world-of-rockets', 1360, 'NA - 3v3', '7PM EST'],
-		'myth' => ['Valhalla', 'mythical-esports', 251, 'NA Renegade Cup', '7PM EST'],
 		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - Winter Circuit', '7PM EST'],
-		'flg' => ['Frontline Gaming', 'frontline-gaming', 1572, 'Combine', '8PM EST'],
 		'csl' => ['CStarLeague', 'cstarleague', 1632, 'NA - League Play', '9PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
 	),
 	'Thursday' => array(
-		'flames' => ['Ember Series', 'copenhagen-flames', 1628, 'EU Renegade Cup', '1PM EST'],
-		'myth' => ['Valhalla', 'mythical-esports', 251, 'NA Renegade Cup', '7PM EST'],
 		'igl' => ['Indy Gaming League', 'indy-gaming-league', 1544, 'NA - Winter Circuit', '7PM EST'],
 		'genx' => ['GenX Esports', 'genx-esports', 1664, 'NA - 2v2', '7PM EST'],
 		'flg' => ['Frontline Gaming', 'frontline-gaming', 1572, 'NA - 3v3 - $30', '8PM EST'],
 		'me' => ['The Dailies', 'rocket-dailies', 688, 'Nom Stream', '6PM EST'],
-		'nordic' => ['Viking Shield 25', 'nordic-gaming', 1613, 'OCE - 3v3 - $500', '330AM EST'],
+		'nordic' => ['Asgard Cup', 'nordic-gaming', 1613, 'OCE - League Play', '330AM EST'],
 	),
 	'Friday' => array(
 		'nitro' => ['Nitro League', 'nitro-league', 1645, 'EU - League Play', '1PM EST'],
@@ -82,6 +78,7 @@
 		// 'euccgg' => ['ECC', 'ecc', 1507, 'League Play', '2PM EST'],
 		// 'fancy' => ['Team Fancy', 'team-fancy', 1502, 'NA - 3v3', '8PM EST'],
 		//'federation' => ['RL Federation', 'rocketleaguefederation', 1192, 'NA - 3v3 - $25', '8PM EST'],
+		// 'flames' => ['Ember Series', 'copenhagen-flames', 1628, 'EU Renegade Cup', '1PM EST'],
 		// 'flightclub' => ['Flight Club', 'flight-club', 855, 'NA - 1v1', 'SAT 7PM EST'],
 		//'forzen' => ['Forzen Esports', 'forzen', 772, 'NA - 2v2 - $20', '8PM EST'],
 		// 'gfinityAU' => ['GFinityAU', 'gfinityau', 1401, 'Elite Series LAN', 'SAT 8PM EST'],
@@ -127,6 +124,7 @@
 		//'UERLA' => ['UERLA', 'uerla-league', 1123, 'EU - 3v3 - League Play', 'SUN 2PM EST'],
 		//'universalOpen' => ['Universal Open', 'faceit', 883, 'EU Closed Quals', '12PM EST'],
 		// 'uRogue' => ['United Rogue', 'united-rogue', 1292, 'Conference Championships', '8PM EST'],
+		// 'veritas' => ['Veritas', 'veritas-esports', 1064, 'EU - College Cup', '2PM EST'],
 
 
 

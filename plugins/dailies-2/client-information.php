@@ -2,7 +2,7 @@
 
 add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
-	$version = '-v2.346';
+	$version = '-v2.347';
 	$styleVersion = '-v2.343';
 	wp_register_script('globalScripts', plugins_url() . '/dailies-2/JS/Bundles/global-bundle' . $version . '.js', ['jquery'], '', true );
 	$thisDomain = get_site_url();
