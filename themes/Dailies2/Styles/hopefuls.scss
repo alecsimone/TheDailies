@@ -17,6 +17,21 @@
 			color: $blue;
 		}
 	}
+	& #liveSlugDimmer{
+		z-index: -1;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 100%;
+		overflow: auto;
+		transition: opacity .8s ease-out;
+		background-color: hsla(0, 0%, 0%, .7);
+		opacity: 0;
+		&.dark {
+			opacity: 1;
+		}
+	}
 	& #hopefulsIntroData {
 		margin-bottom: 1em;
 	}
@@ -36,10 +51,16 @@
 			font-weight: 700;
 		}
 	}
+	& .dim {
+		opacity: .1;
+		transition: opacity .8s ease-out;
+	}
 }
 
 #topfive {
 	margin-bottom: 24px;
+	opacity: 1;
+	transition: opacity .8s ease-out;
 	@media #{$bp800} {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -52,4 +73,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 12px;
+	opacity: 1;
+	transition: opacity .8s ease-out;
 }

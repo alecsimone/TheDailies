@@ -63,4 +63,40 @@ function clean_known_moments_db_cron_handler() {
 	}
 }
 
+if( !wp_next_scheduled( 'repponing' ) ) {
+   wp_schedule_event( time(), 'daily', 'repponing' );
+}
+add_action( 'repponing', 'repponing' );
+function repponing() {
+	$currentMonth = date('n');
+	$lastRepponingMonth = get_option("lastRepponingMonth", 0);
+	if ($lastRepponingMonth !== $currentMonth) {
+		update_option("lastRepponingMonth", $currentMonth);
+		global $wpdb;
+		$table = $wpdb->prefix . "people_db";
+		$people = $wpdb->get_results("
+			SELECT hash, rep, giveableRep, lastRepTime
+			FROM $table
+			WHERE rep > 4 
+			", ARRAY_A
+		);
+
+		$activityThreshold = time() - 60 * 60 * 24 * 14;
+		foreach ($people as $person) {
+			$oldRep = (int)$person['rep'];
+			if ($oldRep <= 20 && (int)$person['lastRepTime'] > $activityThreshold) {continue;}
+			$newRep = round($oldRep * .9);
+			$oldGiveable = (int)$person['giveableRep'];
+			$newGiveable = $oldGiveable + $oldRep - $newRep;
+			if ($newGiveable > 200) {$newGiveable = 200;}
+			$personArray = array(
+				'hash' => $person['hash'], 
+				'rep' => $newRep,
+				'giveableRep' => $newGiveable,
+			);
+			editPersonInDB($personArray);
+		}
+	}
+}
+
 ?>

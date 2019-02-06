@@ -161,6 +161,9 @@ export default class Hopefuls extends React.Component{
 	}
 
 	cutSlug(slug) {
+		if (this.state.liveSlug === slug) {
+			window.toggled = false;
+		}
 		var clips = this.state.clips;
 		clips.shift();
 		let locallyCutSlugs = this.state.locallyCutSlugs;
@@ -192,6 +195,9 @@ export default class Hopefuls extends React.Component{
 	}
 
 	makeLive(e, slug) {
+		jQuery("#liveSlugDimmer").toggleClass("dark");
+		jQuery("#topfive").toggleClass("dim");
+		window.toggled = true;
 		let checkboxes = document.getElementsByClassName('checkbox');
 		for (var i = 0; i < checkboxes.length; i++) {
 			if (e.target !== checkboxes[i]) {
@@ -200,6 +206,7 @@ export default class Hopefuls extends React.Component{
 		};
 		if (this.state.liveSlug == slug) {
 			slug = false;
+			window.toggled = false;
 		}
 		jQuery.ajax({
 			type: "POST",
@@ -262,18 +269,26 @@ export default class Hopefuls extends React.Component{
 		let plebcomponents = plebs.map(function(clipdata) {
 			return <TinyThing key={clipdata.id} clipdata={clipdata} />;
 		});
+		let adminToggles = document.getElementsByClassName("checkbox");
+		window.toggled = false;
+		for (let toggle of adminToggles) {
+			if (toggle.checked) {window.toggled = true;}
+		}
+		console.log(window.toggled);
+
 		return(
 			<section id="hopefuls">
+			<div id="liveSlugDimmer" className={((this.state.liveSlug == false || dailiesGlobalData.userData.userRole !== "administrator") || !window.toggled) ? "" : "dark"} />
 				<div id="hopefulsIntroData">
-					<h5>{this.state.pulledClipsCount} plays, <span class="lightbluetext">{this.state.pulledClipsVotecount} votes</span>, <span class="goldtext">{this.state.clips.length} Hopefuls.</span></h5>
+					<h5>{this.state.pulledClipsCount} plays, <span className="lightbluetext">{this.state.pulledClipsVotecount} votes</span>, <span className="goldtext">{this.state.clips.length} Hopefuls.</span></h5>
 				</div>
 				<div id="leader">
 					<Thing key={leader.id} clipdata={leader} adminFunctions={admin} autoplay={false} />
 				</div>
-				<div id="topfive">
+			<div id="topfive" className={((this.state.liveSlug == false || dailiesGlobalData.userData.userRole !== "administrator") || !window.toggled) ? "" : "dim"}>
 					{topfivecomponents}
 				</div>
-				<div id="plebs">
+			<div id="plebs" className={((this.state.liveSlug == false || dailiesGlobalData.userData.userRole !== "administrator") || !window.toggled) ? "" : "dim"}>
 					{plebcomponents}
 				</div>
 			</section>

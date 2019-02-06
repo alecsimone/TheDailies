@@ -78,7 +78,7 @@ export default class DayContainer extends React.Component {
 
 		let nomHeader;
 		if (nomComponents.length > 0) {
-			nomHeader = <h3 className="dayContainerSectionHeader">Nominees</h3>;
+			nomHeader = <h3 className="dayContainerSectionHeader">Winners</h3>;
 		}
 		let contenderHeader;
 		if (contenderComponents.length > 0) {

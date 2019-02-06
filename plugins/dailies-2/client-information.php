@@ -2,7 +2,7 @@
 
 add_action("wp_enqueue_scripts", "client_information");
 function client_information() {
-	$version = '-v2.347';
+	$version = '-v2.348b';
 	$styleVersion = '-v2.343';
 	wp_register_script('globalScripts', plugins_url() . '/dailies-2/JS/Bundles/global-bundle' . $version . '.js', ['jquery'], '', true );
 	$thisDomain = get_site_url();
@@ -58,7 +58,7 @@ function client_information() {
 		// $hopefulsData = generateHopefulsData();
 		// wp_localize_script('hopefulsScripts', 'selected', $selected);
 		wp_enqueue_script('hopefulsScripts');
-	} else if (is_page('Live')) {
+	} else if (is_page('Live') || is_page('Finalists')) {
 		wp_register_script( 'liveScripts', plugins_url() . '/dailies-2/JS/Bundles/live-bundle' . $version . '.js', ['jquery'], '', true );
 		$nonce = wp_create_nonce('vote_nonce');
 		$livePageObject = get_page_by_path('live');
@@ -104,7 +104,7 @@ function generateUserData() {
 	if ($userID === 0) {
 		$userPic = get_site_url() . '/wp-content/uploads/2017/03/default_pic.jpg';
 	} else {
-		$userPic = $personRow['picture'];
+		$userPic = $personRow['manualPicture'] === "none" ? $personRow['picture'] : $personRow['manualPicture'];
 	}
 	$personData = array(
 		'userID' => $userID,

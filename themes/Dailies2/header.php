@@ -28,7 +28,7 @@
 			'Schedule' => '/schedule',
 			'Scout' => '/scout',
 			'Hopefuls' => '/hopefuls',
-			'Live' => '/live',
+			'Finalists' => '/finalists',
 		];
 		$baseURL = get_site_url();
 		foreach ($navLinks as $name => $link) {

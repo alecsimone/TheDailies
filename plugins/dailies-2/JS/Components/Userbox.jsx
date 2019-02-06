@@ -5,10 +5,6 @@ export default class Userbox extends React.Component {
 	render() {
 			if (this.props.userData.userID != '0') {
 				let thisDomain = dailiesGlobalData.thisDomain;
-				var changePic;
-				if (this.props.userData.userRep > 20) {
-					changePic = <p className="userbox">Edit Picture (soon!)</p>
-				}
 				let giveableRepNumber = parseInt(this.props.userData.giveableRep, 10);			
 				if (!isNaN(giveableRepNumber)) {
 					var giveableRep = this.props.userData.giveableRep;

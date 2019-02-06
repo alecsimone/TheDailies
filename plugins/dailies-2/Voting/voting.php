@@ -339,6 +339,7 @@ function getVoterDisplayInfoForSlug($slug) {
 				"name" => "Twitter",
 				"picture" => get_site_url() . "/wp-content/uploads/2018/08/twitter-logo.png",
 				"weight" => $voter['weight'],
+				"contribution" => 0,
 			);
 		} else {
 			$person = getPersonInDB($voter['hash']);
@@ -347,12 +348,14 @@ function getVoterDisplayInfoForSlug($slug) {
 					"name" => "Deleted Person",
 					"picture" => get_site_url() . "/wp-content/uploads/2017/03/default_pic.jpg",
 					"weight" => $voter['weight'],
+					"contribution" => 0,
 				);
 			} else {
 				$voterData = array(
 					"name" => $person['dailiesDisplayName'] == "--" ? $person['twitchName'] : $person['dailiesDisplayName'],
-					"picture" => $person['picture'],
+					"picture" => $person['manualPicture'] === "none" ? $person['picture'] : $person['manualPicture'],
 					"weight" => $voter['weight'],
+					"contribution" => $person['contribution'],
 				);
 			}
 		}

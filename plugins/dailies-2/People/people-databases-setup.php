@@ -1,7 +1,7 @@
 <?php
 
 global $people_db_version;
-$people_db_version = '0.4';
+$people_db_version = '0.5';
 
 function createPeopleDB() {
 	global $wpdb;
@@ -17,6 +17,7 @@ function createPeopleDB() {
 			id INT NOT NULL AUTO_INCREMENT,
 			hash VARCHAR(255) NOT NULL,
 			picture VARCHAR(1028) DEFAULT 'none',
+			manualPicture VARCHAR(1028) DEFAULT 'none',
 			dailiesID INT DEFAULT '-1',
 			dailiesDisplayName NVARCHAR(255) DEFAULT '--',
 			twitchName NVARCHAR(64) DEFAULT '--',
@@ -27,8 +28,10 @@ function createPeopleDB() {
 			email NVARCHAR(320) DEFAULT '--',
 			provider VARCHAR(64) DEFAULT '--',
 			role VARCHAR(64) DEFAULT '--',
+			contribution TINYINT DEFAULT 0,
 			starID INT DEFAULT '-1',
-			special TINYINT DEFAULT false,
+			special TINYINT DEFAULT 0,
+			hasVeto TINYINT DEFAULT 0,
 			PRIMARY KEY  (id)
 		) " . $charset_collate . ";";
 

@@ -127,7 +127,7 @@ export default class VotingMachine extends React.Component{
 			let voterPic = yeaVotersList[key]['picture'];
 			let voterRep = yeaVotersList[key]['weight'];
 			return (
-				<img key={key} className="voterBubble" src={voterPic} title={`${voterName}: ${voterRep}`} onError={(e) => window.imageError(e, 'twitchVoter')} />
+				<img key={key} className={`voterBubble ${Number(yeaVotersList[key]['contribution']) > 0 ? "skinIn" : ""}`} src={voterPic} title={`${voterName}: ${voterRep}`} onError={(e) => window.imageError(e, 'twitchVoter')} />
 			)
 		});
 
@@ -137,7 +137,7 @@ export default class VotingMachine extends React.Component{
 			let voterPic = nayVotersList[key]['picture'];
 			let voterRep = nayVotersList[key]['weight'];
 			return (
-				<img key={key} className="voterBubble" src={voterPic} title={`${voterName}: ${voterRep}`} onError={(e) => window.imageError(e, 'twitchVoter')} />
+				<img key={key} className={`voterBubble ${Number(nayVotersList[key]['contribution']) > 0 ? "skinIn" : ""}`} src={voterPic} title={`${voterName}: ${voterRep}`} onError={(e) => window.imageError(e, 'twitchVoter')} />
 			)
 		});
 

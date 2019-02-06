@@ -128,7 +128,7 @@ function buildFreshTwitchDB() {
     $table_name = $wpdb->prefix . "people_db";
     $twitchAccounts = $wpdb->get_results(
         "
-        SELECT twitchName, rep, picture
+        SELECT twitchName, rep, picture, role, contribution, manualPicture
         FROM $table_name
         WHERE twitchName != '--'
         ",
@@ -206,6 +206,10 @@ function increase_rep($person, $additionalRep) {
     $oldRep = getValidRep($person);
     if ($oldRep == 100) {return false;}
     $newRep = $oldRep + $additionalRep;
+    $personRow = getPersonInDB($personRow);
+    if ((int)$personRow['contribution'] >= 20) {
+        $newRep = $newRep + $additionalRep;
+    }
     if ($newRep > 100) {$newRep = 100;}
     if (is_numeric($person)) {
         $personArray = array(
@@ -226,6 +230,10 @@ function increase_rep($person, $additionalRep) {
 function increase_giveable_rep($person, $additionalRep) {
     $oldRep = getGiveableRep($person);
     $newRep = $oldRep + $additionalRep;
+    $personRow = getPersonInDB($person);
+    if ((int)$personRow['contribution'] >= 20) {
+        $newRep = $newRep + $additionalRep;
+    }
     if ($newRep > 200) {$newRep = 200;}
     if ($newRep < 0) {return false;}
     if (is_numeric($person)) {
@@ -407,7 +415,6 @@ function give_rep() {
 }
 
 function validateUserInfo($user_login, $user) {
-    //When I figure out what needs to be fixed when people login, do it here
     $dailiesID = $user->ID;
 
     $userMeta = get_user_meta($dailiesID);

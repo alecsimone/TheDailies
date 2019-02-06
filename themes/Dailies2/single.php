@@ -1,7 +1,6 @@
 <?php get_header(); 
 
-$website = get_userdata(4);
-basicPrint($website->data->user_url);
+increase_rep("shutson901", 5);
 
 ?>
 
