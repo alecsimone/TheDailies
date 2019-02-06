@@ -202,6 +202,8 @@ function hopefuls_cutter() {
 	$slugToNuke = $_POST['slug'];
 	nukeSlug($slugToNuke);
 	deleteVotesIfSlugIsLive($_POST['slug']);
+	$cutSlugTitle = getTitleBySlug($_POST['slug']);
+	send_nightbot_message($cutSlugTitle . " has been killed");
 	killAjaxFunction($slugToNuke);
 }
 
@@ -209,6 +211,10 @@ add_action( 'wp_ajax_choose_live_slug', 'choose_live_slug' );
 function choose_live_slug() {
 	update_option( "liveSlug", $_POST['slug'] );
 	update_option("lastAutoAction", "false");
+	$liveSlugTitle = getTitleBySlug($_POST['slug']);
+	if ($_POST['slug'] !== "false") {
+		send_nightbot_message("Now discussing " . $liveSlugTitle);
+	}
 	// if ($_POST['slug']) {
 	// 	$liveVoters = getVotersForSlug("live");
 	// 	global $wpdb;

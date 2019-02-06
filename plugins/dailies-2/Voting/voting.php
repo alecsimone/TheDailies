@@ -124,6 +124,8 @@ function chat_vote() {
 			if ( $liveSlugYeaCount >= round($viewerCount * $magicNumberConstant, 0, PHP_ROUND_HALF_DOWN) && $liveSlugYeaCount >= 2 ) {
 				$postWasAdded = addPostForSlug($liveSlug);
 				if ($postWasAdded) {
+					$liveSlugTitle = getTitleBySlug($liveSlug);
+					send_nightbot_message($liveSlugTitle . " has moved on to the final round!");
 					nukeSlug($liveSlug);
 					deleteAllVotesForSlug($liveSlug);
 					deleteAllVotesForSlug("live");

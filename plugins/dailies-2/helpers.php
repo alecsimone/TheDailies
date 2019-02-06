@@ -214,6 +214,21 @@ function getPostIDBySlug($slug) {
 	$query = new WP_Query($args);
 	return $query->posts[0]->ID;
 }
+function getTitleBySlug($slug) {
+	global $wpdb;
+	$table = $wpdb->prefix . "pulled_clips_db";
+	$pulledClipRow = $wpdb->get_row("
+		SELECT title FROM $table WHERE slug = '$slug'
+		", ARRAY_A);
+	if ($pulledClipRow !== null) {
+		return $pulledClipRow['title'];
+	}
+	$postID = getPostIDBySlug($slug);
+	if ($postID !== null) {
+		return get_the_title($postID);
+	}
+	return null;
+}
 
 function getClipTypeByPostID($postID) {
 	$twitch = get_post_meta($postID, 'TwitchCode', true);

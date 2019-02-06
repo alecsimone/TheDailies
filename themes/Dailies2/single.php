@@ -1,6 +1,6 @@
 <?php get_header(); 
 
-increase_rep("shutson901", 5);
+
 
 ?>
 
