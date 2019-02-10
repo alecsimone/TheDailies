@@ -204,6 +204,7 @@ function hopefuls_cutter() {
 	deleteVotesIfSlugIsLive($_POST['slug']);
 	$cutSlugTitle = getTitleBySlug($_POST['slug']);
 	send_nightbot_message($cutSlugTitle . " has been killed");
+	placeStreamMarker($slugToNuke . " killed");
 	killAjaxFunction($slugToNuke);
 }
 
@@ -214,6 +215,7 @@ function choose_live_slug() {
 	$liveSlugTitle = getTitleBySlug($_POST['slug']);
 	if ($_POST['slug'] !== "false") {
 		send_nightbot_message("Now discussing " . $liveSlugTitle);
+		placeStreamMarker($_POST['slug'] . " start");
 	}
 	// if ($_POST['slug']) {
 	// 	$liveVoters = getVotersForSlug("live");

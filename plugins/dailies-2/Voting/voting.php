@@ -126,6 +126,7 @@ function chat_vote() {
 				if ($postWasAdded) {
 					$liveSlugTitle = getTitleBySlug($liveSlug);
 					send_nightbot_message($liveSlugTitle . " has moved on to the final round!");
+					placeStreamMarker($liveSlug .  " promoted");
 					nukeSlug($liveSlug);
 					deleteAllVotesForSlug($liveSlug);
 					deleteAllVotesForSlug("live");

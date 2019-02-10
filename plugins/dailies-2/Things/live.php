@@ -217,4 +217,24 @@ function returnVoteNumber() {
 	killAjaxFunction($votenumber);
 }
 
+function placeStreamMarker($label) {
+	$url = "https://api.twitch.tv/helix/streams/markers";
+
+	global $privateData;
+	$args = array(
+		"headers" => array(
+			"Client-ID" => $privateData['twitchClientID'],
+			"Authorization" => "Bearer " .  $privateData['twitchStreamMarkerToken'],
+			'Accept' => 'application/vnd.twitchtv.v5+json',
+		),
+		"body" => array(
+			"user_id" => "137604379",
+			"description" => $label,
+		),
+	);
+
+	$response = wp_remote_post($url, $args);
+	basicPrint($response);
+}
+
 ?>
