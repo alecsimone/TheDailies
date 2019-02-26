@@ -6,8 +6,9 @@ $thisDomain = get_site_url();
 
 <section id="schedule-container">
 	<?php $scheduleCounter = 0;
-	date_default_timezone_set('America/Chicago');
-	$firstDayString = $latestNomDate . '-' . $latestNomMonth . '-' . $latestNomYear;
+	date_default_timezone_set('America/New_York');
+	// $firstDayString = $latestNomDate . '-' . $latestNomMonth . '-' . $latestNomYear;
+	$firstDayString = date('j') . '-' . date('F') . '-' . date('Y');
 	$date = new DateTime($firstDayString);
 	foreach ($shiftedSchedule as $day => $daySchedule) { ?>
 		<div class="schedule-day-title"><div id="scheduleFor"><?php echo $date->format('l') === 'Saturday' ? 'SCHEDULE FOR THE' : 'SCHEDULE FOR' ?></div><?php echo $date->format('l') === 'Saturday' ? 'WEEKEND OF' : strtoupper($date->format('l')) . ','; ?> <?php echo strtoupper($date->format('F')); ?> <?php echo strtoupper($date->format('j')); ?><span id="suffix"><?php echo strtoupper($date->format('S'));?></span></div>

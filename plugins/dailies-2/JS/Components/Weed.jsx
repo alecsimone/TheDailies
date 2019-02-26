@@ -498,13 +498,13 @@ export default class Weed extends React.Component{
 			lastVoteDirection: "down",
 		});
 		console.log(`You hit the nuke button on ${this.firstSlug}`);
-		let dupeSlugs = this.findAllDupes(this.firstSlug);
+		// let dupeSlugs = this.findAllDupes(this.firstSlug);
 		let boundThis = this;
 		this.nukeSlug(this.firstSlug);
-		dupeSlugs.forEach(function(slugToNuke) {
-			console.log(`Nuking ${slugToNuke} because it's the same moment as the clip you just judged`);
-			boundThis.nukeSlug(slugToNuke);
-		});
+		// dupeSlugs.forEach(function(slugToNuke) {
+		// 	console.log(`Nuking ${slugToNuke} because it's the same moment as the clip you just judged`);
+		// 	boundThis.nukeSlug(slugToNuke);
+		// });
 	}
 
 	nukeSlug(slug) {

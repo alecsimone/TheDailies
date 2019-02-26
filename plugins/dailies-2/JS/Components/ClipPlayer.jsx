@@ -89,9 +89,10 @@ export default class ClipPlayer extends React.Component{
 				autoplay ? isAutoPlay = {autoPlay: true} : isAutoPlay = {};
 				return (
 					<div className="embed-container">
-						<video controls {...isAutoPlay} loop muted src={this.props.vodlink} type="video/mp4" onClick={ (e) => {e.target.paused ? e.target.play() : e.target.pause()} } />
+						<video controls {...isAutoPlay} loop muted src={this.props.vodlink} type="video/mp4" />
 					</div>
 				)
+				// onClick={(e) => {e.target.paused ? e.target.play() : e.target.pause()} }
 			} else {
 				return (
 					<div className="embed-container">
@@ -105,9 +106,10 @@ export default class ClipPlayer extends React.Component{
 			autoplay ? isAutoPlay = {autoPlay: true} : isAutoPlay = {};
 			return (
 				<div className="embed-container">
-					<video controls {...isAutoPlay} loop muted src={this.props.vodlink} type="video/mp4" onClick={ (e) => {e.target.paused ? e.target.play() : e.target.pause()} } />
+					<video controls {...isAutoPlay} loop muted src={this.props.vodlink} type="video/mp4" />
 				</div>
 			)
+			//onClick={(e) => {e.target.paused ? e.target.play() : e.target.pause()} }
 		}
 		return(
 			<div className="embed-container">

@@ -110,6 +110,7 @@ function eliminate_post() {
 		wp_die("You are not an admin, sorry");
 	}
 	update_post_meta($_POST['id'], 'eliminated', "true");
+	placeStreamMarker(getSlugByPostID($_POST['id']) . "eliminated");
 	killAjaxFunction("Eliminated post " . $_POST['id']);
 }
 
