@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-var version = '-v2.3492';
+var version = '-v2.3492b';
 
 module.exports = {
 	devtool: 'cheap-module-source-map',
