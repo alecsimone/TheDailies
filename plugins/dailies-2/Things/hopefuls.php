@@ -23,6 +23,13 @@ function getHopefuls() {
 		$theseVoters = [];
 		$score = 0;
 		$voters = getVotersForSlug($clipData['slug']);
+		if (count($voters) < 2) {
+			$hasHundredRepVote = false;
+			foreach ($voters as $voter) {
+				if ((int)$voter["weight"] === 100) {$hasHundredRepVote = true;}
+			}
+			if (!$hasHundredRepVote) {continue;}
+		}
 		foreach ($voters as $voter) {
 			$score = $score + (int)$voter['weight'];
 		}

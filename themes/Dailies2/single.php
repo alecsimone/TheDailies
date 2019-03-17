@@ -1,6 +1,6 @@
 <?php get_header(); 
 
-placeStreamMarker("testMarker");
+getHopefuls();
 
 ?>
 
