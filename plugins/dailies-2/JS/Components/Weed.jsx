@@ -826,6 +826,13 @@ export default class Weed extends React.Component{
 			admin.toggle = this.blacklistVod;
 		} else if (dailiesGlobalData.userData.userRole === "editor" || Number(dailiesGlobalData.userData.userRep) >= 5) {
 			admin.cut = this.nukeButtonHandler;
+			if (Array.isArray(this.state.voters)) {
+				this.state.voters.forEach( (vote) => {
+					if (Number(vote.weight) > 0) {
+						delete admin.cut;
+					}
+				});
+			}
 		}
 		console.log(Number(dailiesGlobalData.userData.userRep));
 
