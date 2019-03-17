@@ -123,6 +123,13 @@ body.page-template-weed-template {
     	margin: 0 12px 0 0;
     	font-weight: 500;
     	font-size: 18px;
+    	&.unNuke {
+    		margin-left: 6px;
+    		&:hover {
+    			text-decoration: underline;
+    			cursor: pointer;
+    		}
+    	}
     }
     & .nukerBubble {
     	margin: 2px 4px;

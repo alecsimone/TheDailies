@@ -113,6 +113,30 @@ function nuke_slug_handler() {
 	killAjaxFunction($slugToNuke);
 }
 
+add_action( 'wp_ajax_un_nuke_slug', 'un_nuke_slug_handler' );
+function un_nuke_slug_handler() {
+	if (!currentUserIsEditorOrAdmin()) {
+		killAjaxFunction(false);
+	}
+	$slug = $_POST['slug'];
+
+	global $wpdb;
+	$table = $wpdb->prefix . "nuke_records_db";
+
+	$where = array(
+		"slug" => $slug,
+	);
+
+	$wpdb->delete($table, $where);
+
+
+	$slugToUnNuke = getSlugInPulledClipsDB($slug);
+	$slugToUnNuke['nuked'] = 0;
+	editPulledClip($slugToUnNuke);
+
+	killAjaxFunction(true);
+}
+
 function storeNukeRecord($nukeArray) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "nuke_records_db";

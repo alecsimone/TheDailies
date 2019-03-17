@@ -173,7 +173,6 @@ export default class Weed extends React.Component{
 						thisVodsLowestVotes = Number(clipsData[slug].votecount);
 					}
 					thisVodsViews += Number(clipsData[slug].views);
-					console.log(clipsData[slug]);
 					if (Number(clipsData[slug].score) > 0) {
 						thisVodsScore += Number(clipsData[slug].score);
 					}
@@ -547,6 +546,29 @@ export default class Weed extends React.Component{
 		});
 	}
 
+	unNukeSlug(slug) {
+		console.log(slug);
+		jQuery.ajax({
+			type: "POST",
+			url: dailiesGlobalData.ajaxurl,
+			dataType: 'json',
+			data: {
+				slug,
+				action: 'un_nuke_slug',
+			},
+			error: function(one, two, three) {
+				console.log(one);
+				console.log(two);
+				console.log(three);
+			},
+			success: (data) => {
+				if (data == true) {
+					this.setState({nukers: []});
+				}
+			}
+		});
+	}
+
 	postComment(commentObject) {
 		let currentState = this.state;
 		currentState.commentsLoading = true;
@@ -775,7 +797,6 @@ export default class Weed extends React.Component{
 		this.firstSlug = this.state.clipsArray[0];
 		let firstSlugData = this.state.clips[this.firstSlug];
 		firstSlugData.voters = this.state.voters;
-		console.log(firstSlugData);
 
 		let unjudgedClipCounter = 0;
 		let yourUndjudgedClips = 0;
@@ -789,6 +810,9 @@ export default class Weed extends React.Component{
 				return <img key={nukerData.hash} className="nukerBubble" src={nukerData.picture} title={nukerData.name} onError={(e) => window.imageError(e, 'twitchVoter')} />
 			});
 			nukers.unshift(<h5 className="nukersHeader">Nuked by</h5>);
+			if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
+				nukers.push(<h5 className="nukersHeader unNuke" onClick={() => this.unNukeSlug(this.firstSlug)} >(un-nuke)</h5>);
+			}
 			nukersDisplay = <div className="nukers">{nukers}</div>
 		}
 
@@ -834,8 +858,6 @@ export default class Weed extends React.Component{
 				});
 			}
 		}
-		console.log(Number(dailiesGlobalData.userData.userRep));
-
 
 		console.groupEnd("render");
 		return(
