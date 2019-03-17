@@ -201,6 +201,7 @@ function chat_contender_vote() {
 			$where = array(
 				"hash" => $person['hash'],
 				"slug" => $thisSlug,
+				"weight" => $weight,
 			);
 			$wpdb->delete($table_name, $where);
 		}
@@ -219,6 +220,9 @@ function chat_contender_vote() {
 	$postTitle = get_the_title($postIDToVoteOn);
 	$postTitleWordsArray = explode(" ", $postTitle);
 	
+	if ($addVoteResult === "That vote already exists!") {
+		killAjaxFunction($_POST['voter'] . " removed their " . $_POST['direction'] . " vote  on " . $postTitleWordsArray[0]);
+	}
 	killAjaxFunction($_POST['voter'] . " voted " . $_POST['direction'] . " on " . $postTitleWordsArray[0]);
 }
 
