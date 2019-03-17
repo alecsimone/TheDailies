@@ -121,7 +121,7 @@ function generateUserData() {
 }
 
 function generateDayOneData() {
-	date_default_timezone_set('UTC');
+	date_default_timezone_set('America/New_York');
 	$today = new DateTime();
 	$year = $today->format('Y');
 	$month = $today->format('n');

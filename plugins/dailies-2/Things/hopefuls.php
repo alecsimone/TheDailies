@@ -116,18 +116,18 @@ function addPostForSlug($slug, $title = false) {
 	// 	$voteledger[$voter['hash']] = getValidRep($voter['hash']);
 	// }
 
-	$currentHour = (int)date('H');
-	if ($currentHour > 12) {
-		$dateToPostOn = (int)date('d') + 1;
-	} else {
-		$dateToPostOn = (int)date('d');
-	}
-	$postDate = date('Y-m-') . $dateToPostOn . " 00:01:00";
+	// $currentHour = (int)date('H');
+	// if ($currentHour > 12) {
+	// 	$dateToPostOn = (int)date('d') + 1;
+	// } else {
+	// 	$dateToPostOn = (int)date('d');
+	// }
+	// $postDate = date('Y-m-') . $dateToPostOn . " 00:01:00";
 
 	$thingArray = array(
 		'post_title' => $title,
 		'post_author' => 1,
-		'post_date' => $postDate,
+		// 'post_date' => $postDate,
 		'post_content' => '',
 		'post_excerpt' => '',
 		'post_status' => 'publish',
