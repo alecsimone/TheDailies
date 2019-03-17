@@ -235,7 +235,7 @@ export default class Weed extends React.Component{
 		});
 
 		sortedClipsArray.sort( (a, b) => {
-			if (dailiesGlobalData.userData.userRole === "administrator") {
+			if (dailiesGlobalData.userData.userRole === "administrator" || dailiesGlobalData.userData.userRole === "editor") {
 				return Number(clipsData[b].nuked) - Number(clipsData[a].nuked);
 			} else {
 				return Number(clipsData[a].nuked) - Number(clipsData[b].nuked);
@@ -488,7 +488,7 @@ export default class Weed extends React.Component{
 		return isFresh;
 	}
 	nukeButtonHandler() {
-		if (dailiesGlobalData.userData.userRole !== "administrator") {
+		if (dailiesGlobalData.userData.userRole !== "administrator" && dailiesGlobalData.userData.userRole !== "editor") {
 			if (!window.confirm("This is the nuke button. Only hit this button on clips that aren't remotely interesting or relevant in any way. They'll get moved to the back of the queue for everyone else until a mod deletes them. Do NOT nuke anything that there's any chance someone, anyone, might like. Do you want to nuke this clip?")) {
 				return;
 			}
@@ -532,7 +532,7 @@ export default class Weed extends React.Component{
 					clips[data].nuked = 2;
 				} else if (dailiesGlobalData.userData.userRole === "editor") {
 					clips[data].nuked = Number(clips[data].nuked) + 1;
-				} else if (Number(dailiesGlobalData.userData.rep) >= 5) {
+				} else if (Number(dailiesGlobalData.userData.rep) >= 5 && clips[data].nuked < 2) {
 					clips[data].nuked = 1;
 				}
 				let clipsArray = this.state.clipsArray;
