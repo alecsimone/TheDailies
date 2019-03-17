@@ -193,8 +193,22 @@ export default class LittleThing extends React.Component{
 			identifier = this.props.clipdata.slug;
 		}
 
+		let winner;
+		let tags = this.props.clipdata.tags;
+		if (tags) {
+			tags.forEach((tagObject) => {
+				if (tagObject.slug == "winners") {
+					winner = true;
+				}
+			})
+			if (winner) {
+				winner = <div className="winnerBannerBox"><img src={`${dailiesGlobalData.thisDomain}/wp-content/uploads/2018/11/Winner-banner-wide.jpg`} className="winnerBanner" /></div>;
+			}
+		}
+
 		return(
 			<div className="LittleThing">
+				{winner}
 				<ClickToPlayThumb clipdata={this.props.clipdata} />
 				<div className="thing-meta">
 					<div className="thing-title"><SlugTitle slug={this.props.clipdata.slug} type={this.props.clipdata.type} title={this.props.clipdata.title} editable={this.props.editableTitle ? this.props.editableTitle : false} submitNewTitle={this.props.submitNewTitle ? this.props.submitNewTitle : false} editTitle={this.props.editTitle} /></div>

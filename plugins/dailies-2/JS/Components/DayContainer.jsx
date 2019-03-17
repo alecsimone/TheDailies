@@ -41,6 +41,7 @@ export default class DayContainer extends React.Component {
 		var thingsSorted = things.sort(thingsByScore);
 		// var thingsArray = Object.keys(thingsSorted);
 		let winner = false;
+		let winners = [];
 		let noms = [];
 		let contenders = [];
 		things.forEach( (thing) => {
@@ -49,6 +50,7 @@ export default class DayContainer extends React.Component {
 				thing.tags.forEach((tagObject) => {
 					if (tagObject.slug == "winners") {
 						winner = thing;
+						winners.push(thing);
 						isWinner = true;
 						return;
 					}
@@ -65,6 +67,11 @@ export default class DayContainer extends React.Component {
 		if (winner) {
 			winnerPost = <Thing clipdata={winner} key={winner.slug} adminFunctions={adminFunctions} autoplay={false} />
 		}
+		let winnerComponents = winners.map( (thing) => {
+			return(
+				<LittleThing clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
+			)
+		});
 		let nomComponents = noms.map((thing) => {
 			return(
 				<LittleThing clipdata={thing} key={thing.slug} adminFunctions={adminFunctions} />
@@ -87,7 +94,7 @@ export default class DayContainer extends React.Component {
 		return(
 			<section className="dayContainer">
 				<div className="daytitle">{monthsArray[date.month - 1].toUpperCase()} {dayString.toUpperCase()}</div>
-				{winnerPost}
+				{winnerComponents.length > 1 ? winnerComponents : winnerPost}
 				{nomHeader}
 				{nomComponents}
 				{contenderHeader}
