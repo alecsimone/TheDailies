@@ -22,6 +22,25 @@ function get_nightbot_token() {
 	basicPrint($response['body']);
 }
 
+function refresh_nightbot_token() {
+	global $privateData;
+
+	$url = "https://api.nightbot.tv/oauth2/token";
+
+	$args = array(
+		"body" => array(
+			"client_id" => $privateData['nightbotClientID'],
+			"client_secret" => $privateData['nightbotClientSecret'],
+			"refresh_token" => $privateData['nightbotRefreshToken'],
+			"grant_type" => "refresh_token",
+			"redirect_uri" => "https://Dailies.gg",
+		),
+	);
+
+	$response = wp_remote_post($url, $args);
+	basicPrint($response['body']);
+}
+
 function send_nightbot_message($messageText) {
 	global $privateData;
 

@@ -256,19 +256,19 @@ export default class Hopefuls extends React.Component{
 
 		let leader = this.state.clips[0];
 		let topfive = [];
-		for (var i = 1; i < 7 && i < this.state.clips.length; i++) {
+		for (var i = 1; i < this.state.clips.length; i++) {
 			topfive.push(this.state.clips[i]);
 		}
 		let topfivecomponents = topfive.map(function(clipdata) {
 			return <LittleThing key={clipdata.id} clipdata={clipdata} adminFunctions={admin} />;
 		});
-		let plebs = [];
-		for (var i = 7; i < this.state.clips.length; i++) {
-			plebs.push(this.state.clips[i]);
-		}
-		let plebcomponents = plebs.map(function(clipdata) {
-			return <TinyThing key={clipdata.id} clipdata={clipdata} />;
-		});
+		// let plebs = [];
+		// for (var i = 7; i < this.state.clips.length; i++) {
+		// 	plebs.push(this.state.clips[i]);
+		// }
+		// let plebcomponents = plebs.map(function(clipdata) {
+		// 	return <TinyThing key={clipdata.id} clipdata={clipdata} />;
+		// });
 		let adminToggles = document.getElementsByClassName("checkbox");
 		window.toggled = false;
 		for (let toggle of adminToggles) {
@@ -285,11 +285,8 @@ export default class Hopefuls extends React.Component{
 				<div id="leader">
 					<Thing key={leader.id} clipdata={leader} adminFunctions={admin} autoplay={false} />
 				</div>
-			<div id="topfive" className={((this.state.liveSlug == false || dailiesGlobalData.userData.userRole !== "administrator") || !window.toggled) ? "" : "dim"}>
+				<div id="topfive" className={((this.state.liveSlug == false || dailiesGlobalData.userData.userRole !== "administrator") || !window.toggled) ? "" : "dim"}>
 					{topfivecomponents}
-				</div>
-			<div id="plebs" className={((this.state.liveSlug == false || dailiesGlobalData.userData.userRole !== "administrator") || !window.toggled) ? "" : "dim"}>
-					{plebcomponents}
 				</div>
 			</section>
 		)

@@ -1,6 +1,7 @@
 <?php get_header(); 
 
-
+$a = getPostIDForVoteNumber(3);
+basicPrint($a);
 
 ?>
 

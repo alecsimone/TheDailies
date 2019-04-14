@@ -92,7 +92,7 @@ function repponing() {
 			$personArray = array(
 				'hash' => $person['hash'], 
 				'rep' => $newRep,
-				'giveableRep' => $newGiveable,
+				// 'giveableRep' => $newGiveable,
 			);
 			editPersonInDB($personArray);
 		}

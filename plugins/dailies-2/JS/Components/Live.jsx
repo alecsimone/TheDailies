@@ -24,12 +24,12 @@ export default class Live extends React.Component{
 		this.updateLive();
 		if (dailiesGlobalData.userData.userRole == "administrator") {
 			window.setInterval(() => this.updateLive(), 1000);
+			document.addEventListener("fullscreenchange", this.fullScreenListener);
+			document.addEventListener("webkitfullscreenchange", this.fullScreenListener);
+			document.addEventListener("mozfullscreenchange", this.fullScreenListener);
 		} else {
 			window.setInterval(() => this.updateLive(), 3000);
 		}
-		document.addEventListener("fullscreenchange", this.fullScreenListener);
-		document.addEventListener("webkitfullscreenchange", this.fullScreenListener);
-		document.addEventListener("mozfullscreenchange", this.fullScreenListener);
 	}
 
 	updateLive() {
@@ -56,6 +56,9 @@ export default class Live extends React.Component{
 	}
 
 	fullScreenListener(e) {
+		if (dailiesGlobalData.userData.userRole !== "administrator") {
+			return;
+		}
 		let contenderNumber = "";
 		if (document.fullscreenElement !== null) {
 			let fullscreenedContender = jQuery(document.fullscreenElement).parent().parent().parent().parent();
